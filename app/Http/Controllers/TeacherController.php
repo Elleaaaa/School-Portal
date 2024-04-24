@@ -100,7 +100,8 @@ class TeacherController extends Controller
         if ($teacher === null) {
             abort(404); // or handle the case where student is not found
         }
-        return view('teacher.profile-details', compact('teacher'));
+        $address = DB::table('addresses')->where('studentId', $teacherId)->first();
+        return view('teacher.profile-details', compact('teacher', 'address'));
     }
 
     public function showDashboard(string $teacherId)

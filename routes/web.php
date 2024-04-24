@@ -74,6 +74,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/addfeelist', [FeeListController::class, 'store'])->name('addfeelist.store');
     Route::post('/toggle-status/{id}', [FeeListController::class, 'toggleStatus']);
 
+    Route::get('/admin/edit-student/{id}', [StudentController::class, 'showEditStudent'])->name('edit-student.show');
+    Route::post('/admin/edit-student/{id}', [StudentController::class, 'updateAdmin'])->name('edit-student.update');
     Route::get('/admin/addstudent', [StudentController::class, 'index'])->name('addstudent.show');
     Route::post('/admin/addstudent', [StudentController::class, 'store'])->name('addstudent.store');
 

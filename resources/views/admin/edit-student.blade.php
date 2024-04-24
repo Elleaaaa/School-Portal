@@ -4,13 +4,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <title>Smartious - Edit Students</title>
-    <link rel="shortcut icon" href="assets/img/favicon.png">
+    <title>Edit Students</title>
 </head>
 
 <body>
     <div class="main-wrapper">
         @include('layouts/mainlayout')
+
         <div class="page-wrapper">
             <div class="content container-fluid">
                 <div class="page-header">
@@ -41,119 +41,140 @@
                     <div class="col-sm-12">
                         <div class="card">
                             <div class="card-body">
-                                <form method="POST"
-                                    action="{{ route('profile-details.update', ['id' => $student->id]) }}"
-                                    enctype="multipart/form-data">
+                                <form method="POST" action="{{ route('edit-student.update', ['id' => $students->id]) }}">
                                     @csrf
                                     <div class="row">
+                                         {{-- Student Information --}}
                                         <div class="col-12 text-center">
                                             <h5 class="form-title"><span>Student Information</span></h5>
-                                        </div>
-                                        {{-- Student Information --}}
-                                        <div class="col-4">
-                                            <div class="form-group">
-                                                <img src="{{ asset('storage/images/display-photo/' . $student->displayPhoto) }}"
-                                                    style="height: 250px">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label>Change Photo</label>
-                                                <input name="displayPhoto" type="file" class="form-control">
-                                            </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
                                                 <label>First Name</label>
                                                 <input name="firstName" type="text" class="form-control"
-                                                    value="{{ $student->firstName ?? '' }}">
+                                                value="{{ $students-> firstName}}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
                                                 <label>Middle Name</label>
-                                                <input name="middleName" type="text"
-                                                    class="form-control"value="{{ $student->middleName ?? '' }}">
+                                                <input name="middleName" type="text" class="form-control"
+                                                value="{{ $students-> middleName}}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
                                                 <label>Last Name</label>
                                                 <input name="lastName" type="text" class="form-control"
-                                                    value="{{ $student->lastName ?? '' }}">
+                                                value="{{ $students-> lastName}}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
                                                 <label>Suffix Name</label>
                                                 <input name="suffixName" type="text" class="form-control"
-                                                    placeholder="Jr, Sr, III, etc" value="{{ $student->suffix ?? '' }}">
+                                                value="{{ $students-> suffixName}}" placeholder="Jr, Sr, III, etc">
                                             </div>
                                         </div>
-                                        <div class="col-12 col-sm-6 col-md-3">
-                                            <div class="form-group">
-                                                <label>Student Id</label>
-                                                <input readonly name="studentId" type="text" class="form-control"
-                                                    value="{{ Auth::user()->studentId }}">
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-sm-6 col-md-3">
+                                        <div class="col-12 col-sm-6 col-md-4">
                                             <div class="form-group">
                                                 <label>Gender</label>
                                                 <select name="gender" class="form-control">
                                                     <option readonly>Select Gender</option>
-                                                    <option value="Female">Female</option>
-                                                    <option value="Male">Male</option>
-                                                    <option value="Others">Others</option>
+                                                    <option value="Female"
+                                                        {{ old('gender') == 'Female' ? 'selected' : '' }}>Female
+                                                    </option>
+                                                    <option value="Male"
+                                                        {{ old('gender') == 'Male' ? 'selected' : '' }}>Male</option>
+                                                    <option value="Others"
+                                                        {{ old('gender') == 'Others' ? 'selected' : '' }}>Others
+                                                    </option>
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-12 col-sm-6 col-md-3">
+                                        <div class="col-12 col-sm-6 col-md-4">
                                             <div class="form-group">
                                                 <label>Date of Birth</label>
                                                 <input name="birthday" type="date" class="form-control"
-                                                    value="{{ $student->birthday ?? '' }}">
+                                                value="{{ $students-> birthday}}">
                                             </div>
                                         </div>
-                                        <div class="col-12 col-sm-6 col-md-3">
+                                        <div class="col-12 col-sm-6 col-md-4">
                                             <div class="form-group">
                                                 <label>Age</label>
                                                 <input name="age" type="text" class="form-control"
-                                                    value="{{ $student->age ?? '' }}">
+                                                value="{{ $students-> age}}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label>Mobile Number</label>
                                                 <input name="mobileNumber" type="text" class="form-control"
-                                                    value="{{ $student->mobileNumber ?? '' }}">
+                                                value="{{ $students-> mobileNumber}}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label>Landline Number</label>
                                                 <input name="landlineNumber" type="text" class="form-control"
-                                                    value="{{ $student->landlineNumber ?? '' }}">
+                                                value="{{ $students-> landlineNumber}}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label>Religion</label>
                                                 <input name="religion" type="text" class="form-control"
-                                                    value="{{ $student->religion ?? '' }}">
+                                                value="{{ $students-> religion}}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label>Place of Birth</label>
                                                 <input name="birthPlace" type="text" class="form-control"
-                                                    value="{{ $student->placeOfBirth ?? '' }}">
+                                                value="{{ $students-> birthPlace}}">
                                             </div>
                                         </div>
 
-                                        {{-- Address --}}
-                                        <div class="col-12 text-center">
+
+                                        {{-- LOGIN DETAILS --}}
+                                        {{-- <div class="col-12 text-center">
+                                            <h5 class="form-title"><span>Login Details</span></h5>
+                                        </div>
+                                        <div class="col-12 col-sm-6 col-md-6">
+                                            <div class="form-group">
+                                                <label>Student Id</label>
+                                                <input name="studentId" type="text" class="form-control"
+                                                    value="{{ old('studentId') }}" required>
+                                                <x-input-error :messages="$errors->get('studentId')" class="mt-2 error-text" />
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-sm-6 col-md-6">
+                                            <div class="form-group">
+                                                <label>Email Address</label>
+                                                <input name="email" type="email" class="form-control"
+                                                    value="{{ old('email') }}" required>
+                                                <x-input-error :messages="$errors->get('email')" class="mt-2 error-text" />
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-sm-6 col-md-6">
+                                            <div class="form-group">
+                                                <label>Password</label>
+                                                <input type="password" id="password" name="password"
+                                                    class="form-control" required>
+                                                <x-input-error :messages="$errors->get('password')" class="mt-2 error-text" />
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-sm-6 col-md-6">
+                                            <div class="form-group">
+                                                <label>Repeat Password</label>
+                                                <input type="password" id="password_confirmation"
+                                                    name="password_confirmation" class="form-control" required>
+                                                <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2 error-text" />
+                                            </div>
+                                        </div> --}}
+
+                                         {{-- Address --}}
+                                         <div class="col-12">
                                             <h5 class="form-title"><span>Address</span></h5>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-3">
@@ -166,21 +187,21 @@
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
-                                                <label for="region">Province</label>
-                                                <select name="province" id="province" class="form-control">
-                                                    {{-- <option value="">Select Province</option> --}}
-                                                </select>
+                                            <label for="region">Province</label>
+                                            <select name="province" id="province" class="form-control">
+                                                {{-- <option value="">Select Province</option> --}}
+                                            </select>
                                             </div>
-                                        </div>
-                                        <div class="col-12 col-sm-6 col-md-3">
+                                            </div>
+                                            <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
                                                 <label for="region">Municipality</label>
                                                 <select name="city" id="city" class="form-control">
                                                     {{-- <option value="">Select City</option> --}}
                                                 </select>
                                             </div>
-                                        </div>
-                                        <div class="col-12 col-sm-6 col-md-3">
+                                            </div>
+                                            <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
                                                 <label for="region">Barangay</label>
                                                 <select name="barangay" id="barangay" class="form-control">
@@ -191,7 +212,7 @@
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label>Address</label>
-                                                <input name="address" type="text" class="form-control">
+                                                <input name="address" type="text" class="form-control" value="{{ $address->address ?? '' }}">
                                             </div>
                                         </div>
 
@@ -199,97 +220,115 @@
                                         <div class="col-12 text-center">
                                             <h5 class="form-title"><span>Parent Information</span></h5>
                                         </div>
-                                         {{-- Mother Details --}}
-                                         <div class="col-12">
+
+                                        {{-- Mother Details --}}
+                                        <div class="col-12">
                                             <h5 class="form-title"><span>Mother Details</span></h5>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-6">
                                             <div class="form-group">
                                                 <label>Mother's First Name</label>
                                                 <input name="mothersFirstName" type="text" class="form-control"
-                                                    value="{{ $guardians->mothersFirstName ?? '' }}">
+                                                value="{{ $guardians-> mothersFirstName}}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-6">
                                             <div class="form-group">
                                                 <label>Mother's Last Name</label>
                                                 <input name="mothersLastName" type="text" class="form-control"
-                                                    value="{{ $guardians->mothersLastName ?? '' }}">
+                                                value="{{ $guardians-> mothersLastName}}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-4">
                                             <div class="form-group">
                                                 <label>Occupation</label>
                                                 <input name="mothersOccupation" type="text" class="form-control"
-                                                    value="{{ $guardians->mothersOccupation ?? '' }}">
+                                                value="{{ $guardians-> mothersOccupation}}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-4">
                                             <div class="form-group">
                                                 <label>Mobile Number</label>
                                                 <input name="mothersMobile" type="text" class="form-control"
-                                                    value="{{ $guardians->mothersMobile ?? '' }}">
+                                                value="{{ $guardians-> mothersMobile}}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-4">
                                             <div class="form-group">
                                                 <label>Age</label>
                                                 <input name="mothersAge" type="text" class="form-control"
-                                                    value="{{ $guardians->mothersAge ?? '' }}">
+                                                value="{{ $guardians-> mothersAge}}">
                                             </div>
                                         </div>
-                                        <div class="col-12 col-sm-12 col-md-12">
+                                        <div class="col-12">
                                             <div class="form-group">
                                                 <label>Address</label>
                                                 <input name="motherAddress" type="text" class="form-control"
-                                                    value="{{ $guardians->motherAddress ?? '' }}">
+                                                value="{{ $guardians-> motherAddress}}">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value=""
+                                                        id="sameMotherAddress">
+                                                    <label class="form-check-label" for="sameMotherAddress"
+                                                        style="font-size: 13px">
+                                                        Same as Student Address
+                                                    </label>
+                                                </div>
                                             </div>
                                         </div>
 
-                                         {{-- Father Details --}}
-                                         <div class="col-12">
+                                        {{-- Father Details --}}
+                                        <div class="col-12">
                                             <h5 class="form-title"><span>Father Details</span></h5>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-6">
                                             <div class="form-group">
                                                 <label>Father's First Name</label>
                                                 <input name="fathersFirstName" type="text" class="form-control"
-                                                    value="{{ $guardians->fathersFirstName ?? '' }}">
+                                                value="{{ $guardians-> fathersFirstName}}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-6">
                                             <div class="form-group">
                                                 <label>Father's Last Name</label>
                                                 <input name="fathersLastName" type="text" class="form-control"
-                                                    value="{{ $guardians->fathersLastName ?? '' }}">
+                                                value="{{ $guardians-> fathersLastName}}"
+                                                    placeholder="include extension name in Last Name">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-4">
                                             <div class="form-group">
                                                 <label>Occupation</label>
                                                 <input name="fathersOccupation" type="text" class="form-control"
-                                                    value="{{ $guardians->fathersOccupation ?? '' }}">
+                                                value="{{ $guardians-> fathersOccupation}}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-4">
                                             <div class="form-group">
                                                 <label>Mobile Number</label>
                                                 <input name="fathersMobile" type="text" class="form-control"
-                                                    value="{{ $guardians->fathersMobile ?? '' }}">
+                                                value="{{ $guardians-> fathersMobile}}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-4">
                                             <div class="form-group">
                                                 <label>Age</label>
                                                 <input name="fathersAge" type="text" class="form-control"
-                                                    value="{{ $guardians->fathersAge ?? '' }}">
+                                                value="{{ $guardians-> fathersAge}}">
                                             </div>
                                         </div>
-                                        <div class="col-12 col-sm-6 col-md-12">
+                                        <div class="col-12">
                                             <div class="form-group">
                                                 <label>Address</label>
                                                 <input name="fatherAddress" type="text" class="form-control"
-                                                    value="{{ $guardians->fatherAddress ?? '' }}">
+                                                value="{{ $guardians-> fatherAddress}}">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value=""
+                                                        id="sameFatherAddress">
+                                                    <label class="form-check-label" for="sameFatherAddress"
+                                                        style="font-size: 13px">
+                                                        Same as Student Address
+                                                    </label>
+                                                </div>
                                             </div>
                                         </div>
 
@@ -301,16 +340,17 @@
                                             <div class="form-group">
                                                 <label>Name of School</label>
                                                 <input name="lastSchool" type="text" class="form-control"
-                                                value="{{ $lastSchool->school ?? '' }}">
+                                                value="{{ $lastSchool-> school}}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-6">
                                             <div class="form-group">
                                                 <label>General Average</label>
                                                 <input name="lastSchoolAverage" type="text" class="form-control"
-                                                value="{{ $lastSchool->genAverage ?? '' }}">
+                                                value="{{ $lastSchool-> genAverage}}">
                                             </div>
                                         </div>
+
                                         <div class="col-12">
                                             <button type="submit" class="btn btn-primary">Submit</button>
                                         </div>
@@ -324,10 +364,9 @@
         </div>
     </div>
 
-    <script src="{{ asset('js/philippinesgeo.json') }}"></script>
+    @include('layouts/footer')
 
-
-    {{-- AUTO POPULATE ADDRESS FIELDS --}}
+      {{-- AUTO POPULATE ADDRESS FIELDS --}}
       <script>
         fetch("{{ asset('js/philippinesgeo.json') }}")
             .then(response => response.json())
@@ -453,6 +492,85 @@
                 populateProvinces("{{ $address-> region}}");
             })
             .catch(error => console.error('Error fetching data:', error));
+    </script>
+
+    {{-- AUTO POPULATE ADDRESS IF CHECKBOX IS CHECKED --}}
+<script>
+    // Get the elements
+    const provinceSelect = document.getElementById('province');
+    const citySelect = document.getElementById('city');
+    const barangaySelect = document.getElementById('barangay');
+    const addressInput = document.querySelector('input[name="address"]');
+
+    const motherAddressInput = document.querySelector('input[name="motherAddress"]');
+    const sameMotherAddressCheckbox = document.getElementById('sameMotherAddress');
+
+    const fatherAddressInput = document.querySelector('input[name="fatherAddress"]');
+    const sameFatherAddressCheckbox = document.getElementById('sameFatherAddress');
+
+    // Add event listener to mother's checkbox
+    sameMotherAddressCheckbox.addEventListener('change', function() {
+        // Check if checkbox is checked
+        if (this.checked) {
+            // Get the selected values from the dropdowns
+            const provinceValue = provinceSelect.value;
+            const cityValue = citySelect.value;
+            const barangayValue = barangaySelect.value;
+            const addressValue = addressInput.value;
+
+            // Combine values to form the mother's address
+            const motherAddressValue = `${provinceValue}, ${cityValue}, ${barangayValue}, ${addressValue}`;
+
+            // Set mother's address value
+            motherAddressInput.value = motherAddressValue;
+        } else {
+            // Clear mother's address value
+            motherAddressInput.value = '';
+        }
+    });
+
+    // Add event listener to father's checkbox
+    sameFatherAddressCheckbox.addEventListener('change', function() {
+        // Check if checkbox is checked
+        if (this.checked) {
+            // Get the selected values from the dropdowns
+            const provinceValue = provinceSelect.value;
+            const cityValue = citySelect.value;
+            const barangayValue = barangaySelect.value;
+            const addressValue = addressInput.value;
+
+            // Combine values to form the father's address
+            const fatherAddressValue = `${provinceValue}, ${cityValue}, ${barangayValue}, ${addressValue}`;
+
+            // Set father's address value
+            fatherAddressInput.value = fatherAddressValue;
+        } else {
+            // Clear father's address value
+            fatherAddressInput.value = '';
+        }
+    });
+</script>
+
+    {{-- TIMER FOR ALERTS --}}
+    <script>
+        function hideAlerts() {
+            setTimeout(function() {
+                var successAlert = document.getElementById('successAlert');
+                var failedAlert = document.getElementById('failedAlert');
+
+                if (successAlert) {
+                    successAlert.style.display = 'none';
+                }
+                if (failedAlert) {
+                    failedAlert.style.display = 'none';
+                }
+            }, 5000); // Adjust the time here (in milliseconds)
+        }
+
+        // Call the timer function when the page loads
+        window.onload = function() {
+            hideAlerts();
+        };
     </script>
 </body>
 

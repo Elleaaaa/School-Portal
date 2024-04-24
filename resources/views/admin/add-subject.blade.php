@@ -83,7 +83,7 @@
                                                 <select name="subjectTeacher" id="subjectTeacher" class="form-control">
                                                     <option value="" selected disabled>Select Subject Teacher</option>
                                                     @foreach($teachers as $teacher)
-                                                        <option value="{{ $teacher->teacherId }}">{{ $teacher->firstName . ' ' . $teacher->lastName }}</option>
+                                                        <option value="{{ $teacher->firstName . ' ' . $teacher->lastName }}">{{ $teacher->firstName . ' ' . $teacher->lastName }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>

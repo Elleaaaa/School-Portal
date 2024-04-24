@@ -63,12 +63,12 @@
                                           </h2>
                                        </td>
                                        <td>{{ $student->age }}</td>
-                                       <td>2 Feb 2002</td>
-                                       <td>Jeffrey Wong</td>
-                                       <td>097 3584 5870</td>
+                                       <td>{{ $student->birthday }}</td>
+                                       <td>{{ $student->religion }}</td>
+                                       <td>{{ $student->mobileNumber }}</td>
                                        <td class="text-right">
                                           <div class="actions">
-                                             <a href="edit-student.html" class="btn btn-sm bg-success-light mr-2">
+                                             <a href="{{ route('edit-student.show', ['id' => $student->id]) }}" class="btn btn-sm bg-success-light mr-2">
                                              <i class="fas fa-pen"></i>
                                              </a>
                                              <a href="#" class="btn btn-sm bg-danger-light">

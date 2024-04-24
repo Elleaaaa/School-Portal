@@ -91,7 +91,7 @@ class StudentController extends Controller
         $password = $request->input('password');
         $repeatPassword = $request->input('password_confirmation');
         $validatedData = $request->validate([
-            'studentId' => ['required', 'string', 'max:255', 'unique:students'],
+            'studentId' => ['required', 'string', 'max:255', 'unique:students', 'unique:addresses', 'unique:guardians', 'unique:users', 'unique:lastschools'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
@@ -129,8 +129,9 @@ class StudentController extends Controller
 
         $address = DB::table('addresses')->where('studentId', $studentId)->first();
         $guardians = DB::table('guardians')->where('studentId', $studentId)->first();
+        $lastSchool = DB::table('lastschools')->where('studentId', $studentId)->first();
 
-        return view('student.profile-details', compact('student', 'address', 'guardians')); // compact('student') student will be the variable that can access in blade file same for address and guardians
+        return view('student.profile-details', compact('student', 'address', 'guardians', 'lastSchool')); // compact('student') student will be the variable that can access in blade file same for address and guardians
 
     }
 
@@ -144,8 +145,19 @@ class StudentController extends Controller
     {
 
         $student = Student::find($studentId);
-
         return view('student.subject-list', compact('student'));
+    }
+
+    public function showEditStudent( string $id)
+    {
+        $students = Student::find($id);
+        $studentId = $students->studentId;
+
+        $address = Address::where('studentId', $studentId)->first();
+        $guardians = Guardian::where('studentId', $studentId)->first();
+        $lastSchool = LastSchool::where('studentId', $studentId)->first();
+        // dd($address);
+        return view('admin.edit-student', compact('students', 'address', 'guardians', 'lastSchool'));
     }
 
 
@@ -196,9 +208,8 @@ class StudentController extends Controller
         $student->placeOfBirth = $request->input('birthplace');
         $student->save();
 
-        // Add New Address
+        // Update Address
         $address = Address::where('studentId', $studentId)->first();
-        $address->studentId = $request->input('studentId');
         $address->region = $request->input('region');
         $address->province = $request->input('province');
         $address->city = $request->input('city');
@@ -206,15 +217,14 @@ class StudentController extends Controller
         $address->address = $request->input('address');
         $address->save();
 
-        // Add New Guardian
+        // Update Guardian
         $guardian = Guardian::where('studentId', $studentId)->first();
-        $guardian->studentId = $request->input('studentId');
         $guardian->mothersFirstName = $request->input('mothersFirstName');
         $guardian->mothersLastName = $request->input('mothersLastName');
         $guardian->motherAge = $request->input('motherAge');
         $guardian->motherOccupation = $request->input('motherOccupation');
         $guardian->motherContact = $request->input('motherContact');
-        $guardian->motherAnnualGrossIncome = $request->input('motherAnnualGrossIncome');
+        $guardian->motherAddress = $request->input('motherAddress');
 
         $guardian->fathersFirstName = $request->input('fathersFirstName');
         $guardian->fathersLastName = $request->input('fathersLastName');
@@ -222,10 +232,69 @@ class StudentController extends Controller
         $guardian->fatherAge = $request->input('fatherAge');
         $guardian->fatherOccupation = $request->input('fatherOccupation');
         $guardian->fatherContact = $request->input('fatherContact');
-        $guardian->fatherAnnualGrossIncome = $request->input('fatherAnnualGrossIncome');
+        $guardian->fatherAddress = $request->input('fatherAddress');
         $guardian->save();
 
         return redirect()->route('profile-details.show', ['studentId' => $studentId])->with('success', 'Student record updated successfully');
+    }
+
+    public function updateAdmin(Request $request, string $id)
+    {
+         // Add New Student
+         // $student = new Student();
+
+         // Update Student
+         $student = Student::find($id);
+         $studentId = $student->studentId;
+        //  dd($teacher);
+
+         $student->firstName = $request->input('firstName');
+         $student->middleName = $request->input('middleName');
+         $student->lastName = $request->input('lastName');
+         $student->suffix = $request->input('suffixName');
+         $student->gender = $request->input('gender');
+         $student->birthday = $request->input('birthday');
+         $student->age = $request->input('age');
+         $student->mobileNumber = $request->input('mobileNumber');
+         $student->landlineNumber = $request->input('landlineNumber');
+         $student->religion = $request->input('religion');
+         $student->placeOfBirth = $request->input('birthplace');
+         $student->save();
+
+         // Update Address
+         $address = Address::where('studentId', $studentId)->first();
+         $address->region = $request->input('region');
+         $address->province = $request->input('province');
+         $address->city = $request->input('city');
+         $address->baranggay = $request->input('barangay');
+         $address->address = $request->input('address');
+         $address->save();
+
+         // Update Guardian
+         $guardian = Guardian::where('studentId', $studentId)->first();
+         $guardian->mothersFirstName = $request->input('mothersFirstName');
+         $guardian->mothersLastName = $request->input('mothersLastName');
+         $guardian->motherAge = $request->input('motherAge');
+         $guardian->motherOccupation = $request->input('motherOccupation');
+         $guardian->motherContact = $request->input('motherContact');
+         $guardian->motherAddress = $request->input('motherAddress');
+ 
+         $guardian->fathersFirstName = $request->input('fathersFirstName');
+         $guardian->fathersLastName = $request->input('fathersLastName');
+         $guardian->fathersSuffix = $request->input('fathersSuffix');
+         $guardian->fatherAge = $request->input('fatherAge');
+         $guardian->fatherOccupation = $request->input('fatherOccupation');
+         $guardian->fatherContact = $request->input('fatherContact');
+         $guardian->fatherAddress = $request->input('fatherAddress');
+         $guardian->save();
+ 
+         // Update School Attended
+         $lastSchool = LastSchool::where('studentId', $studentId)->first();
+         $lastSchool->school = $request->input('lastSchool');
+         $lastSchool->genAverage = $request->input('lastSchoolAverage');
+         $lastSchool->save();
+         
+         return redirect()->route('edit-student.show', ['id' => $id])->with('success', 'Student record updated successfully');
     }
 
     /**

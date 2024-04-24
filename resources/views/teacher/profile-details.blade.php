@@ -16,31 +16,47 @@
                 <div class="page-header">
                     <div class="row align-items-center">
                         <div class="col">
-                            <h3 class="page-title">Edit Students</h3>
+                            <h3 class="page-title">Edit Profile</h3>
                             <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="students.html">Students</a></li>
-                                <li class="breadcrumb-item active">Edit Students</li>
+                                <li class="breadcrumb-item"><a href="students.html">Faculty</a></li>
+                                <li class="breadcrumb-item active">Edit Profile</li>
                             </ul>
                         </div>
                     </div>
                 </div>
+
+                @if (session('success'))
+                    <div id="successAlert" class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                @if (session('failed'))
+                    <div id="failedAlert" class="alert alert-failed">
+                        {{ session('failed') }}
+                    </div>
+                @endif
+
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="card">
                             <div class="card-body">
-                                <form method="POST" action="{{ route('profile-teacher.update', ['id' => $teacher->id]) }}" enctype="multipart/form-data">
-                                 @csrf
+                                <form method="POST"
+                                    action="{{ route('profile-teacher.update', ['id' => $teacher->id]) }}"
+                                    enctype="multipart/form-data">
+                                    @csrf
                                     <div class="row">
-                                        <div class="col-12">
-                                            <h5 class="form-title"><span>Student Information</span></h5>
-                                        </div>
                                         {{-- Student Information --}}
+                                        <div class="col-12 text-center">
+                                            <h5 class="form-title"><span>Personal Information</span></h5>
+                                        </div>
                                         <div class="col-4">
                                             <div class="form-group">
-                                                <img src="{{ asset('storage/images/display-photo/' . $teacher->displayPhoto) }}"  style="height: 250px">
+                                                <img src="{{ asset('storage/images/display-photo/' . $teacher->displayPhoto) }}"
+                                                    style="height: 250px">
                                             </div>
                                         </div>
-                                        
+
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label>Change Photo</label>
@@ -50,19 +66,22 @@
                                         <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
                                                 <label>First Name</label>
-                                                <input name="firstName" type="text" class="form-control" value="{{ $teacher->firstName ?? '' }}">
+                                                <input name="firstName" type="text" class="form-control"
+                                                    value="{{ $teacher->firstName ?? '' }}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
                                                 <label>Middle Name</label>
-                                                <input name="middleName" type="text" class="form-control"value="{{ $teacher->middleName ?? '' }}">
+                                                <input name="middleName" type="text"
+                                                    class="form-control"value="{{ $teacher->middleName ?? '' }}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
                                                 <label>Last Name</label>
-                                                <input name="lastName" type="text" class="form-control" value="{{ $teacher->lastName ?? '' }}">
+                                                <input name="lastName" type="text" class="form-control"
+                                                    value="{{ $teacher->lastName ?? '' }}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-3">
@@ -75,7 +94,8 @@
                                         <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
                                                 <label>Teacher Id</label>
-                                                <input readonly name="studentId" type="text" class="form-control" value="{{ Auth::user()->studentId }}">
+                                                <input readonly name="studentId" type="text" class="form-control"
+                                                    value="{{ Auth::user()->studentId }}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-3">
@@ -83,51 +103,57 @@
                                                 <label>Gender</label>
                                                 <select name="gender" class="form-control">
                                                     <option readonly>Select Gender</option>
-                                                    <option value="Female" >Female</option>
-                                                    <option value="Male">Male</option>
-                                                    <option value="Others">Others</option>
+                                                    <option value="Female" {{ $teacher->gender === 'Female' ? 'selected' : '' }}>Female</option>
+                                                    <option value="Male" {{ $teacher->gender === 'Male' ? 'selected' : '' }}>Male</option>
+                                                    <option value="Others" {{ $teacher->gender === 'Others' ? 'selected' : '' }}>Others</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
                                                 <label>Date of Birth</label>
-                                                <input name="birthday" type="date" class="form-control" value="{{ $teacher->birthday ?? '' }}">
+                                                <input name="birthday" type="date" class="form-control"
+                                                    value="{{ $teacher->birthday ?? '' }}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
                                                 <label>Age</label>
-                                                <input name="age" type="text" class="form-control" value="{{ $teacher->age ?? '' }}">
+                                                <input name="age" type="text" class="form-control"
+                                                    value="{{ $teacher->age ?? '' }}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label>Mobile Number</label>
-                                                <input name="mobileNumber" type="text" class="form-control" value="{{ $teacher->mobileNumber ?? '' }}">
+                                                <input name="mobileNumber" type="text" class="form-control"
+                                                    value="{{ $teacher->mobileNumber ?? '' }}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label>Landline Number</label>
-                                                <input name="landlineNumber" type="text" class="form-control" value="{{ $teacher->landlineNumber ?? '' }}">
+                                                <input name="landlineNumber" type="text" class="form-control"
+                                                    value="{{ $teacher->landlineNumber ?? '' }}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label>Religion</label>
-                                                <input name="religion" type="text" class="form-control" value="{{ $teacher->religion ?? '' }}">
+                                                <input name="religion" type="text" class="form-control"
+                                                    value="{{ $teacher->religion ?? '' }}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label>Place of Birth</label>
-                                                <input name="birthPlace" type="text" class="form-control" value="{{ $teacher->placeOfBirth ?? '' }}">
+                                                <input name="birthPlace" type="text" class="form-control"
+                                                    value="{{ $teacher->placeOfBirth ?? '' }}">
                                             </div>
                                         </div>
 
                                         {{-- Address --}}
-                                        <div class="col-12">
+                                        <div class="col-12 text-center">
                                             <h5 class="form-title"><span>Address</span></h5>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-3">
@@ -140,21 +166,21 @@
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
-                                            <label for="region">Province</label>
-                                            <select name="province" id="province" class="form-control">
-                                                {{-- <option value="">Select Province</option> --}}
-                                            </select>
+                                                <label for="region">Province</label>
+                                                <select name="province" id="province" class="form-control">
+                                                    {{-- <option value="">Select Province</option> --}}
+                                                </select>
                                             </div>
-                                            </div>
-                                            <div class="col-12 col-sm-6 col-md-3">
+                                        </div>
+                                        <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
                                                 <label for="region">Municipality</label>
                                                 <select name="city" id="city" class="form-control">
                                                     {{-- <option value="">Select City</option> --}}
                                                 </select>
                                             </div>
-                                            </div>
-                                            <div class="col-12 col-sm-6 col-md-3">
+                                        </div>
+                                        <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
                                                 <label for="region">Barangay</label>
                                                 <select name="barangay" id="barangay" class="form-control">
@@ -165,94 +191,11 @@
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label>Address</label>
-                                                <input name="address" type="text" class="form-control">
+                                                <input name="address" type="text" class="form-control"
+                                                    value="{{ $address->address ?? '' }}">
                                             </div>
                                         </div>
 
-                                        {{-- Parent Information --}}
-                                        {{-- <div class="col-12">
-                                            <h5 class="form-title"><span>Parent Information</span></h5>
-                                        </div>
-                                        <div class="col-12 col-sm-6 col-md-6">
-                                            <div class="form-group">
-                                                <label>Mother's First Name</label>
-                                                <input name="mothersFirstName" type="text" class="form-control" value="{{ $guardians->mothersFirstName ?? '' }}">
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-sm-6 col-md-6">
-                                             <div class="form-group">
-                                                <label>Mother's Last Name</label>
-                                                <input name="mothersLastName" type="text" class="form-control" value="{{ $guardians->mothersLastName ?? '' }}">
-                                             </div>
-                                        </div>
-                                        <div class="col-12 col-sm-6 col-md-3">
-                                            <div class="form-group">
-                                                <label>Occupation</label>
-                                                <input name="mothersOccupation" type="text" class="form-control" value="{{ $guardians->mothersOccupation ?? '' }}">
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-sm-6 col-md-3">
-                                            <div class="form-group">
-                                                <label>Mobile Number</label>
-                                                <input name="mothersMobile" type="text" class="form-control" value="{{ $guardians->mothersMobile ?? '' }}">
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-sm-6 col-md-3">
-                                            <div class="form-group">
-                                                <label>Age</label>
-                                                <input name="mothersAge" type="text" class="form-control" value="{{ $guardians->mothersAge ?? '' }}">
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-sm-6 col-md-3">
-                                             <div class="form-group">
-                                                <label>Annual Gross Income</label>
-                                                <input name="motherAnnualGrossIncome" type="text" class="form-control" value="{{ $guardians->motherAnnualGrossIncome ?? '' }}">
-                                             </div>
-                                        </div>
-                                        
-
-                                        <div class="col-12 col-sm-6 col-md-4">
-                                            <div class="form-group">
-                                                <label>Father's First Name</label>
-                                                <input name="fathersFirstName" type="text" class="form-control" value="{{ $guardians->fathersFirstName ?? '' }}">
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-sm-6 col-md-4">
-                                             <div class="form-group">
-                                                <label>Father's Last Name</label>
-                                                <input name="fathersLastName" type="text" class="form-control" value="{{ $guardians->fathersLastName ?? '' }}">
-                                             </div>
-                                        </div>
-                                        <div class="col-12 col-sm-6 col-md-4">
-                                             <div class="form-group">
-                                                <label>Father's Suffix Name</label>
-                                                <input name="fathersSuffixName" type="text" class="form-control" value="{{ $guardians->fathersSuffix ?? '' }}">
-                                             </div>
-                                        </div>
-                                        <div class="col-12 col-sm-6 col-md-3">
-                                            <div class="form-group">
-                                                <label>Occupation</label>
-                                                <input name="fathersOccupation" type="text" class="form-control" value="{{ $guardians->fathersOccupation ?? '' }}">
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-sm-6 col-md-3">
-                                            <div class="form-group">
-                                                <label>Mobile Number</label>
-                                                <input name="fathersMobile" type="text" class="form-control" value="{{ $guardians->fathersMobile ?? '' }}">
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-sm-6 col-md-3">
-                                             <div class="form-group">
-                                                <label>Age</label>
-                                                <input name="fathersAge" type="text" class="form-control" value="{{ $guardians->fathersAge ?? '' }}">
-                                             </div>
-                                        </div>
-                                        <div class="col-12 col-sm-6 col-md-3">
-                                             <div class="form-group">
-                                                <label>Annual Gross Income</label>
-                                                <input name="fatherAnnualGrossIncome" type="text" class="form-control" value="{{ $guardians->fatherAnnualGrossIncome ?? '' }}">
-                                             </div>
-                                        </div> --}}
                                         <div class="col-12">
                                             <button type="submit" class="btn btn-primary">Submit</button>
                                         </div>
@@ -270,144 +213,156 @@
     <script src="{{ asset('js/philippinesgeo.json') }}"></script>
 
 
-      {{-- POPULATES THE ADDRESS FIELDS --}}
-     <script>
-      fetch("{{ asset('js/philippinesgeo.json') }}")
-          .then(response => response.json())
-          .then(data => {
-              const regionSelect = document.getElementById('region');
-              const provinceSelect = document.getElementById('province');
-              const citySelect = document.getElementById('city');
-              const barangaySelect = document.getElementById('barangay');
-              
-              // Add default options for region
-              const defaultRegionOption = document.createElement('option');
-              defaultRegionOption.value = '';
-              defaultRegionOption.textContent = 'Select Region';
-              regionSelect.appendChild(defaultRegionOption);
-  
-              // Add default options for province, city, and barangay
-              ['province', 'city', 'barangay'].forEach(selectId => {
-                  const defaultOption = document.createElement('option');
-                  defaultOption.value = '';
-                  defaultOption.textContent = `Select ${selectId.charAt(0).toUpperCase() + selectId.slice(1)}`;
-                  document.getElementById(selectId).appendChild(defaultOption);
-              });
-  
-              // Iterate over each region
-              for (const regionName in data) {
-                  const option = document.createElement('option');
-                  option.value = regionName;
-                  option.textContent = regionName;
-                  regionSelect.appendChild(option);
-              }
-  
-              // Function to populate provinces based on selected region
-              function populateProvinces(selectedRegion) {
-                  provinceSelect.innerHTML = ''; // Clear previous options
-  
-                  if (selectedRegion) {
-                     // Add default option for Province
-                     const defaultProvinceOption = document.createElement('option');
-                     defaultProvinceOption.value = '';
-                     defaultProvinceOption.textContent = 'Select Province';
-                     provinceSelect.appendChild(defaultProvinceOption);
+    {{-- AUTO POPULATE ADDRESS FIELDS --}}
+    <script>
+        fetch("{{ asset('js/philippinesgeo.json') }}")
+            .then(response => response.json())
+            .then(data => {
+                const regionSelect = document.getElementById('region');
+                const provinceSelect = document.getElementById('province');
+                const citySelect = document.getElementById('city');
+                const barangaySelect = document.getElementById('barangay');
 
-                      const region = data[selectedRegion];
-                      if (region) {
-                          for (const provinceName in region.province_list) {
-                              const option = document.createElement('option');
-                              option.value = provinceName;
-                              option.textContent = provinceName;
-                              provinceSelect.appendChild(option);
-                          }
-                      }
-                  }
-              }
-  
-              // Function to populate cities/municipalities based on selected province
-              function populateCities(selectedProvince) {
-                  citySelect.innerHTML = ''; // Clear previous options
-  
-                  if (selectedProvince) {
-                     citySelect.innerHTML = ''; // Clear previous options
-                     
-                     // Add default option for city
-                     const defaultCityOption = document.createElement('option');
-                     defaultCityOption.value = '';
-                     defaultCityOption.textContent = 'Select City';
-                     citySelect.appendChild(defaultCityOption);
+                // Add default options for region
+                const defaultRegionOption = document.createElement('option');
+                defaultRegionOption.value = '';
+                defaultRegionOption.textContent = 'Select Region';
+                regionSelect.appendChild(defaultRegionOption);
 
-                     const selectedRegion = regionSelect.value;
-                     const region = data[selectedRegion];
-                     if (region) {
-                        const province = region.province_list[selectedProvince];
-                        if (province && province.municipality_list) {
-                              for (const municipalityName in province.municipality_list) {
-                                 const option = document.createElement('option');
-                                 option.value = municipalityName;
-                                 option.textContent = municipalityName;
-                                 citySelect.appendChild(option);
-                              }
+                // Add default options for province, city, and barangay
+                ['province', 'city', 'barangay'].forEach(selectId => {
+                    const defaultOption = document.createElement('option');
+                    defaultOption.value = '';
+                    defaultOption.textContent =
+                    `Select ${selectId.charAt(0).toUpperCase() + selectId.slice(1)}`;
+                    document.getElementById(selectId).appendChild(defaultOption);
+                });
+
+                // Populate regions
+                for (const regionName in data) {
+                    const option = document.createElement('option');
+                    option.value = regionName;
+                    option.textContent = regionName;
+                    regionSelect.appendChild(option);
+                }
+                regionSelect.value = "{{ $address->region }}";
+
+                // Function to populate provinces based on selected region
+                function populateProvinces(selectedRegion) {
+                    provinceSelect.innerHTML = ''; // Clear previous options
+
+                    if (selectedRegion) {
+                        const region = data[selectedRegion];
+                        if (region) {
+                            for (const provinceName in region.province_list) {
+                                const option = document.createElement('option');
+                                option.value = provinceName;
+                                option.textContent = provinceName;
+                                provinceSelect.appendChild(option);
+                            }
                         }
-                     }
-                  }
+                    }
+                    // Set selected province based on old input
+                    provinceSelect.value = "{{ $address->province }}";
+                    // Trigger change event to populate cities
+                    provinceSelect.dispatchEvent(new Event('change'));
+                }
 
-              }
-  
-              // Function to populate barangays based on selected city
-              function populateBarangays(selectedCity) {
-                  barangaySelect.innerHTML = ''; // Clear previous options
-  
-                  if (selectedCity) {
+                // Function to populate cities/municipalities based on selected province
+                function populateCities(selectedProvince) {
+                    citySelect.innerHTML = ''; // Clear previous options
 
-                     // Add default option for barangay
-                     const defaultBarangayOption = document.createElement('option');
-                     defaultBarangayOption.value = '';
-                     defaultBarangayOption.textContent = 'Select Barangay';
-                     barangaySelect.appendChild(defaultBarangayOption);
+                    if (selectedProvince) {
+                        const selectedRegion = regionSelect.value;
+                        const region = data[selectedRegion];
+                        if (region) {
+                            const province = region.province_list[selectedProvince];
+                            if (province && province.municipality_list) {
+                                for (const municipalityName in province.municipality_list) {
+                                    const option = document.createElement('option');
+                                    option.value = municipalityName;
+                                    option.textContent = municipalityName;
+                                    citySelect.appendChild(option);
+                                }
+                            }
+                        }
+                    }
+                    // Set selected city based on old input
+                    citySelect.value = "{{ $address->city }}";
+                    // Trigger change event to populate barangays
+                    citySelect.dispatchEvent(new Event('change'));
+                }
 
-                      const selectedRegion = regionSelect.value;
-                      const selectedProvince = provinceSelect.value;
-                      const region = data[selectedRegion];
-                      if (region) {
-                          const province = region.province_list[selectedProvince];
-                          if (province && province.municipality_list) {
-                              const city = province.municipality_list[selectedCity];
-                              if (city && city.barangay_list) {
-                                  city.barangay_list.forEach(barangayName => {
-                                      const option = document.createElement('option');
-                                      option.value = barangayName;
-                                      option.textContent = barangayName;
-                                      barangaySelect.appendChild(option);
-                                  });
-                              }
-                          }
-                      }
-                  }
-              }
-  
-              // Event listeners for select elements
-              regionSelect.addEventListener('change', () => {
-                  const selectedRegion = regionSelect.value;
-                  populateProvinces(selectedRegion);
-                  populateCities(null); // Clear city dropdown
-                  populateBarangays(null); // Clear barangay dropdown
-              });
-  
-              provinceSelect.addEventListener('change', () => {
-                  const selectedProvince = provinceSelect.value;
-                  populateCities(selectedProvince);
-                  populateBarangays(null); // Clear barangay dropdown
-              });
-  
-              citySelect.addEventListener('change', () => {
-                  const selectedCity = citySelect.value;
-                  populateBarangays(selectedCity);
-              });
-          })
-          .catch(error => console.error('Error fetching data:', error));
-  </script>
+                // Function to populate barangays based on selected city
+                function populateBarangays(selectedCity) {
+                    barangaySelect.innerHTML = ''; // Clear previous options
+
+                    if (selectedCity) {
+                        const selectedRegion = regionSelect.value;
+                        const selectedProvince = provinceSelect.value;
+                        const region = data[selectedRegion];
+                        if (region) {
+                            const province = region.province_list[selectedProvince];
+                            if (province && province.municipality_list) {
+                                const city = province.municipality_list[selectedCity];
+                                if (city && city.barangay_list) {
+                                    city.barangay_list.forEach(barangayName => {
+                                        const option = document.createElement('option');
+                                        option.value = barangayName;
+                                        option.textContent = barangayName;
+                                        barangaySelect.appendChild(option);
+                                    });
+                                }
+                            }
+                        }
+                    }
+                    // Set selected barangay based on old input
+                    barangaySelect.value = "{{ $address->baranggay }}";
+                }
+
+                // Event listeners for select elements
+                regionSelect.addEventListener('change', () => {
+                    const selectedRegion = regionSelect.value;
+                    populateProvinces(selectedRegion);
+                });
+
+                provinceSelect.addEventListener('change', () => {
+                    const selectedProvince = provinceSelect.value;
+                    populateCities(selectedProvince);
+                });
+
+                citySelect.addEventListener('change', () => {
+                    const selectedCity = citySelect.value;
+                    populateBarangays(selectedCity);
+                });
+
+                // Trigger initial population
+                populateProvinces("{{ $address->region }}");
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    </script>
+
+    {{-- TIMER FOR ALERTS --}}
+    <script>
+        function hideAlerts() {
+            setTimeout(function() {
+                var successAlert = document.getElementById('successAlert');
+                var failedAlert = document.getElementById('failedAlert');
+
+                if (successAlert) {
+                    successAlert.style.display = 'none';
+                }
+                if (failedAlert) {
+                    failedAlert.style.display = 'none';
+                }
+            }, 5000); // Adjust the time here (in milliseconds)
+        }
+
+        // Call the timer function when the page loads
+        window.onload = function() {
+            hideAlerts();
+        };
+    </script>
 </body>
 
 </html>

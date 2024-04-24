@@ -47,22 +47,10 @@
                                 <form method="POST" action="{{ route('addstudent.store') }}">
                                     @csrf
                                     <div class="row">
+                                         {{-- Student Information --}}
                                         <div class="col-12 text-center">
                                             <h5 class="form-title"><span>Student Information</span></h5>
                                         </div>
-                                        {{-- Student Information --}}
-                                        {{-- <div class="col-4">
-                                      <div class="form-group">
-                                          <img src="{{ asset('storage/images/display-photo/' . $student->displayPhoto) }}"  style="height: 250px">
-                                      </div>
-                                  </div> --}}
-
-                                        {{-- <div class="col-12">
-                                      <div class="form-group">
-                                          <label>Change Photo</label>
-                                          <input name="displayPhoto" type="file" class="form-control">
-                                      </div>
-                                  </div> --}}
                                         <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
                                                 <label>First Name</label>
@@ -280,8 +268,7 @@
                                             <div class="form-group">
                                                 <label>Address</label>
                                                 <input name="motherAddress" type="text" class="form-control"
-                                                    value="{{ old('motherAddress') }}"
-                                                    placeholder="house no., blk/lot, subd/vill">
+                                                    value="{{ old('motherAddress') }}">
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" value=""
                                                         id="sameMotherAddress">
@@ -337,8 +324,7 @@
                                             <div class="form-group">
                                                 <label>Address</label>
                                                 <input name="fatherAddress" type="text" class="form-control"
-                                                    value="{{ old('fatherAddress') }}"
-                                                    placeholder="house no., blk/lot, subd/vill">
+                                                    value="{{ old('fatherAddress') }}">
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" value=""
                                                         id="sameFatherAddress">
@@ -532,6 +518,66 @@
             hideAlerts();
         };
     </script>
+
+{{-- AUTO POPULATE ADDRESS IF CHECKBOX IS CHECKED --}}
+<script>
+    // Get the elements
+    const provinceSelect = document.getElementById('province');
+    const citySelect = document.getElementById('city');
+    const barangaySelect = document.getElementById('barangay');
+    const addressInput = document.querySelector('input[name="address"]');
+
+    const motherAddressInput = document.querySelector('input[name="motherAddress"]');
+    const sameMotherAddressCheckbox = document.getElementById('sameMotherAddress');
+
+    const fatherAddressInput = document.querySelector('input[name="fatherAddress"]');
+    const sameFatherAddressCheckbox = document.getElementById('sameFatherAddress');
+
+    // Add event listener to mother's checkbox
+    sameMotherAddressCheckbox.addEventListener('change', function() {
+        // Check if checkbox is checked
+        if (this.checked) {
+            // Get the selected values from the dropdowns
+            const provinceValue = provinceSelect.value;
+            const cityValue = citySelect.value;
+            const barangayValue = barangaySelect.value;
+            const addressValue = addressInput.value;
+
+            // Combine values to form the mother's address
+            const motherAddressValue = `${provinceValue}, ${cityValue}, ${barangayValue}, ${addressValue}`;
+
+            // Set mother's address value
+            motherAddressInput.value = motherAddressValue;
+        } else {
+            // Clear mother's address value
+            motherAddressInput.value = '';
+        }
+    });
+
+    // Add event listener to father's checkbox
+    sameFatherAddressCheckbox.addEventListener('change', function() {
+        // Check if checkbox is checked
+        if (this.checked) {
+            // Get the selected values from the dropdowns
+            const provinceValue = provinceSelect.value;
+            const cityValue = citySelect.value;
+            const barangayValue = barangaySelect.value;
+            const addressValue = addressInput.value;
+
+            // Combine values to form the father's address
+            const fatherAddressValue = `${provinceValue}, ${cityValue}, ${barangayValue}, ${addressValue}`;
+
+            // Set father's address value
+            fatherAddressInput.value = fatherAddressValue;
+        } else {
+            // Clear father's address value
+            fatherAddressInput.value = '';
+        }
+    });
+</script>
+
+
+
 
 </body>
 
