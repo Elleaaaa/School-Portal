@@ -52,7 +52,7 @@
                                         </div>
                                         <div class="col-4">
                                             <div class="form-group">
-                                                <img src="{{ asset('storage/images/display-photo/' . $teacher->displayPhoto) }}"
+                                                <img src="{{ asset('storage/images/display-photo/' . $teacherPhoto->displayPhoto) }}"
                                                     style="height: 250px">
                                             </div>
                                         </div>

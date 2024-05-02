@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Address;
+use App\Models\Enrollee;
 use App\Models\Guardian;
 use App\Models\LastSchool;
+use App\Models\Section;
 use App\Models\Student;
+use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
@@ -60,7 +63,7 @@ class StudentController extends Controller
         $address->region = $request->input('region');
         $address->province = $request->input('province');
         $address->city = $request->input('city');
-        $address->baranggay = $request->input('baranggay');
+        $address->baranggay = $request->input('barangay');
         $address->address = $request->input('address');
 
         // Add New Guardian
@@ -121,7 +124,7 @@ class StudentController extends Controller
      */
     public function showProfile(string $studentId)
     {
-
+        $studentPhoto = User::where('studentID', $studentId)->first();
         $student = DB::table('students')->where('studentId', $studentId)->first();
         if ($student === null) {
             abort(404); // or handle the case where student is not found
@@ -131,7 +134,7 @@ class StudentController extends Controller
         $guardians = DB::table('guardians')->where('studentId', $studentId)->first();
         $lastSchool = DB::table('lastschools')->where('studentId', $studentId)->first();
 
-        return view('student.profile-details', compact('student', 'address', 'guardians', 'lastSchool')); // compact('student') student will be the variable that can access in blade file same for address and guardians
+        return view('student.profile-details', compact('student', 'address', 'guardians', 'lastSchool', 'studentPhoto')); // compact('student') student will be the variable that can access in blade file same for address and guardians
 
     }
 
@@ -143,9 +146,34 @@ class StudentController extends Controller
 
     public function showSubjectList(string $studentId)
     {
+        $subjects = Enrollee::where('studentId', $studentId)->first();
+        $sub = $subjects->subjects;
+        $subjectList = explode(' ', $sub);
+        $allSubjects = [];
 
-        $student = Student::find($studentId);
-        return view('student.subject-list', compact('student'));
+        foreach ($subjectList as $subject) {
+            // Append each subject to the $allSubjects array
+            $allSubjects[] = str_replace(',', '', ucwords(strtolower($subject))); //make it title format and remove ','
+        }
+
+        $gradeLevel = $subjects->gradeLevel;
+        $section = $subjects->section;
+        $subjectTeacher = Section::where('gradeLevel', $gradeLevel)
+                        ->where('sectionName', $section)
+                        ->first();
+        // Get the teacher's name
+        if ($subjectTeacher) {
+            $teacherId = $subjectTeacher->teacherId;
+            $teacher = Teacher::where('teacherId', $teacherId)->first();
+            if ($teacher) {
+                $subjectTeacherName = $teacher->firstName . ' ' . $teacher->lastName;
+            } else {
+                $subjectTeacherName = 'Teacher not found';
+            }
+        } else {
+            $subjectTeacherName = 'Teacher not assigned';
+        }
+        return view('student.subject-list', compact('allSubjects', 'subjectTeacher', 'subjectTeacherName'));
     }
 
     public function showEditStudent( string $id)
@@ -180,6 +208,7 @@ class StudentController extends Controller
         // Update Student
         $student = Student::find($id);
         $studentId = $student->studentId;
+        $studentPhoto = User::where('studentId', $studentId)->first();
 
         if ($request->hasFile('displayPhoto')) {
             $file = $request->file('displayPhoto');
@@ -191,7 +220,7 @@ class StudentController extends Controller
             $file->storeAs('public/images/display-photo', $filename);
 
             // Update the student's displayPhoto attribute with the filename
-            $student->displayPhoto = $filename;
+            $studentPhoto->displayPhoto = $filename;
         }
 
         $student->firstName = $request->input('firstName');
@@ -207,6 +236,7 @@ class StudentController extends Controller
         $student->religion = $request->input('religion');
         $student->placeOfBirth = $request->input('birthplace');
         $student->save();
+        $studentPhoto->save();
 
         // Update Address
         $address = Address::where('studentId', $studentId)->first();

@@ -117,6 +117,30 @@
                             <label for="amount" class="form-label">Amount</label>
                             <input type="number" class="form-control" id="amount" name="amount" required>
                         </div>
+                        <div class="mb-3">
+                           <div class="form-group">
+                               <label for="subjectType">Grade Level</label>
+                               <select class="form-control" id="gradeLevel" name="gradeLevel" required>
+                                   <option value=""></option>
+                                   <option value="Grade 7">Grade 7</option>
+                                   <option value="Grade 8">Grade 8</option>
+                                   <option value="Grade 9">Grade 9</option>
+                                   <option value="Grade 10">Grade 10</option>
+                                   <option value="Grade 11">Grade 11</option>
+                                   <option value="Grade 12">Grade 12</option>
+                               </select>
+                           </div>
+                       </div>
+                       <div class="mb-3">
+                        <div class="form-group">
+                            <label for="classType">Class Type</label>
+                            <select class="form-control" id="classType" name="classType" required>
+                                <option value=""></option>
+                                <option value="Regular Class">Regular Class</option>
+                                <option value="Special Science Class">Special Science Class</option>
+                            </select>
+                        </div>
+                    </div>
                         <!-- Add more fields as needed -->
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

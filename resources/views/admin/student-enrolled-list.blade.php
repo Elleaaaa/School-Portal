@@ -21,16 +21,12 @@
                <div class="page-header">
                   <div class="row align-items-center">
                      <div class="col">
-                        <h3 class="page-title">Subjects</h3>
+                        <h3 class="page-title">Enrolled Students</h3>
                         <ul class="breadcrumb">
                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                           <li class="breadcrumb-item active">Subjects</li>
+                           <li class="breadcrumb-item active">Enrolled Students</li>
                         </ul>
                      </div>
-                     {{-- <div class="col-auto text-right float-right ml-auto">
-                        
-                        <a href="add-subject.html" class="btn btn-primary">Add Subject <i class="fas fa-plus"></i></a>
-                     </div> --}}
                   </div>
                </div>
                <div class="row">
@@ -41,20 +37,29 @@
                               <table class="table table-hover table-center mb-0 datatable">
                                  <thead>
                                     <tr>
+                                       <th>Name</th>
                                        <th>Subjects</th>
-                                       <th class="text-left">Teacher</th>
+                                       <th>Grade Level </th>
+                                       <th>Section</th>
+                                       <th class="text-right">Action</th>
                                     </tr>
                                  </thead>
                                  <tbody>
-                                    @foreach ($allSubjects as $subject)
+                                    @foreach ($enrollees as $enrollee)
                                     <tr>
-                                       <td>{{$subject}}</td>
-                                       <td class="text-left">
-                                          @if ($subjectTeacher)
-                                          {{ $subjectTeacherName }}
-                                          @else
-                                                No Teacher Assigned
-                                          @endif
+                                       <td>{{$enrollee->name}}</td>
+                                       <td>{{$enrollee->subjects}}</td>
+                                       <td>{{$enrollee->gradeLevel}}
+                                       <td>{{$enrollee->section}}</td>
+                                       <td class="text-right">
+                                          <div class="actions">
+                                             <a href="{{ route('edit-enroll-student.show', ['id' => $enrollee->id]) }}" class="btn btn-sm bg-success-light mr-2">
+                                                <i class="fas fa-pen"></i>
+                                            </a>
+                                             <a href="#" class="btn btn-sm bg-danger-light">
+                                             <i class="fas fa-trash"></i>
+                                             </a>
+                                          </div>
                                        </td>
                                     </tr>
                                     @endforeach

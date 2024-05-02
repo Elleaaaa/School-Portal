@@ -70,9 +70,10 @@
                                             <div class="form-group">
                                                 <label for="subjectType">Subject Type</label>
                                                 <select class="form-control" id="subjectType" name="subjectType">
+                                                    <option value=""></option>
                                                     <option value="Major Subject" {{ $subject->subjectType === 'Major Subject' ? 'selected' : '' }}>Major Subject</option>
                                                     <option value="Minor Subject" {{ $subject->subjectType === 'Minor Subject' ? 'selected' : '' }}>Minor Subject</option>
-                                                    <option value="General Subject" {{ $subject->subjectType === 'General Subject' ? 'selected' : '' }}>Minor Subject</option>
+                                                    <option value="General Subject" {{ $subject->subjectType === 'General Subject' ? 'selected' : '' }}>General Subject</option>
                                                 </select>
                                             </div>
                                         </div>

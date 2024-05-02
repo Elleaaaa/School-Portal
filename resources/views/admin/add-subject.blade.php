@@ -30,6 +30,18 @@
                     </div>
                 </div>
 
+                @if (session('success'))
+                <div id="successAlert" class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+                @endif
+
+                @if (session('failed'))
+                    <div id="failedAlert" class="alert alert-failed">
+                        {{ session('failed') }}
+                    </div>
+                @endif
+
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="card">
@@ -147,6 +159,28 @@
         lectureUnitInput.addEventListener('input', calculateTotalUnits);
         labUnitInput.addEventListener('input', calculateTotalUnits);
     </script> --}}
+
+        {{-- TIMER FOR ALERTS --}}
+        <script>
+            function hideAlerts() {
+                setTimeout(function() {
+                    var successAlert = document.getElementById('successAlert');
+                    var failedAlert = document.getElementById('failedAlert');
+    
+                    if (successAlert) {
+                        successAlert.style.display = 'none';
+                    }
+                    if (failedAlert) {
+                        failedAlert.style.display = 'none';
+                    }
+                }, 5000); // Adjust the time here (in milliseconds)
+            }
+    
+            // Call the timer function when the page loads
+            window.onload = function() {
+                hideAlerts();
+            };
+        </script>
 
     <script>
         var teachers = @json($teachers);

@@ -19,7 +19,7 @@
 				<form method="POST" action="{{ url('/login1') }}" class="login100-form validate-form">
 					@csrf
 					<span class="login100-form-logo">
-						<img src="{{ asset('images/icons/favicon.ico') }}" alt="">
+						<img src="{{ asset('img/liceologo-sm.png') }}" alt="">
 					</span>
 					<span class="login100-form-title p-b-34 p-t-27">
 						Log in

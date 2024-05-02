@@ -24,7 +24,6 @@ return new class extends Migration
             $table->string('landlineNumber', 255)->nullable();
             $table->string('mobileNumber', 255)->nullable();
             $table->string('gender', 255)->nullable();
-            $table->string('displayPhoto', 255)->default('default_photo.jpg')->nullable();
             $table->string('placeOfBirth', 255)->nullable();
             $table->timestamps();
         });

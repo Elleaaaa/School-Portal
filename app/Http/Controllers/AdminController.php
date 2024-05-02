@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Address;
 use App\Models\Admin;
+use App\Models\Enrollee;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Student;
@@ -49,8 +50,9 @@ class AdminController extends Controller
     public function showStudentList()
     {
         $students = Student::all();
+        $images = User::all();
         // $students = Student::where('userType', 'student')->get(); // filter by usertype
-        return view('admin.studentlist', compact('students'));
+        return view('admin.student-list', compact('students', 'images'));
     }
 
     public function showTeacherList()
@@ -59,13 +61,14 @@ class AdminController extends Controller
         $teachers = Teacher::all();
         $subjects = Subject::all();
         $addresses = Address::all();
-        return view('admin.teacherlist', compact('teachers', 'subjects', 'addresses'));
+        $images = User::all();
+        return view('admin.teacher-list', compact('teachers', 'subjects', 'addresses', 'images'));
     }
 
     public function showSubjectList()
     {
         $subjects = Subject::all(); 
-        return view('admin.subjectlist', compact('subjects'));
+        return view('admin.subject-list', compact('subjects'));
     }
 
     public function showAddSubject()
@@ -79,14 +82,26 @@ class AdminController extends Controller
         return view('admin.edit-subject');
     }
 
+    public function showEnrolledStudents()
+    {
+        $enrollees = Enrollee::where('status', 'Enrolled')->get();
+        return view('admin.student-enrolled-list', compact('enrollees'));
+    }
+
+    public function showPendingStudents()
+    {
+        $enrollees = Enrollee::where('status', 'Pending')->get();
+        return view('admin.student-pending-list', compact('enrollees'));
+    }
+
     public function showProfile(string $adminId)
     {
-        // $admin = Admin::find($adminId);
+        $user = User::where('studentId', $adminId)->first();
         $admin = DB::table('admins')->where('adminId', $adminId)->first();
         if ($admin === null) {
             abort(404); // or handle the case where student is not found
         }
-        return view('admin.profile-details', compact('admin'));
+        return view('admin.profile-details', compact('admin', 'user'));
     }
 
     /**
@@ -107,6 +122,7 @@ class AdminController extends Controller
 
          // Update Admin profile
          $admin = Admin::find($id);
+         $adminPhoto = User::find($id);
          $adminId = $admin->adminId;
          if ($request->hasFile('displayPhoto')) {
             $file = $request->file('displayPhoto');
@@ -118,7 +134,7 @@ class AdminController extends Controller
             $file->storeAs('public/images/display-photo', $filename);
         
             // Update the student's displayPhoto attribute with the filename
-            $admin->displayPhoto = $filename;
+            $adminPhoto->displayPhoto = $filename;
         }
         
          $admin->firstName = $request->input('firstName');
@@ -134,6 +150,7 @@ class AdminController extends Controller
          $admin->religion = $request->input('religion');
          $admin->placeOfBirth = $request->input('birthplace');
          $admin->save();
+         $adminPhoto->save();
  
          // Add New Address
          $address = Address::where('studentId', $adminId)->first();

@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('feelists', function (Blueprint $table) {
+        Schema::create('enrollees', function (Blueprint $table) {
             $table->id();
-            $table->string('feeName', 255)->nullable();
-            $table->string('amount', 255)->nullable();
+            $table->string('studentId', 255)->nullable();
+            $table->string('name', 255)->nullable();
+            $table->string('subjects', 255)->nullable();
             $table->string('gradeLevel', 255)->nullable();
+            $table->string('section', 255)->nullable();
+            $table->string('semester', 255)->nullable();
             $table->string('classType', 255)->nullable();
             $table->string('status', 255)->nullable();
             $table->timestamps();
@@ -27,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('feelists');
+        Schema::dropIfExists('enrollees');
     }
 };

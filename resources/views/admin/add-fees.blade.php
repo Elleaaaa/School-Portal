@@ -151,7 +151,6 @@
     </div>
 
 
- 
     <script>
         // Auto populate student details when student ID is entered
         document.addEventListener('DOMContentLoaded', function() {
@@ -264,12 +263,12 @@
          // Get the status from the session
     var status = "{{ session('status') }}";
 
-// Check if the status is success or failure and show the appropriate message
-if (status === 'success') {
-    alert('Paid Successfully');
-} else if (status === 'failure') {
-    alert('Payment Failed');
-}
+    // Check if the status is success or failure and show the appropriate message
+    if (status === 'success') {
+        alert('Paid Successfully');
+    } else if (status === 'failure') {
+        alert('Payment Failed');
+    }
     </script>
 
     

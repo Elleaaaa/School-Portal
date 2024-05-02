@@ -46,6 +46,8 @@ class FeeListController extends Controller
 
         $feeList->feeName =  $request->input('feeName');
         $feeList->amount = $request->input('amount');
+        $feeList->gradeLevel = $request->input('gradeLevel');
+        $feeList->classType = $request->input('classType');
         $feeList->status = 'active';
         $feeList->save();
 

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('studentId')->unique()->nullable();
             $table->string('email')->unique()->nullable();
             $table->string('usertype')->nullable();
+            $table->string('displayPhoto', 255)->default('default_photo.jpg')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

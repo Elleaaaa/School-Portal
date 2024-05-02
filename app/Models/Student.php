@@ -23,7 +23,6 @@ class Student extends Model
         'landlineNumber',
         'mobileNumber',
         'gender',
-        'displayPhoto',
         'placeOfBirth',
     ];
 }

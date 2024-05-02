@@ -1,10 +1,13 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\EnrolleesController;
 use App\Http\Controllers\FeeController;
 use App\Http\Controllers\FeeListController;
+use App\Http\Controllers\GradeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\SectionController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
@@ -51,6 +54,11 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/profile-teacher/{teacherId}', [TeacherController::class, 'showProfile'])->name('profile-teacher.show');
     Route::post('/profile-teacher/{id}', [TeacherController::class, 'update'])->name('profile-teacher.update'); // update personal details for teacher
+
+    Route::get('/mystudents', [TeacherController::class, 'showStudents'])->name('students.show');
+
+    Route::get('/students/grades', [TeacherController::class, 'showStudentsGrade'])->name('studentsgrade.show');
+    Route::post('/students/grades/update/{id}', [GradeController::class, 'update'])->name('studentsgrade.update');
 });
 
 
@@ -67,8 +75,10 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/admin/edit-subject/{id}', [SubjectController::class, 'showEditSubject'])->name('edit-subject.show');
     Route::post('/admin/edit-subject/{id}', [SubjectController::class, 'update'])->name('edit-subject.update');
-    Route::get('/admin/addsubject', [AdminController::class, 'showAddSubject'])->name('addsubject.show');
+    Route::get('/admin/addsubject', [SubjectController::class, 'index'])->name('addsubject.show');
     Route::post('/admin/addsubject', [SubjectController::class, 'store'])->name('subject.add');
+
+    Route::get('/fetch-subjects', [SubjectController::class, 'fetchSubjects'])->name('subject.show');
 
     Route::get('/admin/viewfees', [FeeListController::class, 'index'])->name('paymentList.show');
     Route::post('/admin/addfeelist', [FeeListController::class, 'store'])->name('addfeelist.store');
@@ -88,6 +98,21 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/addfees', [FeeController::class, 'index'])->name('addfees.show');
     Route::post('/admin/addfees/add', [FeeController::class, 'store'])->name('addfees.store');
     Route::post('/fetch-student-details', [FeeController::class, 'fetchStudentDetails']);
+
+    Route::get('/admin/edit-section/{id}', [SectionController::class, 'showEditSection'])->name('edit-section.show');
+    Route::post('/admin/edit-section/{id}', [SectionController::class, 'update'])->name('edit-section.update');
+    Route::get('/admin/addsection', [SectionController::class, 'index'])->name('add-section.show');
+    Route::post('/admin/addsection', [SectionController::class, 'store'])->name('add-section.store');
+    Route::get('/admin/sectionlist', [SectionController::class, 'showSectionList'])->name('sectionlist.show');
+
+    Route::get('/fetch-sections', [SectionController::class, 'fetchSection'])->name('section.show');
+
+    Route::get('/admin/enroll-student/{id}', [EnrolleesController::class, 'showEditEnrollStudent'])->name('edit-enroll-student.show');
+    Route::post('/admin/enroll-student/{id}', [EnrolleesController::class, 'update'])->name('edit-enroll-student.update');
+    Route::get('/admin/enroll-student', [EnrolleesController::class, 'index'])->name('enroll-student.show');
+    Route::post('/admin/enroll-student', [EnrolleesController::class, 'store'])->name('enroll-student.store');
+    Route::get('/admin/enrolled-student-list', [AdminController::class, 'showEnrolledStudents'])->name('enrolled-student-list.show');
+    Route::get('/admin/pending-student-list', [AdminController::class, 'showPendingStudents'])->name('pending-student-list.show');
 
 });
 

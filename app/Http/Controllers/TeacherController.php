@@ -3,10 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Address;
+use App\Models\Enrollee;
+use App\Models\Grade;
+use App\Models\Section;
+use App\Models\Student;
 use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Validation\Rules;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -96,17 +101,18 @@ class TeacherController extends Controller
 
     public function showProfile(string $teacherId)
     {
+        $teacherPhoto = User::where('studentId', $teacherId)->first();
         $teacher = DB::table('teachers')->where('teacherId', $teacherId)->first();
         if ($teacher === null) {
             abort(404); // or handle the case where student is not found
         }
         $address = DB::table('addresses')->where('studentId', $teacherId)->first();
-        return view('teacher.profile-details', compact('teacher', 'address'));
+        return view('teacher.profile-details', compact('teacher', 'address', 'teacherPhoto'));
     }
 
     public function showDashboard(string $teacherId)
     {
-        $teacher = Teacher::find($teacherId);
+        $teacher = Teacher::where('teacherId', $teacherId)->first();
         return view('teacher.dashboard', compact('teacher'));
     }
 
@@ -119,6 +125,60 @@ class TeacherController extends Controller
         // dd($address);
         return view('admin.edit-teacher', compact('teacher', 'address'));
     }
+
+    public function showStudents()
+    {
+        $id = Auth::user()->studentId;
+        $advisorySection = Section::where('teacherId', $id)->first();
+        $gradeLevel = $advisorySection->gradeLevel;
+        $section = $advisorySection->sectionName;
+        $myStudents = Enrollee::where('gradeLevel', $gradeLevel)
+                      ->where('section', $section)
+                      ->get();
+        $myStudentsIds = $myStudents->pluck('studentId')->toArray();
+        $studentDetails = Student::whereIn('studentId', $myStudentsIds)->get();
+        $images = User::all();
+        return view('teacher.my-students', compact('myStudents', 'images', 'studentDetails'));
+    }
+
+    
+    /**
+     * Show the students of logged in teacher
+     */
+    public function showStudentsGrade()
+    {
+        $id = Auth::user()->studentId;
+        $advisorySection = Section::where('teacherId', $id)->first();
+        $gradeLevel = $advisorySection->gradeLevel;
+        $section = $advisorySection->sectionName;
+        $myStudents = Enrollee::where('gradeLevel', $gradeLevel)
+                      ->where('section', $section)
+                      ->get();
+        $myStudentsIds = $myStudents->pluck('studentId')->toArray();
+        $students = Student::whereIn('studentId', $myStudentsIds)->get();
+        $images = User::all();
+
+        //show the subjects of the students
+        // $subjects = Enrollee::whereIn('studentId', $myStudentsIds)->get();
+        // $allSubjects = [];
+        // foreach ($subjects as $enrollee) {
+        //     $subjectList = explode(' ', $enrollee->subjects);
+        //     foreach ($subjectList as $subject) {
+        //         // Append each subject to the $allSubjects array
+        //         $allSubjects[] = str_replace(',', '', ucwords(strtolower($subject))); //make it title format and remove ','
+        //     }
+        // }
+
+        //show the grade of the student
+        $grade = Grade::where('gradeLevel', $gradeLevel)
+                ->where('section', $section)
+                ->get();
+        $gradeStudentsIds = $grade->pluck('studentId')->toArray();
+        $studentGrade = Grade::whereIn('studentId', $gradeStudentsIds)->get();
+
+        return view('teacher.grading', compact('images', 'studentGrade', 'students'));
+    }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -139,6 +199,7 @@ class TeacherController extends Controller
          // Update Student
          $teacher = Teacher::find($id);
          $teacherId = $teacher->teacherId;
+         $teacherPhoto = User::where('studentId', $teacherId)->first();
 
          if ($request->hasFile('displayPhoto')) {
             $file = $request->file('displayPhoto');
@@ -150,7 +211,7 @@ class TeacherController extends Controller
             $file->storeAs('public/images/display-photo', $filename);
         
             // Update the student's displayPhoto attribute with the filename
-            $teacher->displayPhoto = $filename;
+            $teacherPhoto->displayPhoto = $filename;
         }
  
          $teacher->firstName = $request->input('firstName');
@@ -166,6 +227,7 @@ class TeacherController extends Controller
          $teacher->religion = $request->input('religion');
          $teacher->placeOfBirth = $request->input('birthplace');
          $teacher->save();
+         $teacherPhoto->save();
 
          // Add New Address
          $address = Address::where('studentId', $teacherId)->first();
@@ -177,7 +239,7 @@ class TeacherController extends Controller
          $address->address = $request->input('address');
          $address->save();
  
-         return redirect()->route('profile-teacher.show', ['teacherId' => $teacherId])->with('success', 'Student record updated successfully');
+         return redirect()->route('profile-teacher.show', ['teacherId' => $teacherId])->with('success', 'Updated Record successfully');
     }
 
     public function updateAdmin(Request $request, string $id)

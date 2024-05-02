@@ -22,18 +22,27 @@
                <div class="page-header">
                   <div class="row align-items-center">
                      <div class="col">
-                        <h3 class="page-title">Students</h3>
+                        <h3 class="page-title">Section</h3>
                         <ul class="breadcrumb">
                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                           <li class="breadcrumb-item active">Students</li>
+                           <li class="breadcrumb-item active">Sections</li>
                         </ul>
-                     </div>
-                     <div class="col-auto text-right float-right ml-auto">
-                        
-                        <a href="add-student.html" class="btn btn-primary">add Student  &nbsp;<i class="fas fa-plus"></i></a>
                      </div>
                   </div>
                </div>
+
+               @if (session('success'))
+               <div id="successAlert" class="alert alert-success">
+                   {{ session('success') }}
+               </div>
+               @endif
+
+               @if (session('failed'))
+                   <div id="failedAlert" class="alert alert-failed">
+                       {{ session('failed') }}
+                   </div>
+               @endif
+
                <div class="row">
                   <div class="col-sm-12">
                      <div class="card card-table">
@@ -42,33 +51,31 @@
                               <table class="table table-hover table-center mb-0 datatable">
                                  <thead>
                                     <tr>
-                                       <th>Student ID</th>
-                                       <th>Name</th>
-                                       <th>Age</th>
-                                       <th>DOB</th>
-                                       <th>Religion</th>
-                                       <th>Mobile Number</th>
+                                       <th>Grade Level</th>
+                                       <th>Section</th>
+                                       <th>Section Name</th>
+                                       <th>Adviser</th>
+                                       <th>Status</th>
                                        <th class="text-right">Action</th>
                                     </tr>
                                  </thead>
                                  <tbody>
-                                    @foreach ($students as $student)
+                                    @foreach ($sections as $section)
                                     <tr>
-                                       <td>{{$paddedTeacherId = str_pad($student->studentId, 4, '0', STR_PAD_LEFT)}}</td>
+                                       <td>{{ $section->gradeLevel }}</td>
+                                       <td>{{ $section->section }}</td>
+                                       <td>{{ $section->sectionName }}</td>
                                        <td>
-                                          <h2 class="table-avatar">
-                                             <a href="student-details.html" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="{{ asset('img/profiles/avatar-01.jpg') }}"
-                                                alt="User Image"></a>
-                                             <a href="student-details.html">{{ $student->firstName }}</a>
-                                          </h2>
-                                       </td>
-                                       <td>{{ $student->age }}</td>
-                                       <td>{{ $student->birthday }}</td>
-                                       <td>{{ $student->religion }}</td>
-                                       <td>{{ $student->mobileNumber }}</td>
+                                        @foreach ($teachers as $teacher)
+                                            @if ($teacher->teacherId === $section->teacherId)
+                                                {{ $teacher->firstName }} {{ $teacher->lastName }}
+                                            @endif
+                                        @endforeach
+                                        </td>
+                                       <td>{{ $section->status }}</td>
                                        <td class="text-right">
                                           <div class="actions">
-                                             <a href="{{ route('edit-student.show', ['id' => $student->id]) }}" class="btn btn-sm bg-success-light mr-2">
+                                             <a href="{{ route('edit-section.show', ['id' => $section->id]) }}" class="btn btn-sm bg-success-light mr-2">
                                              <i class="fas fa-pen"></i>
                                              </a>
                                              <a href="#" class="btn btn-sm bg-danger-light">
@@ -100,6 +107,27 @@
         });
     </script>
     
+         {{-- TIMER FOR ALERTS --}}
+         <script>
+            function hideAlerts() {
+                setTimeout(function() {
+                    var successAlert = document.getElementById('successAlert');
+                    var failedAlert = document.getElementById('failedAlert');
+    
+                    if (successAlert) {
+                        successAlert.style.display = 'none';
+                    }
+                    if (failedAlert) {
+                        failedAlert.style.display = 'none';
+                    }
+                }, 5000); // Adjust the time here (in milliseconds)
+            }
+    
+            // Call the timer function when the page loads
+            window.onload = function() {
+                hideAlerts();
+            };
+        </script>
 
 
    </body>

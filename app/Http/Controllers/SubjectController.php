@@ -16,7 +16,8 @@ class SubjectController extends Controller
      */
     public function index()
     {
-        //
+        $teachers = Teacher::all();
+        return view('admin.add-subject', compact('teachers'));
     }
 
     /**
@@ -59,6 +60,17 @@ class SubjectController extends Controller
         $subject = Subject::find($id);
         $teachers = Teacher::all();
         return view('admin.edit-subject', compact('subject', 'teachers'));
+    }
+
+    public function fetchSubjects(Request $request) {
+        $gradeLevel = $request->input('gradeLevel');
+        $subjects = Subject::where('gradeLevel', $gradeLevel)->get();
+        
+        if ($subjects->isNotEmpty()) {
+            return response()->json($subjects);
+        } else {
+            return response()->json(['error' => 'Subjects not found for the given grade level'], 404);
+        }
     }
 
     /**

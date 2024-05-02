@@ -12,37 +12,41 @@
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome/css/fontawesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    
+
 </head>
 
 <body>
     <div class="header">
         <div class="header-left">
-            @if(Auth::user()->usertype == 'admin')
-            <a href="{{ route('admin-dashboard') }}" class="logo">
-                <img src="{{ asset('img/logo.png') }}" alt="Logo">
-            </a>
-            <a href="{{ route('admin-dashboard') }}" class="logo logo-small">
-                <img src="{{ asset('img/logo.png') }}" alt="Logo" width="30" height="30">
-            </a>
-            @endif
-            
-            @if(Auth::user()->usertype == 'teacher')
-            <a href="{{ route('teacher-dashboard.show', ['teacherId' => Auth::user()->studentId]) }}" class="logo">
-                <img src="{{ asset('img/logo.png') }}" alt="Logo">
-            </a>
-            <a href="{{ route('teacher-dashboard.show', ['teacherId' => Auth::user()->studentId]) }}" class="logo logo-small">
-                <img src="{{ asset('img/logo.png') }}" alt="Logo" width="30" height="30">
-            </a>
+            @if (Auth::user()->usertype == 'admin')
+                <a href="{{ route('admin-dashboard') }}" class="logo">
+                    <img src="{{ asset('img/logo.png') }}" alt="Logo">
+                </a>
+                <a href="{{ route('admin-dashboard') }}" class="logo logo-small">
+                    <img src="{{ asset('img/logo.png') }}" alt="Logo" width="30" height="30">
+                </a>
             @endif
 
-            @if(Auth::user()->usertype == 'student')
-            <a href="{{ route('student-dashboard.show', ['studentId' => Auth::user()->studentId]) }}" class="logo">
-                <img src="{{ asset('img/logo.png') }}" alt="Logo">
-            </a>
-            <a href="{{ route('student-dashboard.show', ['studentId' => Auth::user()->studentId]) }}" class="logo logo-small">
-                <img src="{{ asset('img/logo.png') }}" alt="Logo" width="30" height="30">
-            </a>
+            @if (Auth::user()->usertype == 'teacher')
+                <a href="{{ route('teacher-dashboard.show', ['teacherId' => Auth::user()->studentId]) }}"
+                    class="logo">
+                    <img src="{{ asset('img/logo.png') }}" alt="Logo">
+                </a>
+                <a href="{{ route('teacher-dashboard.show', ['teacherId' => Auth::user()->studentId]) }}"
+                    class="logo logo-small">
+                    <img src="{{ asset('img/logo.png') }}" alt="Logo" width="30" height="30">
+                </a>
+            @endif
+
+            @if (Auth::user()->usertype == 'student')
+                <a href="{{ route('student-dashboard.show', ['studentId' => Auth::user()->studentId]) }}"
+                    class="logo">
+                    <img src="{{ asset('img/logo.png') }}" alt="Logo">
+                </a>
+                <a href="{{ route('student-dashboard.show', ['studentId' => Auth::user()->studentId]) }}"
+                    class="logo logo-small">
+                    <img src="{{ asset('img/logo.png') }}" alt="Logo" width="30" height="30">
+                </a>
             @endif
         </div>
         <a href="javascript:void(0);" id="toggle_btn">
@@ -109,7 +113,8 @@
                                         </span>
                                         <div class="media-body">
                                             <p class="noti-details"><span class="noti-title">John Hendry</span> sent a
-                                                cancellation request <span class="noti-title">Apple iPhone XR</span></p>
+                                                cancellation request <span class="noti-title">Apple iPhone XR</span>
+                                            </p>
                                             <p class="noti-time"><span class="notification-time">8 mins ago</span></p>
                                         </div>
                                     </div>
@@ -141,13 +146,18 @@
             </li>
             <li class="nav-item dropdown has-arrow">
                 <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                    <span class="user-img"><img class="avatar-img rounded-circle"
-                        src="{{ asset('img/profiles/avatar-10.jpg') }}" width="40" height="35" alt="Display"></span>
+                    <span class="user-img">
+                        <img class="avatar-img rounded-circle"
+                            src="{{ asset('storage/images/display-photo/' . Auth::user()->displayPhoto) }}"
+                            width="40" height="35" alt="Admin Display">
+                    </span>
+
                 </a>
                 <div class="dropdown-menu">
                     <div class="user-header">
                         <div class="avatar avatar-sm">
-                            <img src="{{ asset('img/profiles/avatar-10.jpg') }}" alt="Display" class="avatar-img rounded-circle">
+                            <img  src="{{ asset('storage/images/display-photo/' . Auth::user()->displayPhoto) }}" alt="Display"
+                                class="avatar-img rounded-circle">
                         </div>
                         <div class="user-text">
                             <h6>{{ Auth::user()->studentId }}</h6>
@@ -155,13 +165,19 @@
                         </div>
                     </div>
                     @if (Auth::user()->usertype == 'student')
-                        <a class="dropdown-item" href="{{route('profile-details.show', ['studentId' => Auth::user()->studentId] )}}">My Profile</a>
+                        <a class="dropdown-item"
+                            href="{{ route('profile-details.show', ['studentId' => Auth::user()->studentId]) }}">My
+                            Profile</a>
                     @elseif (Auth::user()->usertype == 'teacher')
-                        <a class="dropdown-item" href="{{route('profile-teacher.show', ['teacherId' => Auth::user()->studentId] )}}">My Profile</a>
+                        <a class="dropdown-item"
+                            href="{{ route('profile-teacher.show', ['teacherId' => Auth::user()->studentId]) }}">My
+                            Profile</a>
                     @elseif (Auth::user()->usertype == 'admin')
-                        <a class="dropdown-item" href="{{route('profile-admin.show', ['adminId' => Auth::user()->studentId] )}}">My Profile</a>
+                        <a class="dropdown-item"
+                            href="{{ route('profile-admin.show', ['adminId' => Auth::user()->studentId]) }}">My
+                            Profile</a>
                     @endif
-                    <form method="POST" action="{{ url('/logout') }}" >
+                    <form method="POST" action="{{ url('/logout') }}">
                         @csrf
                         <button class="dropdown-item" type="submit">Logout</button>
                     </form>
@@ -176,113 +192,153 @@
                     <li class="menu-title">
                         <span>Main Menu</span>
                     </li>
-                    @if(Auth::user()->usertype == 'admin')
+                    @if (Auth::user()->usertype == 'admin')
                         <li>
-                            <a href="{{ route('admin-dashboard') }}"><i class="fas fa-user-graduate"></i><span>Dashboard</span></a>
+                            <a href="{{ route('admin-dashboard') }}"><i
+                                    class="fas fa-user-graduate"></i><span>Dashboard</span></a>
                         </li>
                     @endif
 
-                    @if(Auth::user()->usertype == 'teacher')
+                    @if (Auth::user()->usertype == 'teacher')
                         <li>
-                            <a href="{{ route('teacher-dashboard.show', ['teacherId' => Auth::user()->studentId]) }}"><i class="fas fa-user-graduate"></i><span>Dashboard</span></a>
+                            <a href="{{ route('teacher-dashboard.show', ['teacherId' => Auth::user()->studentId]) }}"><i
+                                    class="fas fa-user-graduate"></i><span>Dashboard</span></a>
                         </li>
                     @endif
 
-                    @if(Auth::user()->usertype == 'student')
+                    @if (Auth::user()->usertype == 'student')
+                        <li>
+                            <a href="{{ route('student-dashboard.show', ['studentId' => Auth::user()->studentId]) }}">
+                                <i class="fas fa-user-graduate"></i><span>Dashboard</span>
+                            </a>
+                        </li>
+                    @endif
+
+
+                    @if (Auth::user()->usertype == 'admin')
+                        <li class="submenu">
+                            <a href="#"><i class="fas fa-user-graduate"></i> <span> Students</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="{{ route('studentlist.show') }}">Student List</a></li>
+                                {{-- <li><a href="{{ url('student-details.html') }}">Student View</a></li> --}}
+                                <li><a href="{{ route('addstudent.show') }}">Student Add</a></li>
+                                {{-- <li><a href="{{ url('edit-student.html') }}">Student Edit</a></li> --}}
+                            </ul>
+                        </li>
+                    @endif
+
+                    @if (Auth::user()->usertype == 'admin')
+                        <li class="submenu">
+                            <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Teachers</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="{{ route('teacherlist.show') }}">Teacher List</a></li>
+                                {{-- <li><a href="{{ url('teacher-details.html') }}">Teacher View</a></li> --}}
+                                <li><a href="{{ route('addteacher.show') }}">Teacher Add</a></li>
+                                {{-- <li><a href="{{ url('edit-teacher.html') }}">Teacher Edit</a></li> --}}
+                            </ul>
+                        </li>
+                    @endif
+
+                    @if (Auth::user()->usertype == 'admin')
+                        <li class="submenu">
+                            <a href="#"><i class="fas fa-building"></i> <span> Departments</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="{{ url('departments.html') }}">Department List</a></li>
+                                <li><a href="{{ url('add-department.html') }}">Department Add</a></li>
+                                <li><a href="{{ url('edit-department.html') }}">Department Edit</a></li>
+                            </ul>
+                        </li>
+                    @endif
+
+                    @if (Auth::user()->usertype == 'student')
+                        <li>
+                            <a
+                                href="{{ route('student-subjectlist.show', ['studentId' => Auth::user()->studentId]) }}">
+                                <i class="fas fa-book-reader"></i><span>Subject</span>
+                            </a>
+                        </li>
+                    @endif
+
+                    @if (Auth::user()->usertype == 'admin')
+                        <li class="submenu">
+                            <a href="#"><i class="fas fa-book-reader"></i> <span> Subjects</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="{{ route('subjectlist.show') }}">Subject List</a></li>
+                                <li><a href="{{ route('addsubject.show') }}">Subject Add</a></li>
+                                {{-- <li><a href="{{ route('edit-subject.show') }}">Subject Edit</a></li> --}}
+                            </ul>
+                        </li>
+                    @endif
+
+                    @if (Auth::user()->usertype == 'admin')
+                        <li class="submenu">
+                            <a href="#"><i class="fas fa-user-graduate"></i> <span> Sections</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="{{ route('sectionlist.show') }}">Section List</a></li>
+                                <li><a href="{{ route('add-section.show') }}">Section Add</a></li>
+                            </ul>
+                        </li>
+                    @endif
+
+                    @if (Auth::user()->usertype == 'admin')
+                        <li class="submenu">
+                            <a href="#"><i class="fas fa-user-graduate"></i> <span> Enrollment</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="{{ route('enroll-student.show') }}">Enroll Student</a></li>
+                                <li><a href="{{ route('enrolled-student-list.show') }}">Enrolled Student</a></li>
+                                <li><a href="{{ route('pending-student-list.show') }}">Pending Enrollment</a></li>
+                                {{-- <li><a href="{{ url('edit-student.html') }}">Student Edit</a></li> --}}
+                            </ul>
+                        </li>
+                    @endif
+
+                    @if (Auth::user()->usertype == 'admin')
+                        <li class="menu-title">
+                            <span>Management</span>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i class="fas fa-file-invoice-dollar"></i> <span> Accounts</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="{{ route('paymenthistoryadmin.show') }}">Payments Collection</a></li>
+                                {{-- <li><a href="{{ url('expenses.html') }}">Expenses</a></li> --}}
+                                {{-- <li><a href="{{ url('salary.html') }}">Salary</a></li> --}}
+                                <li><a href="{{ route('addfees.show') }}">Add Fees</a></li>
+                                {{-- <li><a href="{{ url('add-expenses.html') }}">Add Expenses</a></li> --}}
+                                {{-- <li><a href="{{ url('add-salary.html') }}">Add Salary</a></li> --}}
+                                <li><a href="{{ route('paymentList.show') }}">Payment List</a></li>
+                            </ul>
+                        </li>
+                    @endif
+
+                    @if (Auth::user()->usertype == 'student')
+                        <li>
+                            <a href="{{ route('paymenthistory.show') }}"><i class="fas fa-comment-dollar"></i>
+                                <span>Fees</span></a>
+                        </li>
+                    @endif
+
+                    @if (Auth::user()->usertype == 'teacher')
                     <li>
-                        <a href="{{ route('student-dashboard.show', ['studentId' => Auth::user()->studentId]) }}">
-                            <i class="fas fa-user-graduate"></i><span>Dashboard</span>
-                        </a>
+                        <a href="{{ route('students.show') }}"><i class="fas fa-user-graduate"></i>
+                            <span>My Students</span></a>
                     </li>
-                    @endif
 
-
-                    @if(Auth::user()->usertype == 'admin')
-                    <li class="submenu">
-                        <a href="#"><i class="fas fa-user-graduate"></i> <span> Students</span> <span
-                                class="menu-arrow"></span></a>
-                        <ul>
-                            <li><a href="{{ route('studentlist.show') }}">Student List</a></li>
-                            {{-- <li><a href="{{ url('student-details.html') }}">Student View</a></li> --}}
-                            <li><a href="{{ route('addstudent.show') }}">Student Add</a></li>
-                            {{-- <li><a href="{{ url('edit-student.html') }}">Student Edit</a></li> --}}
-                        </ul>
-                    </li>
-                    @endif
-
-                    @if(Auth::user()->usertype == 'admin')
-                    <li class="submenu">
-                        <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Teachers</span> <span
-                                class="menu-arrow"></span></a>
-                        <ul>
-                            <li><a href="{{ route('teacherlist.show') }}">Teacher List</a></li>
-                            {{-- <li><a href="{{ url('teacher-details.html') }}">Teacher View</a></li> --}}
-                            <li><a href="{{ route('addteacher.show') }}">Teacher Add</a></li>
-                            {{-- <li><a href="{{ url('edit-teacher.html') }}">Teacher Edit</a></li> --}}
-                        </ul>
-                    </li>
-                    @endif
-
-                    @if(Auth::user()->usertype == 'admin')
-                    <li class="submenu">
-                        <a href="#"><i class="fas fa-building"></i> <span> Departments</span> <span
-                                class="menu-arrow"></span></a>
-                        <ul>
-                            <li><a href="{{ url('departments.html') }}">Department List</a></li>
-                            <li><a href="{{ url('add-department.html') }}">Department Add</a></li>
-                            <li><a href="{{ url('edit-department.html') }}">Department Edit</a></li>
-                        </ul>
-                    </li>
-                    @endif
-
-                    @if(Auth::user()->usertype == 'student')
                     <li>
-                        <a href="{{ route('student-subjectlist.show', ['studentId' => Auth::user()->studentId]) }}">
-                            <i class="fas fa-book-reader"></i><span>Subject</span>
-                        </a>
+                        <a href="{{ route('studentsgrade.show') }}"><i class="fas fa-user-graduate"></i>
+                            <span>Students Grade</span></a>
                     </li>
-                    @endif
-
-                    @if(Auth::user()->usertype == 'admin')
-                    <li class="submenu">
-                        <a href="#"><i class="fas fa-book-reader"></i> <span> Subjects</span> <span
-                                class="menu-arrow"></span></a>
-                        <ul>
-                            <li><a href="{{ route('subjectlist.show') }}">Subject List</a></li>
-                            <li><a href="{{ route('addsubject.show') }}">Subject Add</a></li>
-                            {{-- <li><a href="{{ route('edit-subject.show') }}">Subject Edit</a></li> --}}
-                        </ul>
-                    </li>
-                    @endif
-
-                    @if(Auth::user()->usertype == 'admin')
-                    <li class="menu-title">
-                        <span>Management</span>
-                    </li>
-                    <li class="submenu">
-                        <a href="#"><i class="fas fa-file-invoice-dollar"></i> <span> Accounts</span> <span
-                                class="menu-arrow"></span></a>
-                        <ul>
-                            <li><a href="{{ route('paymenthistoryadmin.show') }}">Payments Collection</a></li>
-                            <li><a href="{{ url('expenses.html') }}">Expenses</a></li>
-                            <li><a href="{{ url('salary.html') }}">Salary</a></li>
-                            <li><a href="{{ route('addfees.show') }}">Add Fees</a></li>
-                            <li><a href="{{ url('add-expenses.html') }}">Add Expenses</a></li>
-                            <li><a href="{{ url('add-salary.html') }}">Add Salary</a></li>
-                            <li><a href="{{ route('paymentList.show') }}">Payment List</a></li>
-                        </ul>
-                    </li>
-                    @endif
-                    
-                    <li>
+                @endif
+                    {{-- <li>
                         <a href="{{ url('holiday.html') }}"><i class="fas fa-holly-berry"></i>
                             <span>Holiday</span></a>
                     </li>
-                    @if(Auth::user()->usertype == 'student')
-                    <li>
-                        <a href="{{ route('paymenthistory.show') }}"><i class="fas fa-comment-dollar"></i> <span>Fees</span></a>
-                    </li>
-                    @endif
                     <li>
                         <a href="{{ url('exam.html') }}"><i class="fas fa-clipboard-list"></i> <span>Exam
                                 list</span></a>
@@ -296,7 +352,7 @@
                     </li>
                     <li>
                         <a href="{{ url('library.html') }}"><i class="fas fa-book"></i> <span>Library</span></a>
-                    </li>
+                    </li> --}}
                 </ul>
             </div>
         </div>
