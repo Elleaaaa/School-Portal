@@ -59,6 +59,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/students/grades', [TeacherController::class, 'showStudentsGrade'])->name('studentsgrade.show');
     Route::post('/students/grades/update/{id}', [GradeController::class, 'update'])->name('studentsgrade.update');
+    Route::post('/students/grades/import', [GradeController::class, 'importGrade'])->name('grades.import');
 });
 
 

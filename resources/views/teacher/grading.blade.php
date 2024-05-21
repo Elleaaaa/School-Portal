@@ -32,6 +32,22 @@
                         </div>
                     </div>
                 </div>
+                <div>
+
+                    @if(session('success'))
+                    <div id="successAlert" class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                    @endif
+
+                    <form action="{{ route('grades.import') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group">
+                            <input type="file" name="gradeImport">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="card card-table">
@@ -40,6 +56,7 @@
                                     <table id="gradeTable" class="table table-striped">
                                         <thead>
                                             <tr>
+                                                <th class="text-left" hidden>ID</th>
                                                 <th class="text-left">Student ID</th>
                                                 <th>Name</th>
                                                 <th>Subject</th>
@@ -53,6 +70,9 @@
                                         <tbody>
                                             @foreach ($studentGrade as $grade)
                                             <tr>
+                                                <td class="text-left" hidden>
+                                                    {{ $grade->id }}
+                                                </td>
                                                 <td class="text-left">
                                                     @foreach ($students->where('studentId', $grade->studentId) as $student)
                                                     {{ $student->studentId }}
@@ -136,8 +156,6 @@
     </script>
     
 
-    
-    
     <script>
         // Wait for the DOM to be fully loaded
         document.addEventListener('DOMContentLoaded', function() {
@@ -166,6 +184,28 @@
                 });
             });
         });
+    </script>
+
+     {{-- TIMER FOR ALERTS --}}
+     <script>
+        function hideAlerts() {
+            setTimeout(function() {
+                var successAlert = document.getElementById('successAlert');
+                var failedAlert = document.getElementById('failedAlert');
+
+                if (successAlert) {
+                    successAlert.style.display = 'none';
+                }
+                if (failedAlert) {
+                    failedAlert.style.display = 'none';
+                }
+            }, 5000); // Adjust the time here (in milliseconds)
+        }
+
+        // Call the timer function when the page loads
+        window.onload = function() {
+            hideAlerts();
+        };
     </script>
 
 </body>
