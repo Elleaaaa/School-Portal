@@ -52,12 +52,12 @@
         <a href="javascript:void(0);" id="toggle_btn">
             <i class="fas fa-align-left"></i>
         </a>
-        <div class="top-nav-search">
+        {{-- <div class="top-nav-search">
             <form>
                 <input type="text" class="form-control" placeholder="Search here">
                 <button class="btn" type="submit"><i class="fas fa-search"></i></button>
             </form>
-        </div>
+        </div> --}}
         <a class="mobile_btn" id="mobile_btn">
             <i class="fas fa-bars"></i>
         </a>
@@ -297,6 +297,24 @@
                             </ul>
                         </li>
                     @endif
+
+                    @if (Auth::user()->usertype == 'admin')
+                        <li>
+                            <a href="{{ route('calendar.show') }}"><i
+                                    class="fas fa-user-graduate"></i><span>Calendar</span></a>
+                        </li>
+                    @endif
+
+                    @if (Auth::user()->usertype == 'admin')
+                    <li class="submenu">
+                        <a href="#"><i class="fas fa-user-graduate"></i> <span> Time Table</span> <span
+                                class="menu-arrow"></span></a>
+                        <ul>
+                            <li><a href="{{ route('timeTable.show') }}">Schedule List</a></li>
+                            <li><a href="{{ route('add-timetable.show') }}">Schedule Add</a></li>
+                        </ul>
+                    </li>
+                @endif
 
                     @if (Auth::user()->usertype == 'admin')
                         <li class="menu-title">

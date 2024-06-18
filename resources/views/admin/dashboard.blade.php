@@ -7,6 +7,9 @@
     <title>Dashboard</title>
     <link rel="shortcut icon" href="assets/img/favicon.png">
 
+    <link rel="stylesheet" href="{{ asset('plugins/fullcalendar/fullcalendar.min.css') }}">
+
+
 </head>
 
 <body>
@@ -87,156 +90,53 @@
                     </div>
                 </div>
 
+
                 <div class="row">
-                    <div class="col-md-6 d-flex">
-                        <div class="card flex-fill">
-                            <div class="card-header">
-                                <h5 class="card-title">Star Students</h5>
-                            </div>
+                    {{-- <div class="col-auto text-right float-right ml-auto">
+                        <a href="add-events.html" class="btn btn-primary"> Add Event <i class="fas fa-plus"></i></a>
+                    </div> --}}
+                    <div class="col-lg-12 col-md-12">
+                        <div class="card">
                             <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-hover table-center">
-                                        <thead class="thead-light">
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Name</th>
-                                                <th class="text-center">Marks</th>
-                                                <th class="text-center">Percentage</th>
-                                                <th class="text-right">Year</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td class="text-nowrap">
-                                                    <div>PRE2209</div>
-                                                </td>
-                                                <td class="text-nowrap">John Smith</td>
-                                                <td class="text-center">1185</td>
-                                                <td class="text-center">98%</td>
-                                                <td class="text-right">
-                                                    <div>2019</div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-nowrap">
-                                                    <div>PRE1245</div>
-                                                </td>
-                                                <td class="text-nowrap">Jolie Hoskins</td>
-                                                <td class="text-center">1195</td>
-                                                <td class="text-center">99.5%</td>
-                                                <td class="text-right">
-                                                    <div>2018</div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-nowrap">
-                                                    <div>PRE1625</div>
-                                                </td>
-                                                <td class="text-nowrap">Pennington Joy</td>
-                                                <td class="text-center">1196</td>
-                                                <td class="text-center">99.6%</td>
-                                                <td class="text-right">
-                                                    <div>2017</div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-nowrap">
-                                                    <div>PRE2516</div>
-                                                </td>
-                                                <td class="text-nowrap">Millie Marsden</td>
-                                                <td class="text-center">1187</td>
-                                                <td class="text-center">98.2%</td>
-                                                <td class="text-right">
-                                                    <div>2016</div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-nowrap">
-                                                    <div>PRE2209</div>
-                                                </td>
-                                                <td class="text-nowrap">John Smith</td>
-                                                <td class="text-center">1185</td>
-                                                <td class="text-center">98%</td>
-                                                <td class="text-right">
-                                                    <div>2015</div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 d-flex">
-                        <div class="card flex-fill">
-                            <div class="card-header">
-                                <h5 class="card-title">Student Activity</h5>
-                            </div>
-                            <div class="card-body">
-                                <ul class="activity-feed">
-                                    <li class="feed-item">
-                                        <div class="feed-date">Apr 13</div>
-                                        <span class="feed-text"><a>John Doe</a> won 1st place in <a>"Chess"</a></span>
-                                    </li>
-                                    <li class="feed-item">
-                                        <div class="feed-date">Mar 21</div>
-                                        <span class="feed-text"><a>Justin Lee</a> participated in <a
-                                                href="invoice.html">"Carrom"</a></span>
-                                    </li>
-                                    <li class="feed-item">
-                                        <div class="feed-date">Feb 2</div>
-                                        <span class="feed-text"><a>Justin Lee</a>attended internation conference in <a
-                                                href="profile.html">"St.John School"</a></span>
-                                    </li>
-                                    <li class="feed-item">
-                                        <div class="feed-date">Apr 13</div>
-                                        <span class="feed-text"><a>John Doe</a> won 1st place in <a>"Chess"</a></span>
-                                    </li>
-                                    <li class="feed-item">
-                                        <div class="feed-date">Mar 21</div>
-                                        <span class="feed-text"><a>Justin Lee</a> participated in <a
-                                                href="invoice.html">"Carrom"</a></span>
-                                    </li>
-                                </ul>
+                                <div id="calendar"></div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-xl-3 col-sm-6 col-12">
-                        <div class="card flex-fill fb sm-box">
-                            <i class="fab fa-facebook"></i>
-                            <h6>50,095</h6>
-                            <p>Likes</p>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-sm-6 col-12">
-                        <div class="card flex-fill twitter sm-box">
-                            <i class="fab fa-twitter"></i>
-                            <h6>48,596</h6>
-                            <p>Followers</p>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-sm-6 col-12">
-                        <div class="card flex-fill insta sm-box">
-                            <i class="fab fa-instagram"></i>
-                            <h6>52,085</h6>
-                            <p>Followers</p>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-sm-6 col-12">
-                        <div class="card flex-fill linkedin sm-box">
-                            <i class="fab fa-linkedin-in"></i>
-                            <h6>69,050</h6>
-                            <p>Followers</p>
+
+                <div class="modal fade none-border" id="my_event">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Add Event</h4>
+                                <button type="button" class="close" data-dismiss="modal"
+                                    aria-hidden="true">&times;</button>
+                            </div>
+                            <div class="modal-body"></div>
+                            <div class="modal-footer justify-content-center">
+                                <button type="button" class="btn btn-success save-event submit-btn">Create
+                                    event</button>
+                                <button type="button" class="btn btn-danger delete-event submit-btn"
+                                    data-dismiss="modal">Delete</button>
+                            </div>
                         </div>
                     </div>
                 </div>
+
             </div>
-            @include('layouts/footer')
+
         </div>
+
+    </div>
+    @include('layouts/footer')
+    </div>
     </div>
 
+    <script src="{{ asset('js/moment.min.js') }}"></script>
+
+
+    <script src="{{ asset('plugins/fullcalendar/fullcalendar.min.js') }}"></script>
+    <script src="{{ asset('plugins/fullcalendar/jquery.fullcalendar.js') }}"></script>
 
 
 </body>

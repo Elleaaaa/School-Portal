@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\EnrolleesController;
 use App\Http\Controllers\FeeController;
 use App\Http\Controllers\FeeListController;
@@ -114,6 +115,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/enroll-student', [EnrolleesController::class, 'store'])->name('enroll-student.store');
     Route::get('/admin/enrolled-student-list', [AdminController::class, 'showEnrolledStudents'])->name('enrolled-student-list.show');
     Route::get('/admin/pending-student-list', [AdminController::class, 'showPendingStudents'])->name('pending-student-list.show');
+
+    Route::get('/admin/calendar', [CalendarController::class, 'schedule'])->name('calendar.show');
+
+    Route::get('/admin/edit-timetable/{id}', [CalendarController::class, 'showEditTimeTable'])->name('edit-timetable.show');
+    Route::post('/admin/edit-timetable/{id}', [CalendarController::class, 'editTimeTable'])->name('edit-timetable.update');
+    Route::get('/admin/time-table', [CalendarController::class, 'timeTable'])->name('timeTable.show');
+    Route::get('/admin/time-table/add', [CalendarController::class, 'timeTableAdd'])->name('add-timetable.show');
+    Route::post('/admin/time-table/add', [CalendarController::class, 'store'])->name('add-timetable.store');
 
 });
 
