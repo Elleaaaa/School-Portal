@@ -60,7 +60,7 @@ class TeacherController extends Controller
         $address->region = $request->input('region');
         $address->province = $request->input('province');
         $address->city = $request->input('city');
-        $address->baranggay = $request->input('baranggay');
+        $address->baranggay = $request->input('barangay');
         $address->address = $request->input('address');
         
         // Validate the request data

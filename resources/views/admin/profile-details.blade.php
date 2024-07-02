@@ -429,27 +429,8 @@
             .catch(error => console.error('Error fetching data:', error));
     </script>
 
-      {{-- TIMER FOR ALERTS --}}
-      <script>
-        function hideAlerts() {
-            setTimeout(function() {
-                var successAlert = document.getElementById('successAlert');
-                var failedAlert = document.getElementById('failedAlert');
-
-                if (successAlert) {
-                    successAlert.style.display = 'none';
-                }
-                if (failedAlert) {
-                    failedAlert.style.display = 'none';
-                }
-            }, 5000); // Adjust the time here (in milliseconds)
-        }
-
-        // Call the timer function when the page loads
-        window.onload = function() {
-            hideAlerts();
-        };
-    </script>
+   {{-- TIMER FOR ALERTS --}}
+   <script src="{{ asset('js/myjs/timerAlert.js') }}"></script>
 </body>
 
 </html>

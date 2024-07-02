@@ -53,7 +53,7 @@
                                        <td>{{$enrollee->section}}</td>
                                        <td class="text-right">
                                           <div class="actions">
-                                             <a href="{{ route('edit-subject.show', ['id' => $enrollee->id]) }}" class="btn btn-sm bg-success-light mr-2">
+                                             <a href="{{ route('edit-enroll-student.show', ['id' => $enrollee->id]) }}" class="btn btn-sm bg-success-light mr-2">
                                                 <i class="fas fa-pen"></i>
                                             </a>
                                              <a href="#" class="btn btn-sm bg-danger-light">

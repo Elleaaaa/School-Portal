@@ -97,7 +97,7 @@
                                         <div class="col-12 col-sm-12">
                                             <div class="form-group">
                                                 <label for="gradeLevel">Grade Level</label>
-                                                <select class="form-control" id="gradeLevel" name="gradeLevel" required readonly>
+                                                <select class="form-control" id="gradeLevel" name="gradeLevel" required > 
                                                     <option value=""></option>
                                                     <option value="Grade 7" {{ $enrollees->gradeLevel == 'Grade 7' ? 'selected' : '' }}>Grade 7</option>
                                                     <option value="Grade 8" {{ $enrollees->gradeLevel == 'Grade 8' ? 'selected' : '' }}>Grade 8</option>
@@ -170,9 +170,17 @@
                 </div>
             </div>
         </div>
-
     </div>
 @include('layouts/footer')
+
+    {{-- TIMER FOR ALERTS --}}
+    <script src="{{ asset('js/myjs/timerAlert.js') }}"></script>
+
+    {{-- DISPLAY SUBJECTS DEPENDS ON GRADE LEVEL --}}
+    <script src="{{ asset('js/myjs/displaySubjects.js') }}"></script>
+
+    {{-- Auto populate student details when student ID is entered --}}
+    {{-- <script src="{{ asset('js/myjs/populateStudentDetails.js') }}"></script> --}}
 
     {{-- DISPLAY SECTION DEPENDS ON GRADE LEVEL --}}
     <script>
@@ -223,152 +231,7 @@
         document.getElementById('gradeLevel').value = gradeLevelValue; // Set the grade level value
         fetchSections(); // Fetch sections based on the grade level value
     </script>
-    
 
-
-    {{-- DISPLAY SUBJECTS DEPENDS ON GRADE LEVEL --}}
-    <script>
-    document.getElementById('gradeLevel').addEventListener('change', function() {
-        var gradeLevel = this.value;
-        
-        // Make AJAX request to fetch subjects based on grade level
-        fetch('/fetch-subjects?gradeLevel=' + encodeURIComponent(gradeLevel))
-            .then(response => response.json())
-            .then(data => {
-                // Clear existing subjects
-                var subjectContainer = document.getElementById('subjectContainer');
-                subjectContainer.innerHTML = '';
-
-                // Initialize an array to store selected subjects
-                var selectedSubjects = [];
-
-                // Check if subjects are found
-                if (data.length > 0) {
-                    // Create checkboxes for each subject
-                    data.forEach(subject => {
-                        var subjectDiv = document.createElement('div'); // Create a div for each checkbox-label pair
-                        
-                        var checkbox = document.createElement('input');
-                        checkbox.type = 'checkbox';
-                        checkbox.name = 'subjects[]'; // Use an array for multiple selections
-                        checkbox.value = subject.id;
-                        checkbox.checked = true; // Auto-check the checkbox
-                        
-                        var label = document.createElement('label');
-                        label.appendChild(checkbox);
-                        label.appendChild(document.createTextNode(subject.subjectTitle));
-                        label.classList.add('subject-label'); // Add a class for styling
-                        
-                        // Append checkbox and label to div
-                        subjectDiv.appendChild(label);
-                        subjectContainer.appendChild(subjectDiv); // Append div to container
-
-                        // Add the subject to the selectedSubjects array
-                        selectedSubjects.push(subject.subjectTitle);
-                    });
-                } else {
-                    // No subjects found, display message
-                    subjectContainer.textContent = 'No Subject Found';
-                }
-
-                // Set the value of the selectedSubjects input field
-                document.getElementById('selectedSubjects').value = selectedSubjects.join(', ');
-            })
-            .catch(error => {
-                console.error('Error fetching subjects:', error);
-            });
-    });
-    </script>
-
-    {{-- TIMER FOR ALERTS --}}
-    <script>
-        function hideAlerts() {
-            setTimeout(function() {
-                var successAlert = document.getElementById('successAlert');
-                var failedAlert = document.getElementById('failedAlert');
-
-                if (successAlert) {
-                    successAlert.style.display = 'none';
-                }
-                if (failedAlert) {
-                    failedAlert.style.display = 'none';
-                }
-            }, 5000); // Adjust the time here (in milliseconds)
-        }
-
-        // Call the timer function when the page loads
-        window.onload = function() {
-            hideAlerts();
-        };
-    </script>
-
-    {{-- Auto populate student details when student ID is entered --}}
-    <script>
-       document.addEventListener('DOMContentLoaded', function() {
-            // Get the input field
-            var studentIdInput = document.getElementById('studentId');
-
-            // Add event listener for keypress event
-            studentIdInput.addEventListener('keypress', function(event) {
-                // Check if Enter key was pressed (key code 13)
-                if (event.key === 'Enter') {
-                    // Prevent the default form submission behavior
-                    event.preventDefault();
-                    
-                    // Perform the same action as when the button is clicked
-                    var studentId = studentIdInput.value;
-                    fetchData(studentId);
-                }
-            });
-
-            // Function to fetch student data
-            function fetchData(studentId) {
-                // AJAX request to fetch student data
-                var xhr = new XMLHttpRequest();
-                xhr.open('POST', '/fetch-student-details', true);
-                xhr.setRequestHeader('Content-Type', 'application/json');
-                
-                // Retrieve CSRF token from a meta tag in the HTML
-                var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-                xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
-                
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState === XMLHttpRequest.DONE) {
-                        if (xhr.status === 200) {
-                            var studentDetails = JSON.parse(xhr.responseText);
-                            // Check if student details are found
-                            if (studentDetails && Object.keys(studentDetails).length > 0) {
-                                // Populate the details fields with the received data
-                                document.querySelector('input[name="firstName"]').value = studentDetails.firstName;
-                                document.querySelector('input[name="middleName"]').value = studentDetails.middleName;
-                                document.querySelector('input[name="lastName"]').value = studentDetails.lastName;
-                                document.querySelector('input[name="suffixName"]').value = studentDetails.suffix;
-                            } else {
-                                // Display a message if no student is found
-                                alert('No student found with the provided ID');
-                                // Clear the fields if no student is found
-                                document.querySelector('input[name="firstName"]').value = '';
-                                document.querySelector('input[name="middleName"]').value = '';
-                                document.querySelector('input[name="lastName"]').value = '';
-                                document.querySelector('input[name="suffixName"]').value = '';
-                            }
-                        } else if (xhr.status === 404) {
-                            // Handle the case where the student is not found
-                            alert('No student found with the provided ID');
-                            // Clear the fields if no student is found
-                            document.querySelector('input[name="firstName"]').value = '';
-                            document.querySelector('input[name="middleName"]').value = '';
-                            document.querySelector('input[name="lastName"]').value = '';
-                            document.querySelector('input[name="suffixName"]').value = '';
-                        } else {
-                            console.error('Error fetching student data');
-                        }
-                    }
-                };
-                xhr.send(JSON.stringify({ studentId: studentId }));
-            }
-        });
-    </script>
 </body>
 
 </html>

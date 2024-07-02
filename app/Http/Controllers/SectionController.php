@@ -34,7 +34,8 @@ class SectionController extends Controller
 
         $section->gradeLevel = $request->input('gradeLevel');
         $section->section = $request->input('section');
-        $section->sectionName = $request->input('sectionName');
+        $sectionName = $request->input('sectionName');
+        $section->sectionName = ucwords(strtolower($sectionName)); //make it title Form AMBER will be Amber
         $section->teacherId = $request->input('sectionTeacher');
         $section->status = 'active';
         $section->save();

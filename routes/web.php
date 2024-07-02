@@ -40,10 +40,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/student-dashboard/{studentId}', [StudentController::class, 'showDashboard'])->name('student-dashboard.show');
     Route::get('/student-subjectlist/{studentId}', [StudentController::class, 'showSubjectList'])->name('student-subjectlist.show');
 
-    Route::get('/payments/history', [FeeController::class, 'paymentHistory'])->name('paymenthistory.show');
-
     // update personal details for students
     Route::post('/profile-details/{id}', [StudentController::class, 'update'])->name('profile-details.update');
+
+    Route::get('/payments/history', [FeeController::class, 'paymentHistory'])->name('paymenthistory.show');
+
+    Route::get('/myschedule', [CalendarController::class, 'studentSchedule'])->name('schedule.show');
+
+    Route::get('/enrollment', [EnrolleesController::class, 'selfEnrollment'])->name('selfEnrollment.show');
+    Route::post('/selfenroll', [EnrolleesController::class, 'selfenroll'])->name('selfEnroll.store');
 });
 
 
@@ -61,6 +66,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/students/grades', [TeacherController::class, 'showStudentsGrade'])->name('studentsgrade.show');
     Route::post('/students/grades/update/{id}', [GradeController::class, 'update'])->name('studentsgrade.update');
     Route::post('/students/grades/import', [GradeController::class, 'importGrade'])->name('grades.import');
+
+    Route::get('/schedule', [CalendarController::class, 'teacherSchedule'])->name('teacherSchedule.show');
 });
 
 

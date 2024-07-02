@@ -68,65 +68,59 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($studentGrade as $grade)
-                                            <tr>
-                                                <td class="text-left" hidden>
-                                                    {{ $grade->id }}
-                                                </td>
-                                                <td class="text-left">
-                                                    @foreach ($students->where('studentId', $grade->studentId) as $student)
-                                                    {{ $student->studentId }}
-                                                    @endforeach
-                                                </td>
-                                                <td>
-                                                    @foreach ($images as $image)
-                                                    @if ($image->studentId == $student->studentId)
-                                                    <h2 class="table-avatar">
-                                                        <a href="teacher-details.html" class="avatar avatar-sm mr-2">
-                                                            <img class="avatar-img rounded-circle"
-                                                                src="{{ asset('storage/images/display-photo/' . $image->displayPhoto) }}"
-                                                                alt="User Image">
-                                                        </a>
-                                                        <a href="teacher-details.html">{{ $student->firstName }} {{ $student->lastName }}</a>
-                                                    </h2>
-                                                    @endif
-                                                    @endforeach
-                                                </td>
-                                                <td>{{ $grade->subject }}</td>
-                                                <form  method="POST"
-                                                action="{{ route('studentsgrade.update', ['id' => $grade->id]) }}">
-                                                @csrf
-                                                    <td>
-                                                        {{ $grade->firstQGrade }}
-                                                    <input type="number" id="update_firstQGrade" name="firstQGrade" style="width: 80px" hidden>
-                                                    </td>
-                                                    <td>
-                                                        {{ $grade->secondQGrade }}
-                                                        <input type="number" id="update_secondQGrade" name="secondQGrade" style="width: 80px" hidden>
-                                                    </td>
-                                                    <td>
-                                                        {{ $grade->thirdQGrade }}
-                                                        <input type="number" id="update_thirdQGrade" name="thirdQGrade" style="width: 80px" hidden>
-                                                    </td>
-                                                    <td>
-                                                        {{ $grade->fourthQGrade }}
-                                                        <input type="number" id="update_fourthQGrade" name="fourthQGrade" style="width: 80px" hidden>
-                                                    </td>
-                                                    <td class="text-right">
-                                                        <div class="actions">
-                                                            <button type="submit"
-                                                                class="btn btn-sm bg-success-light mr-2"
-                                                                id="updateBtn" hidden>Update</button>
-                                                            <button type="button"
-                                                                class="btn btn-sm bg-warning mr-2"
-                                                                id="editBtn">Edit</button>
-                                                        </div>
-                                                    </td>
-                                                </form>
-                                            </tr>
+                                            @foreach ($students as $student)
+                                                @foreach ($studentGrade->where('studentId', $student->studentId) as $grade)
+                                                    <tr>
+                                                        <td class="text-left" hidden>
+                                                            {{ $grade->id }}
+                                                        </td>
+                                                        <td class="text-left">
+                                                            {{ $student->studentId }}
+                                                        </td>
+                                                        <td>
+                                                            @foreach ($images->where('studentId', $student->studentId) as $image)
+                                                                <h2 class="table-avatar">
+                                                                    <a href="teacher-details.html" class="avatar avatar-sm mr-2">
+                                                                        <img class="avatar-img rounded-circle"
+                                                                            src="{{ asset('storage/images/display-photo/' . $image->displayPhoto) }}"
+                                                                            alt="User Image">
+                                                                    </a>
+                                                                    <a href="teacher-details.html">{{ $student->firstName }} {{ $student->lastName }}</a>
+                                                                </h2>
+                                                            @endforeach
+                                                        </td>
+                                                        <td>{{ $grade->subject }}</td>
+                                                        <form method="POST" action="{{ route('studentsgrade.update', ['id' => $grade->id]) }}">
+                                                            @csrf
+                                                            <td>
+                                                                {{ $grade->firstQGrade }}
+                                                                <input type="number" id="update_firstQGrade" name="firstQGrade" style="width: 80px" hidden>
+                                                            </td>
+                                                            <td>
+                                                                {{ $grade->secondQGrade }}
+                                                                <input type="number" id="update_secondQGrade" name="secondQGrade" style="width: 80px" hidden>
+                                                            </td>
+                                                            <td>
+                                                                {{ $grade->thirdQGrade }}
+                                                                <input type="number" id="update_thirdQGrade" name="thirdQGrade" style="width: 80px" hidden>
+                                                            </td>
+                                                            <td>
+                                                                {{ $grade->fourthQGrade }}
+                                                                <input type="number" id="update_fourthQGrade" name="fourthQGrade" style="width: 80px" hidden>
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <div class="actions">
+                                                                    <button type="submit" class="btn btn-sm bg-success-light mr-2" id="updateBtn" hidden>Update</button>
+                                                                    <button type="button" class="btn btn-sm bg-warning mr-2" id="editBtn">Edit</button>
+                                                                </div>
+                                                            </td>
+                                                        </form>
+                                                    </tr>
+                                                @endforeach
                                             @endforeach
                                         </tbody>
                                     </table>
+                                    
                                     
                                 </div>
                             </div>
@@ -186,27 +180,8 @@
         });
     </script>
 
-     {{-- TIMER FOR ALERTS --}}
-     <script>
-        function hideAlerts() {
-            setTimeout(function() {
-                var successAlert = document.getElementById('successAlert');
-                var failedAlert = document.getElementById('failedAlert');
-
-                if (successAlert) {
-                    successAlert.style.display = 'none';
-                }
-                if (failedAlert) {
-                    failedAlert.style.display = 'none';
-                }
-            }, 5000); // Adjust the time here (in milliseconds)
-        }
-
-        // Call the timer function when the page loads
-        window.onload = function() {
-            hideAlerts();
-        };
-    </script>
+    {{-- TIMER FOR ALERTS --}}
+    <script src="{{ asset('js/myjs/timerAlert.js') }}"></script>
 
 </body>
 

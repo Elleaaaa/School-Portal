@@ -92,7 +92,7 @@
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label hidden>Teacher ID</label>
-                                                <input name="teacherId" id="teacherId" type="text" class="form-control" readonly hidden>
+                                                <input name="teacherId" id="teacherId" type="text" class="form-control" readonly >
                                             </div>
                                         </div>
                                         {{-- <div class="col-12 col-sm-6">
@@ -128,7 +128,8 @@
     </div>
 
 
-    <script>
+    {{-- THIS IS FOR SUBJECT UNITS --}}
+    {{-- <script>
         // Get references to the input fields
         const lectureUnitInput = document.getElementById('lectureUnit');
         const labUnitInput = document.getElementById('labUnit');
@@ -145,7 +146,8 @@
         // Calculate the total units when the lecture or lab unit inputs change
         lectureUnitInput.addEventListener('input', calculateTotalUnits);
         labUnitInput.addEventListener('input', calculateTotalUnits);
-    </script>
+    </script> --}}
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

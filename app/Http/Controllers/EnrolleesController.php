@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Enrollee;
 use App\Models\Grade;
+use App\Models\Student;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use PhpParser\Builder\Function_;
 
 class EnrolleesController extends Controller
 {
@@ -68,6 +72,47 @@ class EnrolleesController extends Controller
         return redirect()->route('enroll-student.show')->with('success', 'Student Enrolled Successfully');
     }
 
+    public function selfEnroll(Request $request)
+    {
+        $fName = $request->input('firstName');
+        $mName = $request->input('middleName');
+        $lName = $request->input('lastName');
+        $sName = $request->input('suffixName');
+        $fullName = $fName.' '.$mName.' '.$lName.' '.$sName;
+
+        // Enroll Student
+        $enrollee = new Enrollee();
+       
+        $enrollee->studentId = $request->input('studentId');
+        $enrollee->name = $fullName;
+        $enrollee->subjects = $request->input('subjects');
+        $enrollee->gradeLevel = $request->input('gradeLevel');
+        $enrollee->section = $request->input('section');
+        $enrollee->semester = $request->input('semester');
+        $enrollee->classType = $request->input('classType');
+        $enrollee->status = $request->input('status');
+        $enrollee->save();
+
+        // create row for each subjects
+        $subjects = explode(',', $request->input('subjects'));
+        foreach ($subjects as $subject) {
+            $grade = new Grade();
+            $grade->studentId = $request->input('studentId');
+            $grade->gradeLevel = $request->input('gradeLevel');
+            $grade->section = $request->input('section');
+            $grade->semester = $request->input('semester');
+            $grade->subject = $subject;
+            $grade->firstQGrade = 'not yet graded';
+            $grade->secondQGrade = 'not yet graded';
+            $grade->thirdQGrade = 'not yet graded';
+            $grade->fourthQGrade = 'not yet graded';
+            $grade->schoolYear = null;
+            $grade->save();
+        }
+
+        return redirect()->route('selfEnrollment.show')->with('success', 'Waiting for registrar to confirm');
+    }
+
     /**
      * Display the specified resource.
      */
@@ -92,6 +137,33 @@ class EnrolleesController extends Controller
         $suffixName = isset($nameComponents[3]) ? $nameComponents[3] : null;
         return view('admin.edit-enroll-student', compact('enrollees', 'firstName', 'middleName', 'lastName', 'suffixName'));
     }
+
+
+    public function selfEnrollment()
+    {
+        $userId = Auth::id();
+        $students = User::where('id', $userId)->first();
+        $studentId = $students->studentId;
+        $student = Student::where('studentId', $studentId)->first();
+
+        $enrollee = Enrollee::where('studentId', $studentId)->first();
+
+        // +1 WHEN SELF ENROLLMENT
+        $gradeMapping = [
+            "Grade 7" => "Grade 8",
+            "Grade 8" => "Grade 9",
+            "Grade 9" => "Grade 10",
+            "Grade 10" => "Grade 11",
+            "Grade 11" => "Grade 12",
+            "Grade 12" => "Graduated"
+        ];
+
+        $gradeLevel = $enrollee->gradeLevel;
+        $gradeLevelUp = isset($gradeMapping[$gradeLevel]) ? $gradeMapping[$gradeLevel] : "Invalid grade level";
+
+        return view('student.enrollment', compact('student', 'gradeLevelUp', 'enrollee'));
+
+        }
 
     /**
      * Show the form for editing the specified resource.

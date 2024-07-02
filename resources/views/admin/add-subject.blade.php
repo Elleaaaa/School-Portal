@@ -95,7 +95,9 @@
                                                 <select name="subjectTeacher" id="subjectTeacher" class="form-control">
                                                     <option value="" selected disabled>Select Subject Teacher</option>
                                                     @foreach($teachers as $teacher)
-                                                        <option value="{{ $teacher->firstName . ' ' . $teacher->lastName }}">{{ $teacher->firstName . ' ' . $teacher->lastName }}</option>
+                                                        <option value="{{ $teacher->teacherId }}" data-name="{{ $teacher->firstName . ' ' . $teacher->lastName }}">
+                                                            {{ $teacher->firstName . ' ' . $teacher->lastName }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -103,9 +105,15 @@
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label hidden>Teacher ID</label>
-                                                <input name="teacherId" id="teacherId" type="text" class="form-control" readonly hidden>
+                                                <input name="teacherId" id="teacherId" class="form-control" hidden>
+                                            </div>
+                                            <div class="form-group">
+                                                <label hidden>Teacher Name</label>
+                                                <input name="teacherName" id="teacherName" class="form-control" hidden>
                                             </div>
                                         </div>
+                                        
+                                        
                                         {{-- <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label>Lecture Unit</label>
@@ -138,8 +146,6 @@
 
     </div>
 
-
-
     {{-- Getting the total Units --}}
     {{-- <script>
         // Get references to the input fields
@@ -160,43 +166,11 @@
         labUnitInput.addEventListener('input', calculateTotalUnits);
     </script> --}}
 
-        {{-- TIMER FOR ALERTS --}}
-        <script>
-            function hideAlerts() {
-                setTimeout(function() {
-                    var successAlert = document.getElementById('successAlert');
-                    var failedAlert = document.getElementById('failedAlert');
-    
-                    if (successAlert) {
-                        successAlert.style.display = 'none';
-                    }
-                    if (failedAlert) {
-                        failedAlert.style.display = 'none';
-                    }
-                }, 5000); // Adjust the time here (in milliseconds)
-            }
-    
-            // Call the timer function when the page loads
-            window.onload = function() {
-                hideAlerts();
-            };
-        </script>
-
-    <script>
-        var teachers = @json($teachers);
-        document.getElementById('subjectTeacher').addEventListener('change', function() {
-            var selectedTeacherId = this.value;
-            var teacherIdInput = document.getElementById('teacherId');
-            
-            // Loop through the teachers array to find the selected teacher
-            for (var i = 0; i < teachers.length; i++) {
-                if (teachers[i].teacherId === selectedTeacherId) {
-                    teacherIdInput.value = teachers[i].teacherId;
-                    break; // Exit the loop once the teacher is found
-                }
-            }
-        });
-    </script>
+      {{-- TIMER FOR ALERTS --}}
+    <script src="{{ asset('js/myjs/timerAlert.js') }}"></script>
+ 
+    {{-- FETCH TEACHER ID TO SAVE IN DB --}}
+    <script src="{{ asset('js/myjs/fetchTeacherId.js') }}"></script>
 
 </body>
 

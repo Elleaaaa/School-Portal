@@ -13,6 +13,9 @@
       <link rel="stylesheet" href="{{ asset('plugins/datatables/datatables.min.css') }}">
       <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
+      {{-- USED IN TOGGLE SWITCH --}}
+      <meta name="csrf-token" content="{{ csrf_token() }}">
+
       <style>
          .btn.rounded-circle {
              border-radius: 50%;
@@ -153,6 +156,8 @@
     </div>
       
       <script src="{{ asset('plugins/datatables/datatables.min.js') }}"></script>
+
+      <script src="{{ asset('js/myjs/feeListStatus.js') }}"></script>
       
       <script>
         //for displaying datatable  
@@ -162,38 +167,11 @@
             });
         });
 
-       
         // Close the alert after 3 seconds
         setTimeout(function() {
             document.getElementById('successAlert').style.display = 'none';
         }, 3000);
 
-        function toggleStatus(id, currentStatus) {
-        // Send an AJAX request to update the status
-        fetch(`/toggle-status/${id}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: JSON.stringify({ status: currentStatus })
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Update the button color and text based on the new status
-            const button = document.getElementById(`statusButton${id}`);
-            if (data.status === 'active') {
-                button.classList.remove('bg-danger');
-                button.classList.add('bg-success');
-                button.textContent = '';
-            } else {
-                button.classList.remove('bg-success');
-                button.classList.add('bg-danger');
-                button.textContent = '';
-            }
-        })
-        .catch(error => console.error('Error:', error));
-    }
     </script>
     
 

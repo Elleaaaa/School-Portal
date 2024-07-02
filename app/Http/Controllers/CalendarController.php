@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Enrollee;
 use App\Models\Lesson;
 use App\Models\Section;
+use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Teacher;
 use App\Services\CalendarService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CalendarController extends Controller
 {
@@ -26,6 +29,40 @@ class CalendarController extends Controller
 
         return view('admin.calendar', compact('weekDays', 'calendarData'));
     }
+
+    public function studentSchedule(CalendarService $calendarService)
+    {
+        $student = auth()->user();
+        $studentId = $student->studentId;
+    
+        // get the section of the student
+        $section = Enrollee::where('studentId', $studentId)->firstOrFail()->section;
+    
+        // get the schedule of the section of the student
+        $lessons = Lesson::where('sectionId', $section)->get();
+    
+        $weekDays = Lesson::DAYS;
+        // Organize lessons into calendar data format using CalendarService
+        $calendarData = $calendarService->generateCalendarDataFiltered($weekDays, $lessons);
+    
+        return view('student.schedule', compact('weekDays', 'calendarData'));
+    }
+
+    public function teacherSchedule(CalendarService $calendarService)
+    {
+        $teacher = auth()->user();
+        $teacherId = $teacher->studentId; //studentId the name of column in db
+    
+        // get the schedule of the section of the student
+        $lessons = Lesson::where('teacherId', $teacherId)->get();
+    
+        $weekDays = Lesson::DAYS;
+        // Organize lessons into calendar data format using CalendarService
+        $calendarData = $calendarService->generateCalendarDataFiltered($weekDays, $lessons);
+    
+        return view('teacher.schedule', compact('weekDays', 'calendarData'));
+    }
+
 
     public function timeTable()
     {
@@ -57,21 +94,66 @@ class CalendarController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    // public function store(Request $request)
+    // {
+    //     $lesson = new Lesson();
+
+    //     $lesson->gradeLevel = $request->input('gradeLevel');
+    //     $lesson->teacherId = $request->input('teacher');
+    //     $lesson->subjectId = $request->input('subject');
+    //     $lesson->sectionId = $request->input('section');
+    //     $lesson->room = $request->input('room');
+    //     $lesson->day = $request->input('day');
+    //     $lesson->start_time = $request->input('start_time');
+    //     $lesson->end_time = $request->input('end_time');
+    //     $lesson->save();
+
+    //     return redirect()->route('add-timetable.show')->with('success', 'Schedule Added');
+    // }
+
     public function store(Request $request)
     {
-        $lesson = new Lesson();
+        $gradeLevel = $request->input('gradeLevel');
+        $teacherId = $request->input('teacher');
+        $subjectId = $request->input('subject');
+        $sectionId = $request->input('section');
+        $room = $request->input('room');
+        $day = $request->input('day');
+        $start_time = $request->input('start_time');
+        $end_time = $request->input('end_time');
 
-        $lesson->gradeLevel = $request->input('gradeLevel');
-        $lesson->teacherId = $request->input('teacher');
-        $lesson->subjectId = $request->input('subject');
-        $lesson->sectionId = $request->input('section');
-        $lesson->room = $request->input('room');
-        $lesson->day = $request->input('day');
-        $lesson->start_time = $request->input('start_time');
-        $lesson->end_time = $request->input('end_time');
+        // Check for overlapping lessons in the same room
+        $overlappingLesson = Lesson::where('room', $room)
+            ->where('day', $day)
+            ->where(function($query) use ($start_time, $end_time) {
+                $query->where(function($q) use ($start_time, $end_time) {
+                    $q->where('start_time', '<', $end_time)
+                    ->where('end_time', '>', $start_time);
+                });
+            })
+            ->first();
+
+        if ($overlappingLesson) {
+            // Return the specific time that is not available
+            $conflictTime = "from {$overlappingLesson->start_time} to {$overlappingLesson->end_time}";
+            return redirect()->back()
+                ->with('failed', "There is an overlapping lesson in the same room: $conflictTime")
+                ->withInput();
+        }
+
+        // Save the lesson if no overlapping lessons are found
+        $lesson = new Lesson();
+        $lesson->gradeLevel = $gradeLevel;
+        $lesson->teacherId = $teacherId;
+        $lesson->subjectId = $subjectId;
+        $lesson->sectionId = $sectionId;
+        $lesson->room = $room;
+        $lesson->day = $day;
+        $lesson->start_time = $start_time;
+        $lesson->end_time = $end_time;
         $lesson->save();
 
-        return redirect()->route('add-timetable.show')->with('success', 'Schedule Added');
+        return redirect()->back()->with('success', 'Lesson created successfully.');
     }
 
     /**

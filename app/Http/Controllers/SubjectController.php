@@ -42,7 +42,7 @@ class SubjectController extends Controller
         $subject->gradeLevel = $request->input('gradeLevel');
         $subject->subjectTitle = $request->input('subjectTitle');
         $subject->subjectType = $request->input('subjectType');
-        $subject->subjectTeacher = $request->input('subjectTeacher');
+        $subject->subjectTeacher = $request->input('teacherName');
         $subject->subjectUnit = $request->input('totalUnits');
         $subject->subjectLectUnit = $request->input('lectureUnit');
         $subject->subjectLabUnit = $request->input('labUnit');

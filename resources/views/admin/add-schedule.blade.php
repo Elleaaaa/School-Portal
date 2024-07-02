@@ -116,21 +116,21 @@
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label for="room">Room</label>
-                                                <input class="form-control"  type="text" id="room" name="room">
+                                                <input class="form-control"  type="text" id="room" name="room" required>
                                             </div>
                                         </div>
 
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label for="start_time">Start Time:</label>
-                                                <input class="form-control"  type="text" id="start_time" name="start_time">
+                                                <input class="form-control" type="text" id="start_time" name="start_time" required>
                                             </div>
                                         </div>
-
+                                        
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label for="end_time">End Time:</label>
-                                                <input class="form-control" type="text" id="end_time" name="end_time">
+                                                <input class="form-control" type="text" id="end_time" name="end_time" required>
                                             </div>
                                         </div>
                                         
@@ -157,9 +157,7 @@
             dateFormat: "H:i",
             time_24hr: true
         });
-    </script>
-
-       <script>
+    
         flatpickr("#end_time", {
             enableTime: true,
             noCalendar: true,
@@ -168,88 +166,12 @@
         });
     </script>
 
-    
-
-        {{-- TIMER FOR ALERTS --}}
-        <script>
-            function hideAlerts() {
-                setTimeout(function() {
-                    var successAlert = document.getElementById('successAlert');
-                    var failedAlert = document.getElementById('failedAlert');
-    
-                    if (successAlert) {
-                        successAlert.style.display = 'none';
-                    }
-                    if (failedAlert) {
-                        failedAlert.style.display = 'none';
-                    }
-                }, 5000); // Adjust the time here (in milliseconds)
-            }
-    
-            // Call the timer function when the page loads
-            window.onload = function() {
-                hideAlerts();
-            };
-        </script>
-
-    <script>
-        // JavaScript code to fetch sections based on selected grade level
-        document.getElementById('gradeLevel').addEventListener('change', function() {
-            var gradeLevel = this.value;
-            var sectionSelect = document.getElementById('section');
-            
-            // Clear existing options
-            sectionSelect.innerHTML = '<option value="">Loading...</option>';
-            
-            // Fetch sections based on selected grade level
-            fetch('/fetch-sections?gradeLevel=' + encodeURIComponent(gradeLevel))
-                .then(response => response.json())
-                .then(section => {
-                    // Populate section options
-                    sectionSelect.innerHTML = '<option value="">Select Section</option>';
-                    section.forEach(section => {
-                            var option = document.createElement('option');
-                            option.value = section.sectionName;
-                            option.text = section.sectionName;
-                            sectionSelect.appendChild(option);
-                        });
-                })
-                .catch(error => {
-                    console.error('Error fetching sections:', error);
-                    sectionSelect.innerHTML = '<option value="">No Section Available</option>';
-                });
-        });
-    </script>
-
-<script>
-    // JavaScript code to fetch subjects based on selected grade level
-    document.getElementById('gradeLevel').addEventListener('change', function() {
-        var gradeLevel = this.value;
-        var subjectSelect = document.getElementById('subject');
-        
-        // Clear existing options
-        subjectSelect.innerHTML = '<option value="">Loading...</option>';
-        
-        // Fetch subjects based on selected grade level
-        fetch('/fetch-subjects?gradeLevel=' + encodeURIComponent(gradeLevel))
-            .then(response => response.json())
-            .then(subjects => {
-                // Populate subject options
-                subjectSelect.innerHTML = '<option value="">Select Subject</option>';
-                subjects.forEach(subject => {
-                    var option = document.createElement('option');
-                    option.value = subject.subjectTitle;
-                    option.text = subject.subjectTitle;
-                    subjectSelect.appendChild(option);
-                });
-            })
-            .catch(error => {
-                console.error('Error fetching subjects:', error);
-                subjectSelect.innerHTML = '<option value="">No Subject Available</option>';
-            });
-    });
-</script>
-
+    {{-- TIMER FOR ALERTS --}}
+    <script src="{{ asset('js/myjs/timerAlert.js') }}"></script>
+    {{-- FETCH SECTION BASED ON GRADE LEVEL --}}
+    <script src="{{ asset('js/myjs/fetchSection.js') }}"></script>
+    {{-- FETCH Subject BASED ON GRADE LEVEL --}}
+    <script src="{{ asset('js/myjs/fetchSubject.js') }}"></script>
 
 </body>
 
