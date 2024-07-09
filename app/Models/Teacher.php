@@ -24,6 +24,7 @@ class Teacher extends Model
         'mobileNumber',
         'gender',
         'placeOfBirth',
+        'status',
     ];
 
 }

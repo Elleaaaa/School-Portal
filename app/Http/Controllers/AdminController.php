@@ -45,7 +45,10 @@ class AdminController extends Controller
     public function showDashboard(string $studentId)
     {
         $admin = User::find($studentId);
-        return view('admin.dashboard', compact('admin'));
+        $enrolledCount = Enrollee::where('status', "Enrolled")->count();
+        $teachersCount = Teacher::where('status', "active")->count();
+
+        return view('admin.dashboard', compact('admin', 'enrolledCount', 'teachersCount'));
     }
 
     public function showStudentList()

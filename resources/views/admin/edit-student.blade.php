@@ -45,6 +45,13 @@
                                     @csrf
                                     <div class="row">
                                          {{-- Student Information --}}
+                                         <div class="col-4">
+                                            <div class="form-group">
+                                                <img src="{{ asset('storage/images/display-photo/' . $studentPhoto->displayPhoto) }}"
+                                                    style="height: 250px">
+                                            </div>
+                                        </div>
+
                                         <div class="col-12 text-center">
                                             <h5 class="form-title"><span>Student Information</span></h5>
                                         </div>

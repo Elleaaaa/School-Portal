@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\EnrolleesController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\FeeController;
 use App\Http\Controllers\FeeListController;
 use App\Http\Controllers\GradeController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\SectionController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
+use App\Models\Event;
 use App\Models\Fee;
 use App\Models\Teacher;
 use Illuminate\Support\Facades\Route;
@@ -131,13 +133,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/time-table/add', [CalendarController::class, 'timeTableAdd'])->name('add-timetable.show');
     Route::post('/admin/time-table/add', [CalendarController::class, 'store'])->name('add-timetable.store');
 
+
+    //EVENT CALENDAR
+    Route::post('/update-event/{id}', [EventController::class, 'update'])->name('events.update');
+    Route::get('/get-events', [EventController::class, 'getEvents'])->name('events.get');
+    Route::post('/add-event', [EventController::class, 'store'])->name('events.store');
+
+
 });
 
 
 
-Route::get('/admin-dashboard', function() {
-    return view('admin.dashboard');
-})->name('admin-dashboard');
+
 
 
 Route::get('/fees-collection', function() {

@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('mobileNumber', 255)->nullable();
             $table->string('gender', 255)->nullable();
             $table->string('placeOfBirth', 255)->nullable();
+            $table->string('status', 255)->nullable()->default('active');
             $table->timestamps();
         });
     }

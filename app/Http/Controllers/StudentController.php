@@ -184,8 +184,9 @@ class StudentController extends Controller
         $address = Address::where('studentId', $studentId)->first();
         $guardians = Guardian::where('studentId', $studentId)->first();
         $lastSchool = LastSchool::where('studentId', $studentId)->first();
+        $studentPhoto = User::where('studentID', $studentId)->first();
         // dd($address);
-        return view('admin.edit-student', compact('students', 'address', 'guardians', 'lastSchool'));
+        return view('admin.edit-student', compact('students', 'address', 'guardians', 'lastSchool', 'studentPhoto'));
     }
 
 

@@ -59,12 +59,12 @@
                                           @foreach ($images as $image)
                                           @if ($image->studentId == $student->studentId)
                                           <h2 class="table-avatar">
-                                              <a href="teacher-details.html"
+                                              <a href="{{ route('edit-student.show', ['id' => $student->id]) }}"
                                                   class="avatar avatar-sm mr-2"><img
                                                       class="avatar-img rounded-circle"
                                                       src="{{ asset('storage/images/display-photo/' . $image->displayPhoto) }}"
                                                       alt="User Image"></a>
-                                              <a href="teacher-details.html">{{$student->firstName . " " . $student->lastName}}</a>
+                                              <a href="{{ route('edit-student.show', ['id' => $student->id]) }}">{{$student->firstName . " " . $student->lastName}}</a>
                                           </h2>
                                           @endif
                                           @endforeach

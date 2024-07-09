@@ -9,7 +9,6 @@
 
     <link rel="stylesheet" href="{{ asset('plugins/fullcalendar/fullcalendar.min.css') }}">
 
-
 </head>
 
 <body>
@@ -27,6 +26,17 @@
                         </div>
                     </div>
                 </div>
+
+                @if (session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+                @if (session('failed'))
+                    <div id="failedAlert" class="alert alert-failed">
+                        {{ session('failed') }}
+                    </div>
+                @endif
                 <div class="row">
                     <div class="col-xl-3 col-sm-6 col-12 d-flex">
                         <div class="card bg-one w-100">
@@ -36,8 +46,8 @@
                                         <i class="fas fa-user-graduate"></i>
                                     </div>
                                     <div class="db-info">
-                                        <h3>555</h3>
-                                        <h6>Students</h6>
+                                        <h3>{{$enrolledCount}}</h3>
+                                        <h6><a href="{{ route('studentlist.show') }}">Students</a></h6>
                                     </div>
                                 </div>
                             </div>
@@ -51,8 +61,8 @@
                                         <i class="fas fa-crown"></i>
                                     </div>
                                     <div class="db-info">
-                                        <h3>50+</h3>
-                                        <h6>Awards</h6>
+                                        <h3>{{$teachersCount}}</h3>
+                                        <h6><a href="{{ route('teacherlist.show') }}">Teachers</a></h6>
                                     </div>
                                 </div>
                             </div>
@@ -104,24 +114,48 @@
                     </div>
                 </div>
 
-                <div class="modal fade none-border" id="my_event">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title">Add Event</h4>
-                                <button type="button" class="close" data-dismiss="modal"
-                                    aria-hidden="true">&times;</button>
+         <!-- Modal for adding new event -->
+         <div class="modal fade" id="addEventModal" tabindex="-1" role="dialog" aria-labelledby="addEventModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <form id="eventForm" method="POST" action="{{ route('events.store') }}" onsubmit="return validateDateTime()">
+                        @csrf
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addEventModalLabel">Add New Event</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="eventName">Event Name</label>
+                                <input type="text" class="form-control" id="eventName" name="eventName" placeholder="Enter Event Name" required>
                             </div>
-                            <div class="modal-body"></div>
-                            <div class="modal-footer justify-content-center">
-                                <button type="button" class="btn btn-success save-event submit-btn">Create
-                                    event</button>
-                                <button type="button" class="btn btn-danger delete-event submit-btn"
-                                    data-dismiss="modal">Delete</button>
+                            <div class="form-group">
+                                <label for="category">Category</label>
+                                <select class="form-control" id="category" name="category" required>
+                                    <option value="Mandatory">Mandatory</option>
+                                    <option value="Voluntary">Voluntary</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="start_datetime">Start Date and Time</label>
+                                <input type="datetime-local" class="form-control" id="start_datetime" name="start_datetime" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="end_datetime">End Date and Time</label>
+                                <input type="datetime-local" class="form-control" id="end_datetime" name="end_datetime" required>
                             </div>
                         </div>
-                    </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="submitButton">Save Event</button>
+                        </div>
+                    </form>
                 </div>
+            </div>
+        </div>
+
 
             </div>
 
@@ -130,14 +164,130 @@
     </div>
     @include('layouts/footer')
     </div>
-    </div>
+</div>
 
     <script src="{{ asset('js/moment.min.js') }}"></script>
+    <script src="{{ asset('plugins/fullcalendar/index.global.min.js') }}"></script>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            display_events();
+        });
 
-    <script src="{{ asset('plugins/fullcalendar/fullcalendar.min.js') }}"></script>
-    <script src="{{ asset('plugins/fullcalendar/jquery.fullcalendar.js') }}"></script>
+        function display_events() {
+            fetch('/get-events')
+                .then(response => response.json())
+                .then(response => {
+                    console.log("AJAX response: ", response);
+                    if (response.data && response.data.length > 0) {
+                        var events = response.data.map(item => {
+                            if (item.id && item.title && item.start && item.end) {
+                                return {
+                                    id: item.id,
+                                    title: item.title,
+                                    start: item.start,
+                                    end: item.end,
+                                    allDay: item.allDay // Adjust as needed
+                                };
+                            } else {
+                                console.warn("Invalid event data:", item);
+                                return null;
+                            }
+                        }).filter(event => event !== null);
+                        console.log("Events Array:", events);
+                        initialize_calendar(events);
+                    } else {
+                        console.warn("No event data received or events array is empty.");
+                        initialize_calendar([]);
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching events: ", error);
+                    initialize_calendar([]);
+                });
+        }
 
+        function initialize_calendar(events) {
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                },
+                views: {
+                    timeGrid: {
+                        slotDuration: '00:30:00',
+                        scrollTime: '07:00:00',
+                        validRange: {
+                            start: '07:00:00',
+                            end: '19:00:00'
+                        }
+                    }
+                },
+                editable: true,
+                droppable: true,
+                dayMaxEvents: true, // Replaces eventLimit
+                selectable: true,
+                timeZone: 'local', // Ensure this matches your application's timezone
+                events: events,
+                select: function(info) {
+                    // var startFormatted = info.startStr;
+                    // var endFormatted = info.endStr;
+                    var startFormatted = moment(info.startStr).format('YYYY-MM-DD HH:mm');
+                    var endFormatted = moment(info.endStr).format('YYYY-MM-DD HH:mm');
+                    $('#addEventModalLabel').text("Add Event");
+                    $('#addEventModal').find("input[name='start_datetime']").val(startFormatted);
+                    $('#addEventModal').find("input[name='end_datetime']").val(endFormatted);
+                    $('#addEventModal').modal('show');
+                },
+                eventClick: function(info) {
+                    var event = info.event;
+                    var startFormatted = moment(event.startStr).format('YYYY-MM-DD HH:mm');
+                    var endFormatted = moment(event.endStr).format('YYYY-MM-DD HH:mm');
+                    $('#addEventModalLabel').text("Update Event");
+                    $('#addEventModal').find("input[name='eventName']").val(event.title);
+                    $('#addEventModal').find("input[name='start_datetime']").val(startFormatted);
+                    $('#addEventModal').find("input[name='end_datetime']").val(endFormatted);
+                    // Assume you store category in the extendedProps
+                    $('#addEventModal').find("select[name='category']").val(event.extendedProps.category);
+                    $('#addEventModal').modal('show');
+                    // Modify the form's action for updating the event
+                    $('form').attr('action', '/update-event/' + event.id);
+                },
+                eventContent: function(arg) {
+                    if (arg.event) {
+                        var startTime = arg.event.start ? moment(arg.event.start).format('HH:mm') : '';
+                        var endTime = arg.event.end ? moment(arg.event.end).format('HH:mm') : '';
+                        var title = arg.event.title || 'Untitled';
+                        if (startTime && endTime) {
+                            // return { html: `<div class="fc-time">${startTime} - ${endTime} - ${title} </div>` };
+                            return { html: `<div class="fc-time">${title} </div>` };
+                        }
+                    } else {
+                        console.warn("Invalid event:", arg.event);
+                    }
+                }
+            });
+
+            calendar.render();
+        }
+        </script>
+
+<script>
+    function validateDateTime() {
+        const startDateTime = document.getElementById('start_datetime').value;
+        const endDateTime = document.getElementById('end_datetime').value;
+
+        if (new Date(startDateTime) >= new Date(endDateTime)) {
+            alert('End Date and Time must be greater than Start Date and Time.');
+            return false;
+        }
+        return true;
+    }
+</script>
 
 </body>
 

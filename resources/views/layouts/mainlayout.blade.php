@@ -19,10 +19,10 @@
     <div class="header">
         <div class="header-left">
             @if (Auth::user()->usertype == 'admin')
-                <a href="{{ route('admin-dashboard') }}" class="logo">
+                <a href="{{ route('admin-dashboard.show', ['studentId' => Auth::user()->studentId]) }}" class="logo">
                     <img src="{{ asset('img/logo.png') }}" alt="Logo">
                 </a>
-                <a href="{{ route('admin-dashboard') }}" class="logo logo-small">
+                <a href="{{ route('admin-dashboard.show', ['studentId' => Auth::user()->studentId]) }}" class="logo logo-small">
                     <img src="{{ asset('img/logo.png') }}" alt="Logo" width="30" height="30">
                 </a>
             @endif
@@ -197,7 +197,7 @@
                     {{-- ADMIN/REGISTRAR SIDEBAR --}}
                     @if (Auth::user()->usertype == 'admin')
                         <li>
-                            <a href="{{ route('admin-dashboard') }}"><i
+                            <a href="{{ route('admin-dashboard.show', ['studentId' => Auth::user()->studentId]) }}"><i
                                     class="fas fa-user-graduate"></i><span>Dashboard</span></a>
                         </li>
                 
