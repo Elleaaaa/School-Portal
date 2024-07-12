@@ -1,3 +1,18 @@
+body.no-scroll {
+    overflow: hidden;
+}
+
+#mobile_menu {
+    display: none;
+}
+
+#mobile_menu.show {
+    display: block;
+}
+
+.hidden {
+    display: none;
+}
 
 html {
 	height: 100%;

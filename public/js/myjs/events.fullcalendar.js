@@ -6,7 +6,7 @@ function display_events() {
     fetch('/get-events')
         .then(response => response.json())
         .then(response => {
-            console.log("AJAX response: ", response);
+            // console.log("AJAX response: ", response); // for debugging purpose
             if (response.data && response.data.length > 0) {
                 var events = response.data.map(item => {
                     if (item.id && item.title && item.start && item.end) {
@@ -15,6 +15,7 @@ function display_events() {
                             title: item.title,
                             start: item.start,
                             end: item.end,
+                            category: item.category,
                             allDay: item.allDay // Adjust as needed
                         };
                     } else {
@@ -22,7 +23,7 @@ function display_events() {
                         return null;
                     }
                 }).filter(event => event !== null);
-                console.log("Events Array:", events);
+                // console.log("Events Array:", events); // for debugging purpose
                 initialize_calendar(events);
             } else {
                 console.warn("No event data received or events array is empty.");
@@ -60,7 +61,12 @@ function initialize_calendar(events) {
         dayMaxEvents: true, // Replaces eventLimit
         selectable: true,
         timeZone: 'local', // Ensure this matches your application's timezone
-        events: events,
+        events: events.map(event => ({
+            ...event,
+            extendedProps: {
+                category: event.category || ''
+            }
+        })),
         select: function(info) {
             clearModalFields(); // Clear the fields first
             var startFormatted = moment(info.startStr).format('YYYY-MM-DD HH:mm'); // formatted the info.startStr

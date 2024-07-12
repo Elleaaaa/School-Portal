@@ -13,9 +13,18 @@
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
+    {{-- use for the toast --}}
+    @notifyCss
+    <style>
+        .notify {
+            z-index: 9999;
+        }
+    </style>
+
 </head>
 
 <body>
+    <x-notify::notify />
     <div class="header">
         <div class="header-left">
             @if (Auth::user()->usertype == 'admin')
@@ -223,7 +232,7 @@
                             </ul>
                         </li>
          
-                        <li class="submenu">
+                        {{-- <li class="submenu">
                             <a href="#"><i class="fas fa-building"></i> <span> Departments</span> <span
                                     class="menu-arrow"></span></a>
                             <ul>
@@ -231,7 +240,7 @@
                                 <li><a href="{{ url('add-department.html') }}">Department Add</a></li>
                                 <li><a href="{{ url('edit-department.html') }}">Department Edit</a></li>
                             </ul>
-                        </li>
+                        </li> --}}
        
                         <li class="submenu">
                             <a href="#"><i class="fas fa-book-reader"></i> <span> Subjects</span> <span
@@ -366,7 +375,8 @@
             </div>
         </div>
     </div>
-
+    {{-- use for the toast --}}
+    @notifyJs
     <script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
     <script src="{{ asset('js/popper.min.js') }}"></script>
     <script src="{{ asset('plugins/bootstrap/js/bootstrap.min.js') }}"></script>

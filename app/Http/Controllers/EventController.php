@@ -43,7 +43,8 @@ class EventController extends Controller
         // Save the event to the database
         $event->save();
         // Redirect or return a response
-        return redirect()->back()->with('success', 'Event created successfully.');
+        notify()->success('Event created successfully!');
+        return redirect()->back();
 
     }
 
@@ -61,6 +62,7 @@ class EventController extends Controller
                     'title' => $event->eventName,
                     'start' => $start_datetime,
                     'end' => $end_datetime,
+                    'category' => $event->category,
                     'allDay' => false,
                 ];
             });
@@ -101,7 +103,8 @@ class EventController extends Controller
         $event->end_datetime = $request->input('end_datetime');
         $event->save();
     
-        return redirect()->back()->with('success', 'Event updated successfully.');
+        notify()->success('Event Updated Successfully!');
+        return redirect()->back();
     }
 
     /**

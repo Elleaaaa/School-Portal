@@ -113,10 +113,12 @@ class StudentController extends Controller
             $lastSchool->save();
             $user->save();
         } else {
-            return redirect()->route('addstudent.show')->with('failed', 'Passwords do not match');
+            notify()->error('Passwords do not match!');
+            return redirect()->route('addstudent.show');
         }
 
-        return redirect()->route('addstudent.show')->with('success', 'Student Added Successfully');
+        notify()->success('Student Added Successfully!');
+        return redirect()->route('addstudent.show');
     }
 
     /**
@@ -266,7 +268,8 @@ class StudentController extends Controller
         $guardian->fatherAddress = $request->input('fatherAddress');
         $guardian->save();
 
-        return redirect()->route('profile-details.show', ['studentId' => $studentId])->with('success', 'Student record updated successfully');
+        notify()->success('Student Record Updated Successfully!');
+        return redirect()->route('profile-details.show', ['studentId' => $studentId]);
     }
 
     public function updateAdmin(Request $request, string $id)
@@ -325,7 +328,8 @@ class StudentController extends Controller
          $lastSchool->genAverage = $request->input('lastSchoolAverage');
          $lastSchool->save();
          
-         return redirect()->route('edit-student.show', ['id' => $id])->with('success', 'Student record updated successfully');
+         notify()->success('Student Record Updated Successfully!');
+         return redirect()->route('edit-student.show', ['id' => $id]);
     }
 
     /**

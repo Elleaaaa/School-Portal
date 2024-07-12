@@ -58,7 +58,8 @@ class GradeController extends Controller
         $file = $request->file('gradeImport');
         (new GradesImport)->import($file);
 
-        return back()->with('success', 'Grades imported successfully.');
+        notify()->success('Grades Imported Successfully!');
+        return back();
     }
 
     /**

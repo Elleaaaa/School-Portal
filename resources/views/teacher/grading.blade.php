@@ -34,12 +34,6 @@
                 </div>
                 <div>
 
-                    @if(session('success'))
-                    <div id="successAlert" class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                    @endif
-
                     <form action="{{ route('grades.import') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
@@ -179,9 +173,6 @@
             });
         });
     </script>
-
-    {{-- TIMER FOR ALERTS --}}
-    <script src="{{ asset('js/myjs/timerAlert.js') }}"></script>
 
 </body>
 

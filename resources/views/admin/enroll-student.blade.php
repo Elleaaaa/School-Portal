@@ -38,18 +38,6 @@
                     </div>
                 </div>
 
-                @if (session('success'))
-                <div id="successAlert" class="alert alert-success">
-                    {{ session('success') }}
-                </div>
-                @endif
-
-                @if (session('failed'))
-                    <div id="failedAlert" class="alert alert-failed">
-                        {{ session('failed') }}
-                    </div>
-                @endif
-
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="card">
@@ -211,9 +199,6 @@
 
     {{-- DISPLAY SUBJECTS DEPENDS ON GRADE LEVEL --}}
     <script src="{{ asset('js/myjs/displaySubjects.js') }}"></script>
-
-    {{-- TIMER FOR ALERTS --}}
-    <script src="{{ asset('js/myjs/timerAlert.js') }}"></script>
 
     {{-- Auto populate student details when student ID is entered --}}
     <script src="{{ asset('js/myjs/populateStudentDetails.js') }}"></script>

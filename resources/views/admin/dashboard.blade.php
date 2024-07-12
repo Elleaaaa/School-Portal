@@ -9,6 +9,25 @@
 
     <link rel="stylesheet" href="{{ asset('plugins/fullcalendar/fullcalendar.min.css') }}">
 
+    <style>
+        .calendar-container {
+            overflow-x: auto; /* Enables horizontal scrolling */
+            overflow-y: hidden; /* Prevents vertical scrolling */
+        }
+
+        @media (max-width: 768px) {
+            .calendar-container {
+                display: block; /* Ensures the container takes up the full width */
+            }
+
+            /* Ensure the entire FullCalendar, including the header, is scrollable */
+            .fc-view, .fc-toolbar {
+                min-width: 600px;
+                white-space: nowrap; /* Prevents wrapping */
+            }
+        }
+    </style>
+
 </head>
 
 <body>
@@ -28,7 +47,7 @@
                 </div>
 
                 @if (session('success'))
-                    <div class="alert alert-success">
+                    <div id="successAlert" class="alert alert-success">
                         {{ session('success') }}
                     </div>
                 @endif
@@ -105,14 +124,29 @@
                     {{-- <div class="col-auto text-right float-right ml-auto">
                         <a href="add-events.html" class="btn btn-primary"> Add Event <i class="fas fa-plus"></i></a>
                     </div> --}}
-                    <div class="col-lg-12 col-md-12">
+                    {{-- <div class="col-lg-12 col-md-12 col-sm-12">
                         <div class="card">
                             <div class="card-body">
                                 <div id="calendar"></div>
                             </div>
                         </div>
+                    </div> --}}
+                    <div class="col-12 col-lg-12 col-xl-12 d-flex">
+                        <div class="card flex-fill">
+                            <div class="card-header">
+                                <div class="row align-items-center">
+                                    <div class="col-12">
+                                        <h5 class="card-title">Calendar</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div id="calendar" class="calendar-container"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                @include('layouts/footer')
 
          <!-- Modal for adding new event -->
          <div class="modal fade" id="addEventModal" tabindex="-1" role="dialog" aria-labelledby="addEventModalLabel" aria-hidden="true">
@@ -162,14 +196,17 @@
         </div>
 
     </div>
-    @include('layouts/footer')
     </div>
 </div>
 
     <script src="{{ asset('js/moment.min.js') }}"></script>
     <script src="{{ asset('plugins/fullcalendar/index.global.min.js') }}"></script>
+    {{-- TIMER FOR ALERTS --}}
+    <script src="{{ asset('js/myjs/timerAlert.js') }}"></script>
 
-    <script>
+    <script src="{{ asset('js/myjs/events.fullcalendar.js') }}"></script>
+
+    {{-- <script>
         document.addEventListener('DOMContentLoaded', function() {
             display_events();
         });
@@ -227,7 +264,7 @@
                         }
                     }
                 },
-                editable: true,
+                editable: false,
                 droppable: true,
                 dayMaxEvents: true, // Replaces eventLimit
                 selectable: true,
@@ -274,9 +311,9 @@
 
             calendar.render();
         }
-        </script>
+        </script> --}}
 
-<script>
+{{-- <script>
     function validateDateTime() {
         const startDateTime = document.getElementById('start_datetime').value;
         const endDateTime = document.getElementById('end_datetime').value;
@@ -287,7 +324,7 @@
         }
         return true;
     }
-</script>
+</script> --}}
 
 </body>
 

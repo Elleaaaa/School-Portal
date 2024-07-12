@@ -69,7 +69,8 @@ class EnrolleesController extends Controller
             $grade->save();
         }
 
-        return redirect()->route('enroll-student.show')->with('success', 'Student Enrolled Successfully');
+        notify()->success('Student Enrolled Successfully!');
+        return redirect()->route('enroll-student.show');
     }
 
     public function selfEnroll(Request $request)
@@ -110,7 +111,8 @@ class EnrolleesController extends Controller
             $grade->save();
         }
 
-        return redirect()->route('selfEnrollment.show')->with('success', 'Waiting for registrar to confirm');
+        notify()->success('Wait for registrar to confirm!');
+        return redirect()->route('selfEnrollment.show');
     }
 
     /**
@@ -197,7 +199,8 @@ class EnrolleesController extends Controller
         $enrollee->status = $request->input('status');
         $enrollee->save();
 
-        return redirect()->route('enrolled-student-list.show')->with('success', 'Student Enrolled Successfully');
+        notify()->success('Student Enrolled Successfully!');
+        return redirect()->route('enrolled-student-list.show');
     }
 
     /**

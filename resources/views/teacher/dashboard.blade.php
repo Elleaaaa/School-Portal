@@ -9,9 +9,28 @@
     <link rel="stylesheet" href="{{ asset('plugins/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome/css/fontawesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome/css/all.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('plugins/simple-calendar/simple-calendar.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
+    <link rel="stylesheet" href="{{ asset('plugins/fullcalendar/fullcalendar.min.css') }}">
+
+    <style>
+        .calendar-container {
+            overflow-x: auto; /* Enables horizontal scrolling */
+            overflow-y: hidden; /* Prevents vertical scrolling */
+        }
+
+        @media (max-width: 768px) {
+            .calendar-container {
+                display: block; /* Ensures the container takes up the full width */
+            }
+
+            /* Ensure the entire FullCalendar, including the header, is scrollable */
+            .fc-view, .fc-toolbar {
+                min-width: 600px;
+                white-space: nowrap; /* Prevents wrapping */
+            }
+        }
+    </style>
 
 </head>
 
@@ -100,86 +119,6 @@
 
 
                 <div class="row">
-                    <div class="col-12 col-lg-12 col-xl-12">
-                        {{-- <div class="row">
-                            <div class="col-12 col-lg-8 col-xl-8 d-flex">
-                                <div class="card flex-fill">
-                                    <div class="card-header">
-                                        <div class="row align-items-center">
-                                            <div class="col-6">
-                                                <h5 class="card-title">Upcoming Lesson</h5>
-                                            </div>
-                                            <div class="col-6">
-                                                <span class="float-right view-link"><a href="#">View All
-                                                        Courses</a></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="pt-3 pb-3">
-                                        <div class="table-responsive lesson">
-                                            <table class="table table-center">
-                                                <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="date">
-                                                                <b>Aug 4, Tuesday</b>
-                                                                <p>2.30pm - 3.30pm (60min)</p>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="date">
-                                                                <b>Lessons 30</b>
-                                                                <p>3.1 Ipsuum dolor</p>
-                                                            </div>
-                                                        </td>
-                                                        <td><a href="#">Confirmed</a></td>
-                                                        <td><button type="submit"
-                                                                class="btn btn-info">Reschedule</button></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="date">
-                                                                <b>Aug 5, Wednesday</b>
-                                                                <p>3.00pm - 4.30pm (90min)</p>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="date">
-                                                                <b>Lessons 31</b>
-                                                                <p>3.2 Ipsuum dolor</p>
-                                                            </div>
-                                                        </td>
-                                                        <td><a href="#">Confirmed</a></td>
-                                                        <td><button type="submit"
-                                                                class="btn btn-info">Reschedule</button></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="date">
-                                                                <b>Aug 6, Thursday</b>
-                                                                <p>11.00am - 12.00pm (20min)</p>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="date">
-                                                                <b>Lessons 32</b>
-                                                                <p>3.3 Ipsuum dolor</p>
-                                                            </div>
-                                                        </td>
-                                                        <td><a href="#">Confirmed</a></td>
-                                                        <td><button type="submit"
-                                                                class="btn btn-info">Reschedule</button></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div> --}}
-
-                    </div>
                     <div class="col-12 col-lg-12 col-xl-12 d-flex">
                         <div class="card flex-fill">
                             <div class="card-header">
@@ -190,8 +129,7 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <div id="calendar-doctor" class="calendar-container"></div>
-
+                                <div id="calendar" class="calendar-container"></div>
                             </div>
                         </div>
                     </div>
@@ -205,9 +143,9 @@
 
     </div>
 
-    <script src="{{ asset('plugins/simple-calendar/jquery.simple-calendar.js') }}"></script>
-    <script src="{{ asset('js/calander.js') }}"></script>
-    <script src="{{ asset('js/circle-progress.min.js') }}"></script>
+    <script src="{{ asset('js/moment.min.js') }}"></script>
+    <script src="{{ asset('plugins/fullcalendar/index.global.min.js') }}"></script>
+    <script src="{{ asset('js/myjs/events.fullcalendar.js') }}"></script>
 
 
 </body>

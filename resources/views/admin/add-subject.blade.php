@@ -30,18 +30,6 @@
                     </div>
                 </div>
 
-                @if (session('success'))
-                <div id="successAlert" class="alert alert-success">
-                    {{ session('success') }}
-                </div>
-                @endif
-
-                @if (session('failed'))
-                    <div id="failedAlert" class="alert alert-failed">
-                        {{ session('failed') }}
-                    </div>
-                @endif
-
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="card">
@@ -165,9 +153,6 @@
         lectureUnitInput.addEventListener('input', calculateTotalUnits);
         labUnitInput.addEventListener('input', calculateTotalUnits);
     </script> --}}
-
-      {{-- TIMER FOR ALERTS --}}
-    <script src="{{ asset('js/myjs/timerAlert.js') }}"></script>
  
     {{-- FETCH TEACHER ID TO SAVE IN DB --}}
     <script src="{{ asset('js/myjs/fetchTeacherId.js') }}"></script>

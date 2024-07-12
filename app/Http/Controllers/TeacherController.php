@@ -85,10 +85,12 @@ class TeacherController extends Controller
             $address->save();
             $user->save();
         } else {
-            return redirect()->route('addteacher.show')->with('failed', 'Passwords do not match');
+            notify()->error('Passwords do not match!');
+            return redirect()->route('addteacher.show');
         }
 
-        return redirect()->route('addteacher.show')->with('success', 'Teacher Added Successfully');
+        notify()->success('Teacher Added Successfully!');
+        return redirect()->route('addteacher.show');
     }
 
     /**
@@ -239,7 +241,8 @@ class TeacherController extends Controller
          $address->address = $request->input('address');
          $address->save();
  
-         return redirect()->route('profile-teacher.show', ['teacherId' => $teacherId])->with('success', 'Updated Record successfully');
+         notify()->success('Record Updated Successfully!');
+         return redirect()->route('profile-teacher.show', ['teacherId' => $teacherId]);
     }
 
     public function updateAdmin(Request $request, string $id)
@@ -274,7 +277,8 @@ class TeacherController extends Controller
          $address->address = $request->input('address');
          $address->save();
         
-         return redirect()->route('edit-teacher.show', ['id' => $id])->with('success', 'Teacher record updated successfully');
+         notify()->success('Teacher Record Updated Successfully!');
+         return redirect()->route('edit-teacher.show', ['id' => $id]);
     }
 
     /**

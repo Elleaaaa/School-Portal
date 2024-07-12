@@ -51,7 +51,8 @@ class FeeListController extends Controller
         $feeList->status = 'active';
         $feeList->save();
 
-        return back()->with('success', 'Fee added successfully.');
+        notify()->success('Fee added successfully!');
+        return back();
     }
 
     public function setStatus(){

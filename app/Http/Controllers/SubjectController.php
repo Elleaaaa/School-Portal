@@ -48,7 +48,8 @@ class SubjectController extends Controller
         $subject->subjectLabUnit = $request->input('labUnit');
         $subject->save();
 
-          return redirect()->route('subjectlist.show')->with('success', 'Subject Added Successfully');
+        notify()->success('Subject Added Successfully!');
+        return redirect()->route('subjectlist.show');
 
     }
 
@@ -100,7 +101,8 @@ class SubjectController extends Controller
         $subject->subjectLabUnit = $request->input('labUnit');
         $subject->save();
 
-        return redirect()->route('subjectlist.show')->with('success', 'Subject Updated Successfully');
+        notify()->success('Subject Updated Successfully!');
+        return redirect()->route('subjectlist.show');
     }
 
     /**

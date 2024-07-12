@@ -165,8 +165,9 @@ class AdminController extends Controller
          $address->baranggay = $request->input('barangay');
          $address->address = $request->input('address');
          $address->save();
- 
-         return redirect()->route('profile-admin.show', ['adminId' => $adminId])->with('success', 'Student record updated successfully');
+
+         notify()->success('Student Record Updated Successfully!');
+         return redirect()->route('profile-admin.show', ['adminId' => $adminId]);
     }
 
     /**

@@ -134,7 +134,8 @@ class FeeController extends Controller
         $fee->amountLeft = $amountLeft;
         $fee->save();
 
-        return redirect()->route('addfees.show')->with('success', 'Paid Successfully');
+        notify()->success('Paid Successfully!');
+        return redirect()->route('addfees.show');
     }
 
     /**

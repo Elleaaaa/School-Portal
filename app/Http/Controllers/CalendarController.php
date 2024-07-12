@@ -94,22 +94,6 @@ class CalendarController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    // public function store(Request $request)
-    // {
-    //     $lesson = new Lesson();
-
-    //     $lesson->gradeLevel = $request->input('gradeLevel');
-    //     $lesson->teacherId = $request->input('teacher');
-    //     $lesson->subjectId = $request->input('subject');
-    //     $lesson->sectionId = $request->input('section');
-    //     $lesson->room = $request->input('room');
-    //     $lesson->day = $request->input('day');
-    //     $lesson->start_time = $request->input('start_time');
-    //     $lesson->end_time = $request->input('end_time');
-    //     $lesson->save();
-
-    //     return redirect()->route('add-timetable.show')->with('success', 'Schedule Added');
-    // }
 
     public function store(Request $request)
     {
@@ -153,7 +137,8 @@ class CalendarController extends Controller
         $lesson->end_time = $end_time;
         $lesson->save();
 
-        return redirect()->back()->with('success', 'Lesson created successfully.');
+        notify()->success('Lesson Created Successfully!');
+        return redirect()->back();
     }
 
     /**

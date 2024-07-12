@@ -35,12 +35,13 @@ class SectionController extends Controller
         $section->gradeLevel = $request->input('gradeLevel');
         $section->section = $request->input('section');
         $sectionName = $request->input('sectionName');
-        $section->sectionName = ucwords(strtolower($sectionName)); //make it title Form AMBER will be Amber
+        $section->sectionName = ucwords(strtolower($sectionName)); //make it title Format AMBER/amber will be Amber
         $section->teacherId = $request->input('sectionTeacher');
         $section->status = 'active';
         $section->save();
 
-        return redirect()->route('add-section.show')->with('success', 'Section Added Successfully');
+        notify()->success('Section Added Successfully!');
+        return redirect()->route('add-section.show');
     }
 
     public function showSectionList()
@@ -99,7 +100,8 @@ class SectionController extends Controller
         $section->status = $request->input('status');
         $section->save();
 
-        return redirect()->route('sectionlist.show')->with('success', 'Section Updated Successfully');
+        notify()->success('Section Updated Successfully!');
+        return redirect()->route('sectionlist.show');
     }
 
     /**
