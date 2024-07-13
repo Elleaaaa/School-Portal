@@ -39,18 +39,40 @@ class EnrolleesController extends Controller
         $sName = $request->input('suffixName');
         $fullName = $fName.' '.$mName.' '.$lName.' '.$sName;
 
+        // Check if the student is already enrolled this SY
+        $year = date('Y');
+        $month = date('m');
+
+        if ($month <= 6) {
+            $schoolYear = ($year - 1) . '-' . $year;
+        } else {
+            $schoolYear = $year . '-' . ($year + 1);
+        }
+
+        $studentId = $request->input('studentId');
+        $existingEnrollment = Enrollee::where('studentId', $studentId)
+        ->where('schoolYear', $schoolYear)
+        ->first();
+
         // Enroll Student
-        $enrollee = new Enrollee();
-       
-        $enrollee->studentId = $request->input('studentId');
-        $enrollee->name = $fullName;
-        $enrollee->subjects = $request->input('subjects');
-        $enrollee->gradeLevel = $request->input('gradeLevel');
-        $enrollee->section = $request->input('section');
-        $enrollee->semester = $request->input('semester');
-        $enrollee->classType = $request->input('classType');
-        $enrollee->status = $request->input('status');
-        $enrollee->save();
+        if ($existingEnrollment) {
+            // Student is already enrolled, do not enroll again
+            notify()->error('Student Already Enrolled!');
+            return redirect()->back();
+        } else {
+            // Proceed with enrollment
+            $enrollee = new Enrollee();
+            $enrollee->studentId = $studentId;
+            $enrollee->name = $fullName;
+            $enrollee->subjects = $request->input('subjects');
+            $enrollee->gradeLevel = $request->input('gradeLevel');
+            $enrollee->section = $request->input('section');
+            $enrollee->semester = $request->input('semester');
+            $enrollee->classType = $request->input('classType');
+            $enrollee->schoolYear = $schoolYear;
+            $enrollee->status = $request->input('status');
+            $enrollee->save();
+        }
 
         // create row for each subjects
         $subjects = explode(',', $request->input('subjects'));
@@ -198,6 +220,28 @@ class EnrolleesController extends Controller
         $enrollee->classType = $request->input('classType');
         $enrollee->status = $request->input('status');
         $enrollee->save();
+
+        // delete previous grade when section is changed
+        $studentId = $request->input('studentId');
+        $grade = Grade::where('studentId', $studentId);
+        $grade->delete();
+
+        // create row for each subjects
+        $subjects = explode(',', $request->input('subjects'));
+        foreach ($subjects as $subject) {
+            $grade = new Grade();
+            $grade->studentId = $request->input('studentId');
+            $grade->gradeLevel = $request->input('gradeLevel');
+            $grade->section = $request->input('section');
+            $grade->semester = $request->input('semester');
+            $grade->subject = $subject;
+            $grade->firstQGrade = 'not yet graded';
+            $grade->secondQGrade = 'not yet graded';
+            $grade->thirdQGrade = 'not yet graded';
+            $grade->fourthQGrade = 'not yet graded';
+            $grade->schoolYear = null;
+            $grade->save();
+         }
 
         notify()->success('Student Enrolled Successfully!');
         return redirect()->route('enrolled-student-list.show');

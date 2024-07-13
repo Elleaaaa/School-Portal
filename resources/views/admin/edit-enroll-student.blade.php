@@ -172,7 +172,7 @@
         // Function to fetch sections based on grade level
         function fetchSections() {
             var gradeLevel = document.getElementById('gradeLevel').value;
-            
+    
             // Make AJAX request to fetch sections based on grade level
             fetch('/fetch-sections?gradeLevel=' + encodeURIComponent(gradeLevel))
                 .then(response => response.json())
@@ -180,7 +180,7 @@
                     // Clear existing options
                     var sectionSelect = document.getElementById('section');
                     sectionSelect.innerHTML = '<option value=""></option>';
-                    
+    
                     // Check if sections are found
                     if (data.length > 0) {
                         // Populate the section select dropdown with fetched sections
@@ -205,16 +205,18 @@
                     console.error('Error fetching sections:', error);
                 });
         }
-        
-        // Call fetchSections function when the page loads
-        window.onload = function() {
-            fetchSections(); // Fetch sections immediately after page loads
-        };
     
-        // Call fetchSections function after setting the grade level value programmatically
-        var gradeLevelValue = "{{ $enrollees->gradeLevel }}"; // Assuming this fetches the grade level from the database
-        document.getElementById('gradeLevel').value = gradeLevelValue; // Set the grade level value
-        fetchSections(); // Fetch sections based on the grade level value
+        document.addEventListener('DOMContentLoaded', function() {
+            // Call fetchSections function after setting the grade level value programmatically
+            var gradeLevelValue = "{{ $enrollees->gradeLevel }}"; // Assuming this fetches the grade level from the database
+            var gradeLevelSelect = document.getElementById('gradeLevel');
+            
+            gradeLevelSelect.value = gradeLevelValue; // Set the grade level value
+            fetchSections(); // Fetch sections based on the grade level value
+    
+            // Add event listener to grade level dropdown
+            gradeLevelSelect.addEventListener('change', fetchSections);
+        });
     </script>
 
 </body>

@@ -5,13 +5,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <title>Smartious - Payment History</title>
+    <title>Payment History</title>
 
 
     <link rel="stylesheet" href="{{ asset('plugins/datatables/datatables.min.css') }}">
-
-    <script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables/datatables.min.js') }}"></script>
 </head>
 
 <body>
@@ -82,24 +79,30 @@
                 </div>
             </div>
 
-            <footer>
-                <p>Copyright © 2024 Smartious.</p>
-            </footer>
+       @include('layouts/footer')
 
         </div>
 
     </div>
     
+    <script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables/datatables.min.js') }}"></script>
 
     <script>
         new DataTable('#paymentHistory', {
-            layout: {
-                topStart: {
-                    buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
-                }
-            }
-        });
-    </script>
+        lengthMenu: [5, 10, 25, 50, 100, { label: 'All', value: -1 }],
+         layout: {
+         top1Start: {
+             buttons: [
+                 {
+                     text: 'Export As',
+                     split: ['pdf', 'excel', 'csv', 'copy', 'print',],
+                 }
+             ],
+         }
+     }
+     });
+     </script>
   
 
 </body>

@@ -29,7 +29,7 @@
                 <div class="page-header">
                     <div class="row">
                         <div class="col-sm-12">
-                            <h3 class="page-title">Welcome Bruklin!</h3>
+                            <h3 class="page-title">Welcome</h3>
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
                                 <li class="breadcrumb-item active">Student Dashboard</li>
@@ -48,8 +48,8 @@
                                         <i class="fas fa-book-open"></i>
                                     </div>
                                     <div class="db-info">
-                                        <h3>04/06</h3>
-                                        <h6>All Courses</h6>
+                                        <h3>{{$subjectCount}}</h3>
+                                        <h6><a href="{{ route('student-subjectlist.show', ['studentId' => Auth::user()->studentId]) }}">Subjects</a></h6>
                                     </div>
                                 </div>
                             </div>

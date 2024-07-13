@@ -43,7 +43,6 @@
                                        <th>Section</th>
                                        <th>Section Name</th>
                                        <th>Adviser</th>
-                                       <th>Status</th>
                                        <th class="text-right">Action</th>
                                     </tr>
                                  </thead>
@@ -60,7 +59,6 @@
                                             @endif
                                         @endforeach
                                         </td>
-                                       <td>{{ $section->status }}</td>
                                        <td class="text-right">
                                           <div class="actions">
                                              <a href="{{ route('edit-section.show', ['id' => $section->id]) }}" class="btn btn-sm bg-success-light mr-2">
@@ -90,7 +88,9 @@
       <script>
         $(document).ready(function() {
             $('.datatable').DataTable({
-                "pageLength": 10
+                "pageLength": 5,
+                lengthMenu: [5, 10, 25, 50, 100, { label: 'All', value: -1 }]
+               //  order: [[3, 'desc']]
             });
         });
     </script>

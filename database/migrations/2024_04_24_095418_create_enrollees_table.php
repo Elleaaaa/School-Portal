@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('section', 255)->nullable();
             $table->string('semester', 255)->nullable();
             $table->string('classType', 255)->nullable();
+            $table->string('schoolYear', 255)->nullable();
             $table->string('status', 255)->nullable();
             $table->timestamps();
         });

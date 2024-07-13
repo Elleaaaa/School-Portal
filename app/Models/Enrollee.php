@@ -17,6 +17,7 @@ class Enrollee extends Model
         'section',
         'semester',
         'classType',
+        'schoolYear',
         'status',
     ];
 }

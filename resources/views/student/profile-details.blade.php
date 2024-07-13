@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
     <title>Smartious - Edit Students</title>
     <link rel="shortcut icon" href="assets/img/favicon.png">
+    <style>
+        #sidebar {
+            display: none; /* Initially hide the sidebar */
+        }
+    </style>
 </head>
 
 <body>
@@ -147,7 +152,7 @@
                                         <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
                                                 <label for="region">Region</label>
-                                                <select name="region" id="region" class="form-control">
+                                                <select name="region" id="region" class="form-control" required>
                                                     {{-- <option value="">Select Region</option> --}}
                                                 </select>
                                             </div>
@@ -155,7 +160,7 @@
                                         <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
                                                 <label for="region">Province</label>
-                                                <select name="province" id="province" class="form-control">
+                                                <select name="province" id="province" class="form-control" required>
                                                     {{-- <option value="">Select Province</option> --}}
                                                 </select>
                                             </div>
@@ -163,7 +168,7 @@
                                         <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
                                                 <label for="region">Municipality</label>
-                                                <select name="city" id="city" class="form-control">
+                                                <select name="city" id="city" class="form-control" required>
                                                     {{-- <option value="">Select City</option> --}}
                                                 </select>
                                             </div>
@@ -171,7 +176,7 @@
                                         <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
                                                 <label for="region">Barangay</label>
-                                                <select name="barangay" id="barangay" class="form-control">
+                                                <select name="barangay" id="barangay" class="form-control" required>
                                                     {{-- <option value="">Select Baranggay</option> --}}
                                                 </select>
                                             </div>
@@ -179,7 +184,7 @@
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label>Address</label>
-                                                <input name="address" type="text" class="form-control">
+                                                <input name="address" type="text" class="form-control" value="{{ $address-> address ?? ''}}" required>
                                             </div>
                                         </div>
 
@@ -441,6 +446,17 @@
                 populateProvinces("{{ $address-> region}}");
             })
             .catch(error => console.error('Error fetching data:', error));
+    </script>
+
+    <script>
+        // Assume this value is dynamically set based on user profile
+        var completeProfile = {{ Auth::user()->completeProfile }}; // Change this to true to show the sidebar
+
+        if (completeProfile) {
+            $('#sidebar').show();
+        } else {
+            $('#sidebar').hide();
+        }
     </script>
     
 </body>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Address;
 use App\Models\Enrollee;
+use App\Models\Grade;
 use App\Models\Guardian;
 use App\Models\LastSchool;
 use App\Models\Section;
@@ -104,6 +105,7 @@ class StudentController extends Controller
          $user->studentId = $validatedData['studentId'];
          $user->email = $validatedData['email'];
          $user->password = Hash::make($validatedData['password']);
+         $user->completeProfile = false;
          $user->usertype = 'student';
 
          if($password == $repeatPassword){
@@ -142,9 +144,24 @@ class StudentController extends Controller
 
     public function showDashboard(string $studentId)
     {
-        $student = Student::find($studentId);
-        return view('student.dashboard', compact('student'));
+        $student = Student::where('studentId', $studentId)->first();
+
+        $subjectCount = Enrollee::where('studentId', $studentId)
+            ->selectRaw("LENGTH(REPLACE(subjects, ' ', '')) - LENGTH(REPLACE(REPLACE(subjects, ' ', ''), ',', '')) + 1 AS subject_count")
+            ->first();
+
+        $subjectCount = $subjectCount ? $subjectCount->subject_count : 0;
+
+        return view('student.dashboard', compact('student', 'subjectCount'));
     }
+
+    public function showGrades(string $studentId)
+    {
+        $grades = Grade::where('studentId', $studentId)->get();
+
+        return view('student.grades', compact('grades'));
+    }
+
 
     public function showSubjectList(string $studentId)
     {
@@ -267,6 +284,10 @@ class StudentController extends Controller
         $guardian->fatherContact = $request->input('fatherContact');
         $guardian->fatherAddress = $request->input('fatherAddress');
         $guardian->save();
+
+        $user = User::where('studentId', $studentId)->first();
+        $user->completeProfile = True;
+        $user->save();
 
         notify()->success('Student Record Updated Successfully!');
         return redirect()->route('profile-details.show', ['studentId' => $studentId]);

@@ -7,6 +7,7 @@ use App\Models\Enrollee;
 use App\Models\Grade;
 use App\Models\Section;
 use App\Models\Student;
+use App\Models\Subject;
 use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Validation\Rules;
@@ -128,15 +129,26 @@ class TeacherController extends Controller
         return view('admin.edit-teacher', compact('teacher', 'address'));
     }
 
+    // this will display student based on handle section, if there is no section, it will based on handle subjects
     public function showStudents()
     {
         $id = Auth::user()->studentId;
         $advisorySection = Section::where('teacherId', $id)->first();
-        $gradeLevel = $advisorySection->gradeLevel;
-        $section = $advisorySection->sectionName;
-        $myStudents = Enrollee::where('gradeLevel', $gradeLevel)
+        $handleSubjects = Subject::where('teacherId', $id)->first();
+        $myStudents = null;
+        if($advisorySection){
+            $gradeLevel = $advisorySection->gradeLevel;
+            $section = $advisorySection->sectionName;
+            $myStudents = Enrollee::where('gradeLevel', $gradeLevel)
                       ->where('section', $section)
                       ->get();
+        }else
+        {
+            $subject = $handleSubjects->subjectTitle;
+            $myStudents = Enrollee::whereRaw("FIND_IN_SET(?, REPLACE(subjects, ' ', ''))", [$subject])
+                      ->get();
+        }
+
         $myStudentsIds = $myStudents->pluck('studentId')->toArray();
         $studentDetails = Student::whereIn('studentId', $myStudentsIds)->get();
         $images = User::all();
@@ -151,34 +163,41 @@ class TeacherController extends Controller
     {
         $id = Auth::user()->studentId;
         $advisorySection = Section::where('teacherId', $id)->first();
-        $gradeLevel = $advisorySection->gradeLevel;
-        $section = $advisorySection->sectionName;
-        $myStudents = Enrollee::where('gradeLevel', $gradeLevel)
+        $handleSubjects = Subject::where('teacherId', $id)->first();
+        if($advisorySection){
+            $gradeLevel = $advisorySection->gradeLevel;
+            $section = $advisorySection->sectionName;
+            $myStudents = Enrollee::where('gradeLevel', $gradeLevel)
                       ->where('section', $section)
                       ->get();
+        }else
+        {
+            $subject = $handleSubjects->subjectTitle;
+            $myStudents = Enrollee::whereRaw("FIND_IN_SET(?, REPLACE(subjects, ' ', ''))", [$subject])
+                      ->get();
+        }
         $myStudentsIds = $myStudents->pluck('studentId')->toArray();
         $students = Student::whereIn('studentId', $myStudentsIds)->get();
         $images = User::all();
 
-        //show the subjects of the students
-        // $subjects = Enrollee::whereIn('studentId', $myStudentsIds)->get();
-        // $allSubjects = [];
-        // foreach ($subjects as $enrollee) {
-        //     $subjectList = explode(' ', $enrollee->subjects);
-        //     foreach ($subjectList as $subject) {
-        //         // Append each subject to the $allSubjects array
-        //         $allSubjects[] = str_replace(',', '', ucwords(strtolower($subject))); //make it title format and remove ','
-        //     }
-        // }
-
         //show the grade of the student
-        $grade = Grade::where('gradeLevel', $gradeLevel)
+        $grade = null;
+        if($advisorySection){
+            $gradeLevel = $advisorySection->gradeLevel;
+            $section = $advisorySection->sectionName;
+            $grade = Grade::where('gradeLevel', $gradeLevel)
                 ->where('section', $section)
                 ->get();
+        }else{
+            $subject = $handleSubjects->subjectTitle;
+            $grade = Grade::whereRaw("FIND_IN_SET(?, REPLACE(subject, ' ', ''))", [$subject])
+                      ->get();
+        }
         $gradeStudentsIds = $grade->pluck('studentId')->toArray();
-        $studentGrade = Grade::whereIn('studentId', $gradeStudentsIds)->get();
+        $studentGrade = Grade::whereIn('studentId', $gradeStudentsIds)
+                        ->get();
 
-        return view('teacher.grading', compact('images', 'studentGrade', 'students'));
+        return view('teacher.grading', compact('images', 'studentGrade', 'students', 'grade'));
     }
 
 

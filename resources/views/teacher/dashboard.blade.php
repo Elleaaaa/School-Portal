@@ -46,7 +46,7 @@
                         <div class="col-sm-12">
                             <h3 class="page-title">Welcome {{ $teacher->firstName }}</h3>
                             <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                                <li class="breadcrumb-item"><strong>Dashboard</strong></li>
                                 <li class="breadcrumb-item active">Teacher Dashboard</li>
                             </ul>
                         </div>

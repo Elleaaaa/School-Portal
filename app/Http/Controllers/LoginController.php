@@ -42,7 +42,12 @@ class LoginController extends Controller
                     return redirect()->intended(route('teacher-dashboard.show', ['teacherId' => $user->studentId]));
                     break;
                 default:
+                if ($user->completeProfile == True) {
                     return redirect()->route('student-dashboard.show', ['studentId' => $user->studentId]);
+                }
+                else
+                    notify()->warning('Please Complete your Details First!');
+                    return redirect()->route('profile-details.show', ['studentId' => $user->studentId]);
             }
         }
 

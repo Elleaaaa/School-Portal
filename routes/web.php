@@ -42,6 +42,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/student-dashboard/{studentId}', [StudentController::class, 'showDashboard'])->name('student-dashboard.show');
     Route::get('/student-subjectlist/{studentId}', [StudentController::class, 'showSubjectList'])->name('student-subjectlist.show');
 
+    Route::get('/student-grades/{studentId}', [StudentController::class, 'showGrades'])->name('student-grades.show');
+
     // update personal details for students
     Route::post('/profile-details/{id}', [StudentController::class, 'update'])->name('profile-details.update');
 

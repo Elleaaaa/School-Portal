@@ -44,7 +44,7 @@
                                                 <th>Name</th>
                                                 <th>Age</th>
                                                 <th>DOB</th>
-                                                <th>Religion</th>
+                                                <th>Section</th>
                                                 <th>Mobile Number</th>
                                                 {{-- <th class="text-right">Action</th> --}}
                                             </tr>

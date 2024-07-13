@@ -317,6 +317,11 @@
                                 <i class="fas fa-book-reader"></i><span>Subject</span>
                             </a>
                         </li>
+                        <li>
+                            <a href="{{ route('student-grades.show', ['studentId' => Auth::user()->studentId]) }}">
+                                <i class="fas fa-book-reader"></i><span>Grades</span>
+                            </a>
+                        </li>
                             <li>
                             <a href="{{ route('schedule.show') }}"><i class="fas fa-comment-dollar"></i>
                                 <span>Schedule</span>

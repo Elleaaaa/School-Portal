@@ -47,7 +47,7 @@
                         <div class="card card-table">
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table id="gradeTable" class="table table-striped">
+                                    <table id="gradeTable" class="table is-striped" style="width:100%">
                                         <thead>
                                             <tr>
                                                 <th class="text-left" hidden>ID</th>
@@ -63,7 +63,8 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($students as $student)
-                                                @foreach ($studentGrade->where('studentId', $student->studentId) as $grade)
+                                                {{-- @foreach ($studentGrade->where('studentId', $student->studentId) as $grade) --}}
+                                                @foreach ($grade->where('studentId', $student->studentId) as $grade)
                                                     <tr>
                                                         <td class="text-left" hidden>
                                                             {{ $grade->id }}
@@ -88,19 +89,19 @@
                                                             @csrf
                                                             <td>
                                                                 {{ $grade->firstQGrade }}
-                                                                <input type="number" id="update_firstQGrade" name="firstQGrade" style="width: 80px" hidden>
+                                                                <input type="number" id="update_firstQGrade" name="firstQGrade" style="width: 80px; background-color: lightgray" hidden>
                                                             </td>
                                                             <td>
                                                                 {{ $grade->secondQGrade }}
-                                                                <input type="number" id="update_secondQGrade" name="secondQGrade" style="width: 80px" hidden>
+                                                                <input type="number" id="update_secondQGrade" name="secondQGrade" style="width: 80px; background-color: lightgray" hidden>
                                                             </td>
                                                             <td>
                                                                 {{ $grade->thirdQGrade }}
-                                                                <input type="number" id="update_thirdQGrade" name="thirdQGrade" style="width: 80px" hidden>
+                                                                <input type="number" id="update_thirdQGrade" name="thirdQGrade" style="width: 80px; background-color: lightgray" hidden>
                                                             </td>
                                                             <td>
                                                                 {{ $grade->fourthQGrade }}
-                                                                <input type="number" id="update_fourthQGrade" name="fourthQGrade" style="width: 80px" hidden>
+                                                                <input type="number" id="update_fourthQGrade" name="fourthQGrade" style="width: 80px; background-color: lightgray" hidden>
                                                             </td>
                                                             <td class="text-right">
                                                                 <div class="actions">
@@ -130,14 +131,15 @@
 
     <script>
        new DataTable('#gradeTable', {
+        lengthMenu: [5, 10, 25, 50, 100, { label: 'All', value: -1 }],
         layout: {
         top1Start: {
             buttons: [
                 {
-                    extend: 'print',
-                    split: ['pdf', 'excel', 'csv', 'copy'],
+                    text: 'Export As',
+                    split: ['pdf', 'excel', 'csv', 'copy', 'print',],
                 }
-            ]
+            ],
         }
     }
     });

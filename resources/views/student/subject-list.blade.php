@@ -71,12 +71,5 @@
       </div>
 
       <script src="{{ asset('plugins/datatables/datatables.min.js') }}"></script>
-      <script>
-        $(document).ready(function() {
-            $('.datatable').DataTable({
-                "pageLength": 10
-            });
-        });
-    </script>
    </body>
    </html>
