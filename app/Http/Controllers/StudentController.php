@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use App\Mail\WelcomeEmail;
+use Illuminate\Support\Facades\Mail;
 
 class StudentController extends Controller
 {
@@ -118,6 +120,17 @@ class StudentController extends Controller
             notify()->error('Passwords do not match!');
             return redirect()->route('addstudent.show');
         }
+
+        //send email to the student
+        if ($validatedData['email'])
+        {
+            $toEmail = $validatedData['email'];
+            $message = 'Student ID: '. $validatedData['studentId']. ' Password: '. $validatedData['password'];
+            $subject = 'School Portal Login Details';
+
+            Mail::to($toEmail)->send(new WelcomeEmail($message, $subject));
+        }
+
 
         notify()->success('Student Added Successfully!');
         return redirect()->route('addstudent.show');

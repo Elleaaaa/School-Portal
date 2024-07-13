@@ -15,6 +15,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Mail\WelcomeEmail;
+use Illuminate\Support\Facades\Mail;
 
 class TeacherController extends Controller
 {
@@ -88,6 +90,16 @@ class TeacherController extends Controller
         } else {
             notify()->error('Passwords do not match!');
             return redirect()->route('addteacher.show');
+        }
+
+        //send email to the teacher
+        if ($validatedData['email'])
+        {
+            $toEmail = $validatedData['email'];
+            $message = 'Your ID: '. $validatedData['teacherId']. ' Your Password: '. $validatedData['password'];
+            $subject = 'School Portal Login Details';
+
+            Mail::to($toEmail)->send(new WelcomeEmail($message, $subject));
         }
 
         notify()->success('Teacher Added Successfully!');

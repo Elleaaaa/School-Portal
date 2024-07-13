@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\EmailController;
 use App\Http\Controllers\EnrolleesController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\FeeController;
@@ -140,7 +141,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/update-event/{id}', [EventController::class, 'update'])->name('events.update');
     Route::get('/get-events', [EventController::class, 'getEvents'])->name('events.get');
     Route::post('/add-event', [EventController::class, 'store'])->name('events.store');
-
 
 });
 
