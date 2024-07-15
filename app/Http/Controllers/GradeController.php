@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Imports\GradesImport;
 use App\Models\Grade;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class GradeController extends Controller
 {
@@ -50,17 +51,22 @@ class GradeController extends Controller
 
     public function importGrade(Request $request)
     {
-
         $request->validate([
             'gradeImport' => 'required|mimes:xlsx,csv,txt',
         ]);
         
         $file = $request->file('gradeImport');
-        (new GradesImport)->import($file);
-
-        notify()->success('Grades Imported Successfully!');
+        
+        try {
+            (new GradesImport)->import($file);
+            notify()->success('Grades Imported Successfully!');
+        } catch (ValidationException $e) {
+            return back()->withErrors($e->errors());
+        }
+        
         return back();
     }
+
 
     /**
      * Update the specified resource in storage.
