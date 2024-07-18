@@ -21,10 +21,10 @@
                <div class="page-header">
                   <div class="row align-items-center">
                      <div class="col">
-                        <h3 class="page-title">Subjects</h3>
+                        <h3 class="page-title">Notifications</h3>
                         <ul class="breadcrumb">
                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                           <li class="breadcrumb-item active">Subjects</li>
+                           <li class="breadcrumb-item active">Notifications</li>
                         </ul>
                      </div>
                      {{-- <div class="col-auto text-right float-right ml-auto">
@@ -38,30 +38,20 @@
                      <div class="card card-table">
                         <div class="card-body">
                            <div class="table-responsive">
-                              <table class="table table-hover table-center mb-0 datatable">
+                              <table id="notifTable" class="table table-hover table-center mb-0 datatable">
                                  <thead>
                                     <tr>
-                                       <th>Subjects</th>
-                                       <th class="text-left">Teacher</th>
+                                       <th>Title</th>
+                                       <th>Message</th>
                                     </tr>
                                  </thead>
                                  <tbody>
-                                    @if($allSubjects)
-                                       @foreach ($allSubjects as $subject)
-                                       <tr>
-                                          <td>{{$subject}}</td>
-                                          <td class="text-left">
-                                             @if ($subjectTeacher)
-                                             {{ $subjectTeacherName }}
-                                             @else
-                                                   No Teacher Assigned
-                                             @endif
-                                          </td>
-                                       </tr>
-                                       @endforeach
-                                       @else
-                                          <td>You're not currently enrolled<td>
-                                    @endif
+                                    @foreach ($notifications as $notification)
+                                    <tr>
+                                       <td>{{$notification->title}}</td>
+                                       <td>{{$notification->message}}</td>
+                                    </tr>
+                                    @endforeach
                                  </tbody>
                               </table>
                            </div>
@@ -75,5 +65,20 @@
       </div>
 
       <script src="{{ asset('plugins/datatables/datatables.min.js') }}"></script>
+      <script>
+        new DataTable('#notifTable', {
+        lengthMenu: [5, 10, 25, 50, 100, { label: 'All', value: -1 }],
+         layout: {
+         top1Start: {
+            //  buttons: [
+            //      {
+            //          text: 'Export As',
+            //          split: ['pdf', 'excel', 'csv', 'copy', 'print',],
+            //      }
+            //  ],
+         }
+     }
+     });
+     </script>
    </body>
    </html>

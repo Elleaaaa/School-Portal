@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <title>Smartious - Add Fees</title>
+    <title>Add Fees</title>
 
     <link rel="shortcut icon" href="assets/img/favicon.png">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;1,400&amp;display=swap">
@@ -97,31 +97,31 @@
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label>Fees Amount</label>
-                                                <input type="number" class="form-control" name="amount" id="amount" readonly>
+                                                <input type="number" class="form-control" name="amount" id="amount" required>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label>Amount Paid</label>
-                                                <input type="number" class="form-control" name="amountPaid" id="amountPaid">
+                                                <input type="number" class="form-control" name="amountPaid" id="amountPaid" required>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label>Discount</label>
-                                                <input type="number" class="form-control" name="discount" id="discount" placeholder="input 20 if 20%">
+                                                <input type="number" class="form-control" name="discount" id="discount" placeholder="input 20 if 20%" required>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label>Discount Amount</label>
-                                                <input type="number" class="form-control" name="discountAmount" id="discountAmount" readonly>
+                                                <input type="number" class="form-control" name="discountAmount" id="discountAmount" required>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label>Discounted Price</label>
-                                                <input type="number" class="form-control" name="discountedPrice" id="discountedPrice" readonly>
+                                                <input type="number" class="form-control" name="discountedPrice" id="discountedPrice" required>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6">
@@ -271,7 +271,7 @@
     }
     </script>
 
-    
+    <script src="{{ asset('js/myjs/preventInput.js') }}"></script>
 
 </body>
 

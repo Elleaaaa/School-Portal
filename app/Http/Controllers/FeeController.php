@@ -6,6 +6,7 @@ use App\Models\Admin;
 use App\Models\Fee;
 use App\Models\FeeList;
 use App\Models\Student;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
@@ -133,6 +134,14 @@ class FeeController extends Controller
         $fee->status = $status;
         $fee->amountLeft = $amountLeft;
         $fee->save();
+
+        $notif = new Notification();
+        $notif->userId = $request->input('studentId');
+        $notif->title = "Payment Successful!";
+        $notif->message = "You paid an Amount of ". $amountPaid. " Your Remaining Balance is ". $amountLeft. " recieved by: ". $request->input('reciever');
+        $notif->type = "tuition payment";
+        $notif->userRole = "student";
+        $notif->save();
 
         notify()->success('Paid Successfully!');
         return redirect()->route('addfees.show');

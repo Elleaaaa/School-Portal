@@ -34,17 +34,25 @@ class CalendarController extends Controller
     {
         $student = auth()->user();
         $studentId = $student->studentId;
-    
-        // get the section of the student
-        $section = Enrollee::where('studentId', $studentId)->firstOrFail()->section;
-    
-        // get the schedule of the section of the student
-        $lessons = Lesson::where('sectionId', $section)->get();
-    
-        $weekDays = Lesson::DAYS;
-        // Organize lessons into calendar data format using CalendarService
-        $calendarData = $calendarService->generateCalendarDataFiltered($weekDays, $lessons);
-    
+        $enrolled = Enrollee::where('studentId', $studentId)
+                            ->where('status', 'Enrolled')
+                            ->get();
+        $calendarData = null;
+        $weekDays = Lesson::DAYS; // load all weekdays
+        
+        if ($enrolled->isNotEmpty()) { // Check if $enrolled is not empty
+            // get the section of the student
+            $section = Enrollee::where('studentId', $studentId)->first()->section;
+        
+            // get the schedule of the section of the student
+            $lessons = Lesson::where('sectionId', $section)->get();
+        
+            // Organize lessons into calendar data format using CalendarService
+            $calendarData = $calendarService->generateCalendarDataFiltered($weekDays, $lessons);
+        
+            return view('student.schedule', compact('weekDays', 'calendarData'));
+        }
+        
         return view('student.schedule', compact('weekDays', 'calendarData'));
     }
 

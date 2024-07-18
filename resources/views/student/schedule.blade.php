@@ -35,24 +35,28 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($calendarData as $timeText => $timeData)
-                                    <tr>
-                                        <td>{{ $timeText }}</td>
-                                        @foreach($timeData as $value)
-                                            @if(is_array($value))
-                                                <td class="align-middle text-center" style="background-color:#f0f0f0" rowspan="{{ $value['rowspan'] }}">
-                                                    {{ $value['class_name'] }}<br>
-                                                    {{ $value['teacher_name'] }}<br>
-                                                    (ROOM {{ $value['room'] }})
-                                                </td>
-                                            @elseif($value === 1)
-                                                <td></td>
-                                            @else
-                                                <td class="blocked-cell"></td>
-                                            @endif
-                                        @endforeach
-                                    </tr>
-                                @endforeach
+                                @if($calendarData)
+                                    @foreach($calendarData as $timeText => $timeData)
+                                        <tr>
+                                            <td>{{ $timeText }}</td>
+                                            @foreach($timeData as $value)
+                                                @if(is_array($value))
+                                                    <td class="align-middle text-center" style="background-color:#f0f0f0" rowspan="{{ $value['rowspan'] }}">
+                                                        {{ $value['class_name'] }}<br>
+                                                        {{ $value['teacher_name'] }}<br>
+                                                        (ROOM {{ $value['room'] }})
+                                                    </td>
+                                                @elseif($value === 1)
+                                                    <td></td>
+                                                @else
+                                                    <td class="blocked-cell"></td>
+                                                @endif
+                                            @endforeach
+                                        </tr>
+                                    @endforeach
+                                @else
+                                <tr><td colspan="7">You're not currently enrolled</td></tr>
+                                @endif
                             </tbody>
                         </table>
                         

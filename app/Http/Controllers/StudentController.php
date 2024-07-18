@@ -160,8 +160,9 @@ class StudentController extends Controller
         $student = Student::where('studentId', $studentId)->first();
 
         $subjectCount = Enrollee::where('studentId', $studentId)
-            ->selectRaw("LENGTH(REPLACE(subjects, ' ', '')) - LENGTH(REPLACE(REPLACE(subjects, ' ', ''), ',', '')) + 1 AS subject_count")
-            ->first();
+                                ->where('status', 'Enrolled')
+                                ->selectRaw("LENGTH(REPLACE(subjects, ' ', '')) - LENGTH(REPLACE(REPLACE(subjects, ' ', ''), ',', '')) + 1 AS subject_count")
+                                ->first();
 
         $subjectCount = $subjectCount ? $subjectCount->subject_count : 0;
 
@@ -170,7 +171,15 @@ class StudentController extends Controller
 
     public function showGrades(string $studentId)
     {
-        $grades = Grade::where('studentId', $studentId)->get();
+        $enrolled = Enrollee::where('studentId', $studentId)
+                            ->where('status', 'Enrolled')
+                            ->get();
+        $grades = [];
+
+        if($enrolled->isNotEmpty())
+        {
+            $grades = Grade::where('studentId', $studentId)->get();
+        }
 
         return view('student.grades', compact('grades'));
     }
@@ -178,34 +187,40 @@ class StudentController extends Controller
 
     public function showSubjectList(string $studentId)
     {
-        $subjects = Enrollee::where('studentId', $studentId)->first();
-        $sub = $subjects->subjects;
-        $subjectList = explode(' ', $sub);
+        $subjects = Enrollee::where('studentId', $studentId)
+                            ->where('status', 'Enrolled')
+                            ->first();
         $allSubjects = [];
+        if($subjects)
+        {
+            $sub = $subjects->subjects;
+            $subjectList = explode(' ', $sub);
 
-        foreach ($subjectList as $subject) {
-            // Append each subject to the $allSubjects array
-            $allSubjects[] = str_replace(',', '', ucwords(strtolower($subject))); //make it title format and remove ','
-        }
-
-        $gradeLevel = $subjects->gradeLevel;
-        $section = $subjects->section;
-        $subjectTeacher = Section::where('gradeLevel', $gradeLevel)
-                        ->where('sectionName', $section)
-                        ->first();
-        // Get the teacher's name
-        if ($subjectTeacher) {
-            $teacherId = $subjectTeacher->teacherId;
-            $teacher = Teacher::where('teacherId', $teacherId)->first();
-            if ($teacher) {
-                $subjectTeacherName = $teacher->firstName . ' ' . $teacher->lastName;
-            } else {
-                $subjectTeacherName = 'Teacher not found';
+            foreach ($subjectList as $subject) {
+                // Append each subject to the $allSubjects array
+                $allSubjects[] = str_replace(',', '', ucwords(strtolower($subject))); //make it title format and remove ','
             }
-        } else {
-            $subjectTeacherName = 'Teacher not assigned';
+
+            $gradeLevel = $subjects->gradeLevel;
+            $section = $subjects->section;
+            $subjectTeacher = Section::where('gradeLevel', $gradeLevel)
+                            ->where('sectionName', $section)
+                            ->first();
+            // Get the teacher's name
+            if ($subjectTeacher) {
+                $teacherId = $subjectTeacher->teacherId;
+                $teacher = Teacher::where('teacherId', $teacherId)->first();
+                if ($teacher) {
+                    $subjectTeacherName = $teacher->firstName . ' ' . $teacher->lastName;
+                } else {
+                    $subjectTeacherName = 'Teacher not found';
+                }
+            } else {
+                $subjectTeacherName = 'Teacher not assigned';
+            }
+            return view('student.subject-list', compact('allSubjects', 'subjectTeacher', 'subjectTeacherName'));
         }
-        return view('student.subject-list', compact('allSubjects', 'subjectTeacher', 'subjectTeacherName'));
+        return view('student.subject-list', compact('allSubjects'));
     }
 
     public function showEditStudent( string $id)

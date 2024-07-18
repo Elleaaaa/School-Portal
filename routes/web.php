@@ -10,6 +10,7 @@ use App\Http\Controllers\FeeListController;
 use App\Http\Controllers\GradeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
@@ -142,6 +143,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/get-events', [EventController::class, 'getEvents'])->name('events.get');
     Route::post('/add-event', [EventController::class, 'store'])->name('events.store');
 
+});
+
+//anyone who logged in can access
+Route::middleware('auth')->group(function () {
+    Route::get('/notifications', [NotificationController::class, 'index']);
+    Route::get('/notifications/all', [NotificationController::class, 'displayNotif'])->name('notifications.show');
+    Route::post('/notifications/mark-as-read/{id}', [NotificationController::class, 'markAsRead']);
+    Route::post('/notifications/clear-all', [NotificationController::class, 'clearAll']);
 });
 
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Enrollee;
 use App\Models\Grade;
+use App\Models\Notification;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -72,6 +73,14 @@ class EnrolleesController extends Controller
             $enrollee->schoolYear = $schoolYear;
             $enrollee->status = $request->input('status');
             $enrollee->save();
+
+            $notif = new Notification();
+            $notif->userId = $studentId;
+            $notif->title = "Enrollment Approved!";
+            $notif->message = "Congratulation! your enrollment for school year ". $schoolYear . " has been approved";
+            $notif->type = "enrollment";
+            $notif->userRole = "student";
+            $notif->save();
         }
 
         // create row for each subjects
@@ -115,6 +124,14 @@ class EnrolleesController extends Controller
         $enrollee->classType = $request->input('classType');
         $enrollee->status = $request->input('status');
         $enrollee->save();
+
+        $notif = new Notification();
+        $notif->userId = $request->input('studentId');
+        $notif->title = "Pending Enrollment!";
+        $notif->message = "Wait for Registrar to approved your enrollment";
+        $notif->type = "enrollment";
+        $notif->userRole = "student";
+        $notif->save();
 
         // create row for each subjects
         $subjects = explode(',', $request->input('subjects'));
