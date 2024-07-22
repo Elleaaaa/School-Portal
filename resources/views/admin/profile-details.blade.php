@@ -16,10 +16,10 @@
                 <div class="page-header">
                     <div class="row align-items-center">
                         <div class="col">
-                            <h3 class="page-title">Edit Students</h3>
+                            <h3 class="page-title">Edit Profile</h3>
                             <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="students.html">Students</a></li>
-                                <li class="breadcrumb-item active">Edit Students</li>
+                                <li class="breadcrumb-item"><a href="students.html">Dashboard</a></li>
+                                <li class="breadcrumb-item active">Edit Profile</li>
                             </ul>
                         </div>
                     </div>
@@ -75,7 +75,7 @@
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
-                                                <label>Student Id</label>
+                                                <label>ID</label>
                                                 <input readonly name="studentId" type="text" class="form-control" value="{{ Auth::user()->studentId }}">
                                             </div>
                                         </div>

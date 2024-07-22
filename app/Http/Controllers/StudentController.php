@@ -19,7 +19,10 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use App\Mail\WelcomeEmail;
+use App\Models\Fee;
+use App\Models\FeeList;
 use Illuminate\Support\Facades\Mail;
+use PhpParser\Node\Stmt\Break_;
 
 class StudentController extends Controller
 {
@@ -102,15 +105,15 @@ class StudentController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-         // Create a new user
-         $user = new User();
-         $user->studentId = $validatedData['studentId'];
-         $user->email = $validatedData['email'];
-         $user->password = Hash::make($validatedData['password']);
-         $user->completeProfile = false;
-         $user->usertype = 'student';
+        // Create a new user
+        $user = new User();
+        $user->studentId = $validatedData['studentId'];
+        $user->email = $validatedData['email'];
+        $user->password = Hash::make($validatedData['password']);
+        $user->completeProfile = false;
+        $user->usertype = 'student';
 
-         if($password == $repeatPassword){
+        if ($password == $repeatPassword) {
             $student->save();
             $address->save();
             $guardian->save();
@@ -122,10 +125,9 @@ class StudentController extends Controller
         }
 
         //send email to the student
-        if ($validatedData['email'])
-        {
+        if ($validatedData['email']) {
             $toEmail = $validatedData['email'];
-            $message = 'Student ID: '. $validatedData['studentId']. ' Password: '. $validatedData['password'];
+            $message = 'Student ID: ' . $validatedData['studentId'] . ' Password: ' . $validatedData['password'];
             $subject = 'School Portal Login Details';
 
             Mail::to($toEmail)->send(new WelcomeEmail($message, $subject));
@@ -160,9 +162,9 @@ class StudentController extends Controller
         $student = Student::where('studentId', $studentId)->first();
 
         $subjectCount = Enrollee::where('studentId', $studentId)
-                                ->where('status', 'Enrolled')
-                                ->selectRaw("LENGTH(REPLACE(subjects, ' ', '')) - LENGTH(REPLACE(REPLACE(subjects, ' ', ''), ',', '')) + 1 AS subject_count")
-                                ->first();
+            ->where('status', 'Enrolled')
+            ->selectRaw("LENGTH(REPLACE(subjects, ' ', '')) - LENGTH(REPLACE(REPLACE(subjects, ' ', ''), ',', '')) + 1 AS subject_count")
+            ->first();
 
         $subjectCount = $subjectCount ? $subjectCount->subject_count : 0;
 
@@ -172,12 +174,11 @@ class StudentController extends Controller
     public function showGrades(string $studentId)
     {
         $enrolled = Enrollee::where('studentId', $studentId)
-                            ->where('status', 'Enrolled')
-                            ->get();
+            ->where('status', 'Enrolled')
+            ->get();
         $grades = [];
 
-        if($enrolled->isNotEmpty())
-        {
+        if ($enrolled->isNotEmpty()) {
             $grades = Grade::where('studentId', $studentId)->get();
         }
 
@@ -188,11 +189,10 @@ class StudentController extends Controller
     public function showSubjectList(string $studentId)
     {
         $subjects = Enrollee::where('studentId', $studentId)
-                            ->where('status', 'Enrolled')
-                            ->first();
+            ->where('status', 'Enrolled')
+            ->first();
         $allSubjects = [];
-        if($subjects)
-        {
+        if ($subjects) {
             $sub = $subjects->subjects;
             $subjectList = explode(' ', $sub);
 
@@ -204,8 +204,8 @@ class StudentController extends Controller
             $gradeLevel = $subjects->gradeLevel;
             $section = $subjects->section;
             $subjectTeacher = Section::where('gradeLevel', $gradeLevel)
-                            ->where('sectionName', $section)
-                            ->first();
+                ->where('sectionName', $section)
+                ->first();
             // Get the teacher's name
             if ($subjectTeacher) {
                 $teacherId = $subjectTeacher->teacherId;
@@ -223,7 +223,7 @@ class StudentController extends Controller
         return view('student.subject-list', compact('allSubjects'));
     }
 
-    public function showEditStudent( string $id)
+    public function showEditStudent(string $id)
     {
         $students = Student::find($id);
         $studentId = $students->studentId;
@@ -236,6 +236,102 @@ class StudentController extends Controller
         return view('admin.edit-student', compact('students', 'address', 'guardians', 'lastSchool', 'studentPhoto'));
     }
 
+    public function showInvoice()
+    {
+        $studentId = Auth::user()->studentId;
+        $enrollee = Enrollee::where('studentId', $studentId)
+                            ->first();
+        $classType = $enrollee ? $enrollee->classType : null;
+        $gradeLevel = $enrollee ? $enrollee->gradeLevel : null;
+        
+        $student = Enrollee::where('studentId', $studentId)
+            ->where('classType', $classType)
+            ->first();
+
+            //this is for Special Science Class Invoice
+        if($classType == "Special Science Class")
+        {
+            $monthlyTF = 0;
+            $monthlyCF = 200;
+            $genyoELearning = 200;
+            $energyFee = 200;
+            $wholeYearTF = 0;
+            $newStudent = 0;
+            $miscFee = 1340;
+            $otherSF = 4530;
+            $membershipFee = 200;
+
+            switch($gradeLevel){
+                case "Grade 7":
+                    $monthlyTF = 924;
+                    $wholeYearTF = 15240;
+                    $newStudent = 100;
+                    break;
+                case "Grade 8":
+                    $monthlyTF = 936;
+                    $wholeYearTF = 15360;
+                    break;
+                case "Grade 9":
+                    $monthlyTF = 942;
+                    $wholeYearTF = 15420;
+                    break;
+                case "Grade 10":
+                    $monthlyTF = 947;
+                    $wholeYearTF = 15470;
+                    break;
+            }
+
+            $tuitionFee = FeeList::where('feeName', "Tuition Fee")
+                ->where('classType', "Special Science Class")
+                ->where('gradeLevel', $student->gradeLevel)
+                ->first();
+
+            $feeHistory = Fee::where('studentId', $studentId)->get();
+            $totalAmountPaid = Fee::where('studentId', $studentId)->sum('amountPaid');
+        }
+        elseif($classType == "Regular Class")
+        {   
+            //this is for Regular Class Invoice
+            $monthlyTF = 0;
+            $monthlyCF = 175;
+            $genyoELearning = 200;
+            $energyFee = 200;
+            $wholeYearTF = 0;
+            $newStudent = 0;
+            $miscFee = 1340;
+            $otherSF = 4230;
+            $membershipFee = 200;
+
+            switch($gradeLevel) {
+                case "Grade 7":
+                    $monthlyTF = 882;
+                    $wholeYearTF = 14570;
+                    $newStudent = 100;
+                    break;
+                case "Grade 8":
+                    $monthlyTF = 893;
+                    $wholeYearTF = 14680;
+                    break;
+                case "Grade 9":
+                    $monthlyTF = 899;
+                    $wholeYearTF = 14740;
+                    break;
+                case "Grade 10":
+                    $monthlyTF = 904;
+                    $wholeYearTF = 14790;
+                    break;
+            }
+
+            $tuitionFee = FeeList::where('feeName', "Tuition Fee")
+                ->where('classType', "Regular Class")
+                ->where('gradeLevel', $student->gradeLevel)
+                ->first();
+
+            $feeHistory = Fee::where('studentId', $studentId)->get();
+            $totalAmountPaid = Fee::where('studentId', $studentId)->sum('amountPaid');
+        }
+        return view('student.invoice', compact('tuitionFee', 'feeHistory', 'totalAmountPaid','monthlyTF','monthlyCF', 'genyoELearning', 'energyFee', 'wholeYearTF', 'newStudent', 'miscFee', 'otherSF', 'membershipFee'));
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -323,62 +419,62 @@ class StudentController extends Controller
 
     public function updateAdmin(Request $request, string $id)
     {
-         // Add New Student
-         // $student = new Student();
+        // Add New Student
+        // $student = new Student();
 
-         // Update Student
-         $student = Student::find($id);
-         $studentId = $student->studentId;
+        // Update Student
+        $student = Student::find($id);
+        $studentId = $student->studentId;
         //  dd($teacher);
 
-         $student->firstName = $request->input('firstName');
-         $student->middleName = $request->input('middleName');
-         $student->lastName = $request->input('lastName');
-         $student->suffix = $request->input('suffixName');
-         $student->gender = $request->input('gender');
-         $student->birthday = $request->input('birthday');
-         $student->age = $request->input('age');
-         $student->mobileNumber = $request->input('mobileNumber');
-         $student->landlineNumber = $request->input('landlineNumber');
-         $student->religion = $request->input('religion');
-         $student->placeOfBirth = $request->input('birthplace');
-         $student->save();
+        $student->firstName = $request->input('firstName');
+        $student->middleName = $request->input('middleName');
+        $student->lastName = $request->input('lastName');
+        $student->suffix = $request->input('suffixName');
+        $student->gender = $request->input('gender');
+        $student->birthday = $request->input('birthday');
+        $student->age = $request->input('age');
+        $student->mobileNumber = $request->input('mobileNumber');
+        $student->landlineNumber = $request->input('landlineNumber');
+        $student->religion = $request->input('religion');
+        $student->placeOfBirth = $request->input('birthplace');
+        $student->save();
 
-         // Update Address
-         $address = Address::where('studentId', $studentId)->first();
-         $address->region = $request->input('region');
-         $address->province = $request->input('province');
-         $address->city = $request->input('city');
-         $address->baranggay = $request->input('barangay');
-         $address->address = $request->input('address');
-         $address->save();
+        // Update Address
+        $address = Address::where('studentId', $studentId)->first();
+        $address->region = $request->input('region');
+        $address->province = $request->input('province');
+        $address->city = $request->input('city');
+        $address->baranggay = $request->input('barangay');
+        $address->address = $request->input('address');
+        $address->save();
 
-         // Update Guardian
-         $guardian = Guardian::where('studentId', $studentId)->first();
-         $guardian->mothersFirstName = $request->input('mothersFirstName');
-         $guardian->mothersLastName = $request->input('mothersLastName');
-         $guardian->motherAge = $request->input('motherAge');
-         $guardian->motherOccupation = $request->input('motherOccupation');
-         $guardian->motherContact = $request->input('motherContact');
-         $guardian->motherAddress = $request->input('motherAddress');
- 
-         $guardian->fathersFirstName = $request->input('fathersFirstName');
-         $guardian->fathersLastName = $request->input('fathersLastName');
-         $guardian->fathersSuffix = $request->input('fathersSuffix');
-         $guardian->fatherAge = $request->input('fatherAge');
-         $guardian->fatherOccupation = $request->input('fatherOccupation');
-         $guardian->fatherContact = $request->input('fatherContact');
-         $guardian->fatherAddress = $request->input('fatherAddress');
-         $guardian->save();
- 
-         // Update School Attended
-         $lastSchool = LastSchool::where('studentId', $studentId)->first();
-         $lastSchool->school = $request->input('lastSchool');
-         $lastSchool->genAverage = $request->input('lastSchoolAverage');
-         $lastSchool->save();
-         
-         notify()->success('Student Record Updated Successfully!');
-         return redirect()->route('edit-student.show', ['id' => $id]);
+        // Update Guardian
+        $guardian = Guardian::where('studentId', $studentId)->first();
+        $guardian->mothersFirstName = $request->input('mothersFirstName');
+        $guardian->mothersLastName = $request->input('mothersLastName');
+        $guardian->motherAge = $request->input('motherAge');
+        $guardian->motherOccupation = $request->input('motherOccupation');
+        $guardian->motherContact = $request->input('motherContact');
+        $guardian->motherAddress = $request->input('motherAddress');
+
+        $guardian->fathersFirstName = $request->input('fathersFirstName');
+        $guardian->fathersLastName = $request->input('fathersLastName');
+        $guardian->fathersSuffix = $request->input('fathersSuffix');
+        $guardian->fatherAge = $request->input('fatherAge');
+        $guardian->fatherOccupation = $request->input('fatherOccupation');
+        $guardian->fatherContact = $request->input('fatherContact');
+        $guardian->fatherAddress = $request->input('fatherAddress');
+        $guardian->save();
+
+        // Update School Attended
+        $lastSchool = LastSchool::where('studentId', $studentId)->first();
+        $lastSchool->school = $request->input('lastSchool');
+        $lastSchool->genAverage = $request->input('lastSchoolAverage');
+        $lastSchool->save();
+
+        notify()->success('Student Record Updated Successfully!');
+        return redirect()->route('edit-student.show', ['id' => $id]);
     }
 
     /**

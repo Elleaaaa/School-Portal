@@ -15,11 +15,8 @@ use App\Http\Controllers\SectionController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
-use App\Models\Event;
-use App\Models\Fee;
-use App\Models\Teacher;
+
 use Illuminate\Support\Facades\Route;
-use Spatie\FlareClient\View;
 
 Route::get('/login', function () {
     return view('login');
@@ -31,11 +28,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// FOR LOGGING IN
-Route::get('/', [LoginController::class, 'index'])->name('login');
-Route::post('/login1', [LoginController::class, 'login'])->name('login1');
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-
+Route::middleware('guest')->group(function () {
+    // FOR LOGGING IN
+    Route::get('/', [LoginController::class, 'index'])->name('login');
+    Route::post('/login1', [LoginController::class, 'login'])->name('login1');
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+});
 
 
 // STUDENT ROUTES
@@ -55,6 +53,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/enrollment', [EnrolleesController::class, 'selfEnrollment'])->name('selfEnrollment.show');
     Route::post('/selfenroll', [EnrolleesController::class, 'selfenroll'])->name('selfEnroll.store');
+
+    Route::get('/fees/invoice', [StudentController::class, 'showInvoice'])->name('invoice.show');
 });
 
 
@@ -113,6 +113,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/addfees', [FeeController::class, 'index'])->name('addfees.show');
     Route::post('/admin/addfees/add', [FeeController::class, 'store'])->name('addfees.store');
     Route::post('/fetch-student-details', [FeeController::class, 'fetchStudentDetails']);
+
+    Route::post('/fetch-student-grade-level', [FeeController::class, 'fetchStudentGlevel']);
 
     Route::get('/admin/edit-section/{id}', [SectionController::class, 'showEditSection'])->name('edit-section.show');
     Route::post('/admin/edit-section/{id}', [SectionController::class, 'update'])->name('edit-section.update');

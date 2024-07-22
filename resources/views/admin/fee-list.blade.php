@@ -66,6 +66,8 @@
                                     <tr>
                                        <th>ID</th>
                                        <th>Fee Type</th>
+                                       <th>Class Type</th>
+                                       <th>Grade Level</th>
                                        <th>Amount</th>
                                        <th>Status</th>
                                     </tr>
@@ -75,7 +77,9 @@
                                     <tr>
                                        <td>{{$feeList->id}}</td>
                                        <td>{{$feeList->feeName}}</td>
-                                       <td>{{$feeList->amount}}</td>
+                                       <td>{{$feeList->classType}}</td>
+                                       <td>{{$feeList->gradeLevel}}</td>
+                                       <td>{{ number_format(($feeList->amount), 2)}}</td>
                                        <td>
                                           <div class="actions">
                                              <a class="btn btn-sm rounded-circle bg-{{ $feeList->status == 'active' ? 'success' : 'danger' }}"

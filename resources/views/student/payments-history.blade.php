@@ -56,7 +56,7 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($feeHistory as $fHistory)
-                                            <tr>
+                                            <tr data-href="{{ route('invoice.show') }}">
                                                 <td>{{$fHistory->feeId}}</td>
                                                 <td>{{$fHistory->feeType}}</td>
                                                 <td>{{$fHistory->amount}}</td>
@@ -103,6 +103,17 @@
      }
      });
      </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const rows = document.querySelectorAll("tr[data-href]");
+            rows.forEach(row => {
+                row.addEventListener("click", function() {
+                    window.location.href = this.dataset.href;
+                });
+            });
+        });
+    </script>
   
 
 </body>

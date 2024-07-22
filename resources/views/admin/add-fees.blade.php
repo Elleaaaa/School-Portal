@@ -54,8 +54,17 @@
                                                 <input type="text" class="form-control" name="studentId" id="studentId">
                                             </div>
                                         </div>
-                                        <div class="col-12 col-sm-6">
-                                        {{-- for design only --}}
+                                        <div class="col-12 col-sm-3">
+                                            <div class="form-group">
+                                                <label for="gradeLevel">Grade Level</label>
+                                                <input type="text" class="form-control" name="gradeLevel" id="gradeLevel" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-sm-3">
+                                            <div class="form-group">
+                                                <label for="classType">Class Type</label>
+                                                <input type="text" class="form-control" name="classType" id="classType" readonly>
+                                            </div>
                                         </div>
                                        
                                         <div class="col-12 col-sm-4">
@@ -88,7 +97,7 @@
                                                 <select class="form-control" name="feeType">
                                                     <option value="" selected disabled>Select Type</option>
                                                     @foreach($feeLists as $feeList)
-                                                        <option value="{{ $feeList->feeName }}">{{ $feeList->feeName }}</option>
+                                                        <option value="{{ $feeList->feeName }}">{{ $feeList->feeName }} - {{ $feeList->gradeLevel }} - {{ $feeList->classType }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -152,98 +161,6 @@
 
 
     <script>
-        // Auto populate student details when student ID is entered
-        document.addEventListener('DOMContentLoaded', function() {
-            // Get the input field
-            var studentIdInput = document.getElementById('studentId');
-
-            // Add event listener for keypress event
-            studentIdInput.addEventListener('keypress', function(event) {
-                // Check if Enter key was pressed (key code 13)
-                if (event.key === 'Enter') {
-                    // Prevent the default form submission behavior
-                    event.preventDefault();
-                    
-                    // Perform the same action as when the button is clicked
-                    var studentId = studentIdInput.value;
-                    fetchData(studentId);
-                }
-            });
-
-            // Function to fetch student data
-            function fetchData(studentId) {
-                // AJAX request to fetch student data
-                var xhr = new XMLHttpRequest();
-                xhr.open('POST', '/fetch-student-details', true);
-                xhr.setRequestHeader('Content-Type', 'application/json');
-                
-                // Retrieve CSRF token from a meta tag in the HTML
-                var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-                xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
-                
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState === XMLHttpRequest.DONE) {
-                        if (xhr.status === 200) {
-                            var studentDetails = JSON.parse(xhr.responseText);
-                            // Check if student details are found
-                            if (studentDetails && Object.keys(studentDetails).length > 0) {
-                                // Populate the details fields with the received data
-                                document.querySelector('input[name="firstName"]').value = studentDetails.firstName;
-                                document.querySelector('input[name="middleName"]').value = studentDetails.middleName;
-                                document.querySelector('input[name="lastName"]').value = studentDetails.lastName;
-                                document.querySelector('input[name="suffixName"]').value = studentDetails.suffix;
-                            } else {
-                                // Display a message if no student is found
-                                alert('No student found with the provided ID');
-                                // Clear the fields if no student is found
-                                document.querySelector('input[name="firstName"]').value = '';
-                                document.querySelector('input[name="middleName"]').value = '';
-                                document.querySelector('input[name="lastName"]').value = '';
-                                document.querySelector('input[name="suffixName"]').value = '';
-                            }
-                        } else if (xhr.status === 404) {
-                            // Handle the case where the student is not found
-                            alert('No student found with the provided ID');
-                            // Clear the fields if no student is found
-                            document.querySelector('input[name="firstName"]').value = '';
-                            document.querySelector('input[name="middleName"]').value = '';
-                            document.querySelector('input[name="lastName"]').value = '';
-                            document.querySelector('input[name="suffixName"]').value = '';
-                        } else {
-                            console.error('Error fetching student data');
-                        }
-                    }
-                };
-                xhr.send(JSON.stringify({ studentId: studentId }));
-            }
-        });
-        // Auto populate student details when student ID is entered
-
-        // calculate the discount
-        function calculateDiscount() {
-            var originalPrice = parseFloat(document.getElementById('amount').value);
-            var discountPercentage = parseFloat(document.getElementById('discount').value);
-
-            // Calculate discount amount
-            var discountAmount = (originalPrice * discountPercentage) / 100;
-
-            // Calculate discounted price
-            var discountedPrice = originalPrice - discountAmount;
-
-            // Update the input fields with the calculated values
-            document.getElementById('discountAmount').value = discountAmount.toFixed(2);
-            document.getElementById('discountedPrice').value = discountedPrice.toFixed(2);
-        }
-
-        // Attach event listener to recalculate on input change for both original price and discount
-        document.getElementById('amount').addEventListener('input', calculateDiscount);
-        document.getElementById('discount').addEventListener('input', calculateDiscount);
-
-        // Initial calculation when page loads
-        calculateDiscount();
-        // calculate the discount
-
-
         // auto populate the fee amount based on selected fee type
         $(document).ready(function() {
             $('select[name="feeType"]').change(function() {
@@ -259,18 +176,11 @@
             });
         });
         // auto populate the fee amount based on selected fee type
-
-         // Get the status from the session
-    var status = "{{ session('status') }}";
-
-    // Check if the status is success or failure and show the appropriate message
-    if (status === 'success') {
-        alert('Paid Successfully');
-    } else if (status === 'failure') {
-        alert('Payment Failed');
-    }
     </script>
 
+    <script src="{{ asset('js/myjs/populateStudentDetails.js') }}"></script>
+    <script src="{{ asset('js/myjs/fetchGradeLevel.js') }}"></script>
+    <script src="{{ asset('js/myjs/discountCalculator.js') }}"></script>
     <script src="{{ asset('js/myjs/preventInput.js') }}"></script>
 
 </body>

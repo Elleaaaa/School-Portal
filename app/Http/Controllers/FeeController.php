@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\Enrollee;
 use App\Models\Fee;
 use App\Models\FeeList;
 use App\Models\Student;
@@ -47,6 +48,17 @@ class FeeController extends Controller
     public function fetchStudentDetails(Request $request) {
         $studentId = $request->input('studentId');
         $student = Student::where('studentId', $studentId)->first();
+        
+        if ($student) {
+            return response()->json($student);
+        } else {
+            return response()->json(['error' => 'Student not found'], 404);
+        }
+    }
+
+    public function fetchStudentGlevel(Request $request) {
+        $studentId = $request->input('studentId');
+        $student = Enrollee::where('studentId', $studentId)->first();
         
         if ($student) {
             return response()->json($student);
@@ -138,7 +150,7 @@ class FeeController extends Controller
         $notif = new Notification();
         $notif->userId = $request->input('studentId');
         $notif->title = "Payment Successful!";
-        $notif->message = "You paid an Amount of ". $amountPaid. " Your Remaining Balance is ". $amountLeft. " recieved by: ". $request->input('reciever');
+        $notif->message = "You paid an Amount of ". number_format(($amountPaid),2). " Your Remaining Balance is ". number_format(($amountLeft),2). " recieved by: ". $request->input('reciever');
         $notif->type = "tuition payment";
         $notif->userRole = "student";
         $notif->save();
