@@ -7,6 +7,7 @@ use App\Http\Controllers\EnrolleesController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\FeeController;
 use App\Http\Controllers\FeeListController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\GradeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LoginController;
@@ -74,6 +75,15 @@ Route::middleware('auth')->group(function () {
     Route::post('/students/grades/import', [GradeController::class, 'importGrade'])->name('grades.import');
 
     Route::get('/schedule', [CalendarController::class, 'teacherSchedule'])->name('teacherSchedule.show');
+
+    //attendance
+    //subjects
+
+    Route::get('/subjectlist/{teacherId}', [TeacherController::class, 'showSubjectList'])->name('teacher-subjectlist.show');
+    Route::get('/subject-details/{subjectId}', [TeacherController::class, 'showSubDetails'])->name('teacher-subjectdetails.show');
+
+    Route::post('/uploadFile/{id}', [FileController::class, 'store'])->name('uploadFile.store');
+    //add tab that can upload files that are relevant to the subject they have
 });
 
 

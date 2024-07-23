@@ -305,6 +305,10 @@
                             <a href="{{ route('teacherSchedule.show') }}"><i class="fas fa-user-graduate"></i>
                                 <span>My Schedule</span></a>
                         </li>
+                        <li>
+                            <a href="{{ route('teacher-subjectlist.show', ['teacherId' => Auth::user()->studentId]) }}"><i class="fas fa-user-graduate"></i>
+                                <span>My Subjects</span></a>
+                        </li>
                     @endif
                     {{-- <li>
                         <a href="{{ url('holiday.html') }}"><i class="fas fa-holly-berry"></i>

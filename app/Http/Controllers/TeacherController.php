@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Mail\WelcomeEmail;
+use App\Models\File;
 use Illuminate\Support\Facades\Mail;
 
 class TeacherController extends Controller
@@ -212,13 +213,24 @@ class TeacherController extends Controller
         return view('teacher.grading', compact('images', 'studentGrade', 'students', 'grade'));
     }
 
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function showSubjectList(string $teacherId)
     {
-        //
+        $subjects = Subject::where('teacherId', $teacherId)->get();
+        
+        return view('teacher.subjects', compact('subjects'));
+    }
+
+    public function showSubDetails(string $subjectId)
+    {
+        $teacherId = Auth::user()->studentId;
+        $subject = Subject::where('id', $subjectId)
+                    ->where('teacherId', $teacherId)
+                    ->first();
+        $files = File::where('teacherId', $teacherId)
+                    ->where('subjectId', $subjectId)
+                    ->get();
+
+        return view('teacher.subject-details', compact('subject', 'files', 'teacherId', 'subjectId'));
     }
 
     /**
