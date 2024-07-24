@@ -10,9 +10,6 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;1,400&amp;display=swap">
 
-    <link rel="stylesheet" href="{{ asset('plugins/bootstrap/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('plugins/fontawesome/css/fontawesome.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('plugins/fontawesome/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/simple-calendar/simple-calendar.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
@@ -102,6 +99,9 @@
                     </div>
                 </div>
 
+                {{-- ATTENDANCE GRAPH --}}
+                <canvas id="attendanceChart" width="400" height="200"></canvas>
+
 
                 <div class="row">
                     <div class="col-12 col-lg-12 col-xl-12">
@@ -134,6 +134,13 @@
     <script src="{{ asset('plugins/simple-calendar/jquery.simple-calendar.js') }}"></script>
     <script src="{{ asset('js/calander.js') }}"></script>
     <script src="{{ asset('js/circle-progress.min.js') }}"></script>
+
+    {{-- ATTENDANCE GRAPH --}}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ asset('js/myjs/graph/studentAttendanceGraph.js') }}"></script>
+
+
+    
 
 </body>
 

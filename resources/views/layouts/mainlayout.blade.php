@@ -272,6 +272,10 @@
                     <a href="{{ route('paymenthistory.show') }}"><i class="fas fa-comment-dollar"></i>
                         <span>Fees</span></a>
                 </li>
+                <li>
+                    <a href="{{ route('student-attendance.show') }}"><i class="fas fa-comment-dollar"></i>
+                        <span>Attendance</span></a>
+                </li>
                 {{-- @enrolled can be find in AppServiceProvider.php --}}
                 {{-- Enrollment will display if the student is in Enrollee table wether pending/enrolled --}}
                 @enrolled(Auth::user()->studentId) 
@@ -308,6 +312,14 @@
                         <li>
                             <a href="{{ route('teacher-subjectlist.show', ['teacherId' => Auth::user()->studentId]) }}"><i class="fas fa-user-graduate"></i>
                                 <span>My Subjects</span></a>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i class="fas fa-file-invoice-dollar"></i> <span> Attendance</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="{{ route('attendance.index') }}">New Attendance</a></li>
+                                <li><a href="{{ route('view-attendance.show') }}">View Attendance</a></li>
+                            </ul>
                         </li>
                     @endif
                     {{-- <li>

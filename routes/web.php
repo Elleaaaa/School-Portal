@@ -1,23 +1,24 @@
 <?php
 
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\CalendarController;
-use App\Http\Controllers\EmailController;
-use App\Http\Controllers\EnrolleesController;
-use App\Http\Controllers\EventController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FeeController;
-use App\Http\Controllers\FeeListController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\EmailController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\GradeController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\FeeListController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\EnrolleesController;
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\NotificationController;
 
 Route::get('/login', function () {
     return view('login');
@@ -56,6 +57,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/selfenroll', [EnrolleesController::class, 'selfenroll'])->name('selfEnroll.store');
 
     Route::get('/fees/invoice', [StudentController::class, 'showInvoice'])->name('invoice.show');
+
+    Route::get('/student/attendance', [AttendanceController::class, 'showStudentAttendance'])->name('student-attendance.show');
+
+    Route::get('/student-attendance', [AttendanceController::class, 'getAttendance'])->name('attendance.get');
+
+    Route::get('/api/attendance', [AttendanceController::class, 'getAttendanceAJAX']);
 });
 
 
@@ -77,13 +84,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/schedule', [CalendarController::class, 'teacherSchedule'])->name('teacherSchedule.show');
 
     //attendance
-    //subjects
+    Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
+    Route::post('/attendance', [AttendanceController::class, 'store'])->name('attendance.store');
+    Route::get('/view-attendance', [AttendanceController::class, 'showAttendance'])->name('view-attendance.show');
 
     Route::get('/subjectlist/{teacherId}', [TeacherController::class, 'showSubjectList'])->name('teacher-subjectlist.show');
     Route::get('/subject-details/{subjectId}', [TeacherController::class, 'showSubDetails'])->name('teacher-subjectdetails.show');
 
     Route::post('/uploadFile/{id}', [FileController::class, 'store'])->name('uploadFile.store');
-    //add tab that can upload files that are relevant to the subject they have
 });
 
 
