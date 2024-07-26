@@ -22,10 +22,17 @@ class CalendarController extends Controller
         return view('admin.calendar');
     }
 
-    public function schedule(CalendarService $calendarService)
+    public function schedule(Request $request, CalendarService $calendarService)
     {
+        $gradeLevel = $request->input('gradeLevel');
+        $section = $request->input('section');
+
+        $lessons = Lesson::where('gradeLevel', $gradeLevel)
+                        ->where('sectionId', $section)
+                        ->get();
+
         $weekDays = Lesson::DAYS;
-        $calendarData = $calendarService->generateCalendarData($weekDays);
+        $calendarData = $calendarService->generateCalendarData($weekDays, $lessons);
 
         return view('admin.calendar', compact('weekDays', 'calendarData'));
     }

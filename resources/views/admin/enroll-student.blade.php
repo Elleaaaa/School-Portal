@@ -159,43 +159,9 @@
     </div>
 @include('layouts/footer')
 
-    {{-- DISPLAY SECTION DEPENDS ON GRADE LEVEL --}}
-    <script>
-        // Add event listener to grade level select dropdown
-        document.getElementById('gradeLevel').addEventListener('change', function() {
-            var gradeLevel = this.value;
-            
-            // Make AJAX request to fetch sections based on grade level
-            fetch('/fetch-sections?gradeLevel=' + encodeURIComponent(gradeLevel))
-                .then(response => response.json())
-                .then(data => {
-                    // Clear existing options
-                    var sectionSelect = document.getElementById('section');
-                    sectionSelect.innerHTML = '<option value=""></option>';
-                    
-                    // Check if sections are found
-                    if (data.length > 0) {
-                        // Populate the section select dropdown with fetched sections
-                        data.forEach(section => {
-                            var option = document.createElement('option');
-                            option.value = section.sectionName;
-                            option.text = section.sectionName;
-                            sectionSelect.appendChild(option);
-                        });
-                    } else {
-                        // Display "No Section Found" if no sections are found
-                        var option = document.createElement('option');
-                        option.text = 'No Section Found';
-                        sectionSelect.appendChild(option);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching sections:', error);
-                });
-        });
-    </script>
 
-
+    {{-- FETCH SECTION BASED ON GRADE LEVEL --}}
+    <script src="{{ asset('js/myjs/fetchSection.js') }}"></script>
 
     {{-- DISPLAY SUBJECTS DEPENDS ON GRADE LEVEL --}}
     <script src="{{ asset('js/myjs/displaySubjects.js') }}"></script>

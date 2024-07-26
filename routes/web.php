@@ -153,6 +153,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/pending-student-list', [AdminController::class, 'showPendingStudents'])->name('pending-student-list.show');
 
     Route::get('/admin/calendar', [CalendarController::class, 'schedule'])->name('calendar.show');
+    Route::post('/admin/calendar', [CalendarController::class, 'schedule'])->name('calendar.get');
 
     Route::get('/admin/edit-timetable/{id}', [CalendarController::class, 'showEditTimeTable'])->name('edit-timetable.show');
     Route::post('/admin/edit-timetable/{id}', [CalendarController::class, 'editTimeTable'])->name('edit-timetable.update');

@@ -8,12 +8,11 @@ use App\Services\TimeService;
 
 class CalendarService
 {
-    public function generateCalendarData($weekDays)
+    public function generateCalendarData($weekDays, $lessons)
     {
         $calendarData = [];
         $timeRange = (new TimeService)->generateTimeRange(config('app.calendar.start_time'), config('app.calendar.end_time'));
-        $lessons   = Lesson::all();
-
+        
         foreach ($timeRange as $time)
         {
             $timeText = $time['start'] . ' - ' . $time['end'];
