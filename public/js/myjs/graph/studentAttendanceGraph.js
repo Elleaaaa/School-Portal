@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     scales: {
                         x: {
                             ticks: {
-                                autoSkip: false, // Skip some labels to avoid crowding
+                                autoSkip: true, // Skip some labels to avoid crowding
                                 maxRotation: 45, // Rotate labels for better readability
                                 minRotation: 30
                             }

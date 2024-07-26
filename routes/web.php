@@ -19,6 +19,7 @@ use App\Http\Controllers\EnrolleesController;
 
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\SuperAdminController;
 
 Route::get('/login', function () {
     return view('login');
@@ -63,6 +64,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/student-attendance', [AttendanceController::class, 'getAttendance'])->name('attendance.get');
 
     Route::get('/api/attendance', [AttendanceController::class, 'getAttendanceAJAX']);
+    Route::get('/api/payments', [FeeController::class, 'getPaymentsAJAX']);
 });
 
 
@@ -99,6 +101,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/admin-dashboard/studentlist', [AdminController::class, 'showStudentList'])->name('studentlist.show');
     Route::get('/admin-dashboard/teacherlist', [AdminController::class, 'showTeacherList'])->name('teacherlist.show');
+
     Route::get('/admin-dashboard/{studentId}', [AdminController::class, 'showDashboard'])->name('admin-dashboard.show');
 
     Route::get('/profile-admin/{adminId}', [AdminController::class, 'showProfile'])->name('profile-admin.show');
@@ -163,6 +166,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/get-events', [EventController::class, 'getEvents'])->name('events.get');
     Route::post('/add-event', [EventController::class, 'store'])->name('events.store');
 
+});
+
+// SUPERADMIN ROUTES
+Route::middleware('auth')->group(function () {
+    Route::get('/superadmin-dashboard/{supAdminId}', [SuperAdminController::class, 'showDashboard'])->name('supadmin-dashboard.show');
+    Route::get('/profile-superadmin/{supAdminId}', [SuperAdminController::class, 'showProfile'])->name('profile-superadmin.show');
+    Route::post('/profile-superadmin/{supAdminId}', [SuperAdminController::class, 'update'])->name('profile-superadmin.update');
+
+    Route::get('/api/allpayments', [FeeController::class, 'getAllPaymentsAJAX']);
+    Route::get('/api/allattendance', [AttendanceController::class, 'getallAttendanceAJAX']);
 });
 
 //anyone who logged in can access

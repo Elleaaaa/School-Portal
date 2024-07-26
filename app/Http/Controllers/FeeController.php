@@ -67,13 +67,6 @@ class FeeController extends Controller
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     public static function generateFeeId() {
         $timestamp = time();
@@ -158,6 +151,86 @@ class FeeController extends Controller
         notify()->success('Paid Successfully!');
         return redirect()->route('addfees.show');
     }
+
+    public function getPaymentsAJAX()
+    {
+        $studentId = Auth::user()->studentId;
+        $startOfYear = now()->startOfYear()->toDateString();
+        $endOfYear = now()->endOfYear()->toDateString();
+    
+        // Fetch payments data
+        $paymentsData = Fee::where('studentId', $studentId)
+            ->whereBetween('created_at', [$startOfYear, $endOfYear])
+            ->get(['created_at', 'amountPaid', 'amountLeft']);
+    
+        // Group payments by month
+        $monthlyData = $paymentsData->groupBy(function ($payment) {
+            return \Carbon\Carbon::parse($payment->created_at)->format('Y-m'); // Group by year-month
+        })->map(function ($month) {
+            return [
+                'amountPaid' => $month->sum('amountPaid'), // Sum amountsPaid for each month
+                'amountLeft' => $month->sum('amountLeft')  // Sum amountsLeft for each month
+            ];
+        });
+    
+        // Generate month labels for the year
+        $months = [];
+        $amountPaidData = [];
+        $amountLeftData = [];
+        $date = \Carbon\Carbon::parse($startOfYear)->startOfMonth();
+        while ($date->lte($endOfYear)) {
+            $monthKey = $date->format('Y-m');
+            $months[] = $date->format('M Y'); // Label format
+            $amountPaidData[] = $monthlyData->has($monthKey) ? $monthlyData[$monthKey]['amountPaid'] : 0;
+            $amountLeftData[] = $monthlyData->has($monthKey) ? $monthlyData[$monthKey]['amountLeft'] : 0;
+            $date->addMonth();
+        }
+    
+        // Return JSON response
+        return response()->json([
+            'months' => $months,
+            'amountPaid' => $amountPaidData,
+            'amountLeft' => $amountLeftData
+        ]);
+    }
+
+    public function getAllPaymentsAJAX()
+    {
+        $startOfYear = now()->startOfYear()->toDateString();
+        $endOfYear = now()->endOfYear()->toDateString();
+    
+        // Fetch payments data
+        $paymentsData = Fee::whereBetween('created_at', [$startOfYear, $endOfYear])
+            ->get(['created_at', 'amountPaid', 'amountLeft']);
+
+        // Group by year-month and sum amountPaid for each month
+        $monthlyData = $paymentsData->groupBy(function ($payment) {
+            return \Carbon\Carbon::parse($payment->created_at)->format('Y-m'); // Group by year-month
+        })->map(function ($month) {
+            return [
+                'amountPaid' => $month->sum('amountPaid'), // Sum amountsPaid for each month
+            ];
+        });
+
+        // Generate month labels for the year
+        $months = [];
+        $amountPaidData = [];
+        $amountLeftData = [];
+        $date = \Carbon\Carbon::parse($startOfYear)->startOfMonth();
+        while ($date->lte($endOfYear)) {
+            $monthKey = $date->format('Y-m');
+            $months[] = $date->format('M Y'); // Label format
+            $amountPaidData[] = $monthlyData->has($monthKey) ? $monthlyData[$monthKey]['amountPaid'] : 0;
+            $date->addMonth();
+        }
+    
+        // Return JSON response
+        return response()->json([
+            'months' => $months,
+            'amountPaid' => $amountPaidData,
+        ]);
+    }
+
 
     /**
      * Display the specified resource.

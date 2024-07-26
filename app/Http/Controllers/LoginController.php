@@ -35,6 +35,9 @@ class LoginController extends Controller
             // Check user's usertype and redirect accordingly 
             //$studentId in user is the id itself not students ID
             switch ($user->usertype) {
+                case 'superadmin':
+                    return redirect()->intended(route('supadmin-dashboard.show', ['supAdminId' => $user->studentId]));
+                    break;
                 case 'admin':
                     return redirect()->intended(route('admin-dashboard.show', ['studentId' => $user->studentId]));
                     break;

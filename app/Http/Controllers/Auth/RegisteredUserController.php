@@ -7,6 +7,7 @@ use App\Models\Address;
 use App\Models\Admin;
 use App\Models\Guardian;
 use App\Models\Student;
+use App\Models\SuperAdmin;
 use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
@@ -64,16 +65,24 @@ class RegisteredUserController extends Controller
         
             event(new Registered($student));
             event(new Registered($guardian));
-        } elseif ($request->usertype === 'teacher') {
+        } 
+        elseif ($request->usertype === 'teacher') {
             $teacher = Teacher::create([
                 'teacherId'=> $request->id
             ]);
             event(new Registered($teacher));
-        } elseif ($request->usertype === 'admin') {
+        } 
+        elseif ($request->usertype === 'admin') {
             $admin = Admin::create([
                 'adminId'=> $request->id
             ]);
             event(new Registered($admin));
+        } 
+        elseif ($request->usertype === 'superadmin') {
+            $superadmin = SuperAdmin::create([
+                'supAdminId'=> $request->id
+            ]);
+            event(new Registered($superadmin));
         }
         
         event(new Registered($user));

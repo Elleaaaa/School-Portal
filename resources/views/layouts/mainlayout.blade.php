@@ -29,6 +29,15 @@
     <x-notify::notify />
     <div class="header">
         <div class="header-left">
+            @if (Auth::user()->usertype == 'superadmin')
+                <a href="{{ route('supadmin-dashboard.show', ['supAdminId' => Auth::user()->studentId]) }}" class="logo">
+                    <img src="{{ asset('img/logo.png') }}" alt="Logo">
+                </a>
+                <a href="{{ route('admin-dashboard.show', ['studentId' => Auth::user()->studentId]) }}"
+                    class="logo logo-small">
+                    <img src="{{ asset('img/logo.png') }}" alt="Logo" width="30" height="30">
+                </a>
+            @endif
             @if (Auth::user()->usertype == 'admin')
                 <a href="{{ route('admin-dashboard.show', ['studentId' => Auth::user()->studentId]) }}" class="logo">
                     <img src="{{ asset('img/logo.png') }}" alt="Logo">
@@ -127,6 +136,10 @@
                         <a class="dropdown-item"
                             href="{{ route('profile-admin.show', ['adminId' => Auth::user()->studentId]) }}">My
                             Profile</a>
+                    @elseif (Auth::user()->usertype == 'superadmin')
+                        <a class="dropdown-item"
+                            href="{{ route('profile-superadmin.show', ['supAdminId' => Auth::user()->studentId]) }}">My
+                            Profile</a>
                     @endif
                     <form method="POST" action="{{ url('/logout') }}">
                         @csrf
@@ -143,6 +156,34 @@
                     <li class="menu-title">
                         <span>Main Menu</span>
                     </li>
+
+                    {{-- SUPERADMIN/PRINCIPAL SIDEBAR --}}
+                    @if (Auth::user()->usertype == 'superadmin')
+                       <li>
+                           <a href="{{ route('supadmin-dashboard.show', ['supAdminId' => Auth::user()->studentId]) }}"><i
+                                   class="fas fa-user-graduate"></i><span>Dashboard</span></a>
+                       </li>
+                       <li class="submenu">
+                        <a href="#"><i class="fas fa-user-graduate"></i> <span> Enrollment</span> <span
+                                class="menu-arrow"></span></a>
+                        <ul>
+                            <li><a href="{{ route('enrolled-student-list.show') }}">Enrolled Student</a></li>
+                            <li><a href="{{ route('pending-student-list.show') }}">Pending Enrollment</a></li>
+                            {{-- <li><a href="{{ url('edit-student.html') }}">Student Edit</a></li> --}}
+                        </ul>
+                        <li class="submenu">
+                            <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Teachers</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="{{ route('teacherlist.show') }}">Teacher List</a></li>
+                                {{-- <li><a href="{{ url('teacher-details.html') }}">Teacher View</a></li> --}}
+                                <li><a href="{{ route('addteacher.show') }}">Teacher Add</a></li>
+                                {{-- <li><a href="{{ url('edit-teacher.html') }}">Teacher Edit</a></li> --}}
+                            </ul>
+                        </li>
+                    </li>
+                       
+                   @endif
 
                     {{-- ADMIN/REGISTRAR SIDEBAR --}}
                     @if (Auth::user()->usertype == 'admin')
@@ -172,16 +213,6 @@
                                 {{-- <li><a href="{{ url('edit-teacher.html') }}">Teacher Edit</a></li> --}}
                             </ul>
                         </li>
-
-                        {{-- <li class="submenu">
-                            <a href="#"><i class="fas fa-building"></i> <span> Departments</span> <span
-                                    class="menu-arrow"></span></a>
-                            <ul>
-                                <li><a href="{{ url('departments.html') }}">Department List</a></li>
-                                <li><a href="{{ url('add-department.html') }}">Department Add</a></li>
-                                <li><a href="{{ url('edit-department.html') }}">Department Edit</a></li>
-                            </ul>
-                        </li> --}}
 
                         <li class="submenu">
                             <a href="#"><i class="fas fa-book-reader"></i> <span> Subjects</span> <span
@@ -215,7 +246,7 @@
 
                         <li>
                             <a href="{{ route('calendar.show') }}"><i
-                                    class="fas fa-user-graduate"></i><span>Calendar</span></a>
+                                    class="fas fa-user-graduate"></i><span>Schedule</span></a>
                         </li>
 
                         <li class="submenu">

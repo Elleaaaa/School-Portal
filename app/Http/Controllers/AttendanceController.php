@@ -166,6 +166,41 @@ class AttendanceController extends Controller
         return response()->json($attendanceData);
     }
 
+    public function getAllAttendanceAJAX()
+    {
+        // Get the start and end of the current month
+        $startOfMonth = now()->startOfMonth()->toDateString();
+        $endOfMonth = now()->endOfMonth()->toDateString();
+    
+        // Fetch attendance data grouped by date and status
+        $attendanceData = Attendance::whereBetween('date', [$startOfMonth, $endOfMonth])
+            ->selectRaw('date, status, COUNT(*) as count')
+            ->groupBy('date', 'status')
+            ->get()
+            ->mapToGroups(function ($item) {
+                return [$item->date => ['status' => $item->status, 'count' => $item->count]];
+            })
+            ->map(function ($group) {
+                return [
+                    'present' => $group->where('status', 1)->sum('count'),
+                    'absent' => $group->where('status', 0)->sum('count')
+                ];
+            });
+    
+        // Prepare data for response
+        $result = $attendanceData->map(function ($counts, $date) {
+            return [
+                'date' => $date,
+                'present' => $counts['present'] ?? 0,
+                'absent' => $counts['absent'] ?? 0,
+            ];
+        })->values();
+    
+        return response()->json($result);
+    }
+    
+
+
     
     
 

@@ -99,9 +99,24 @@
                     </div>
                 </div>
 
-                {{-- ATTENDANCE GRAPH --}}
-                <canvas id="attendanceChart" width="400" height="200"></canvas>
-
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-sm-6 mb-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Payments</h5>
+                                    <canvas id="paymentsChart" class="w-100" height="200"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-12 col-sm-6 mb-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Attendance</h5>
+                                    <canvas id="attendanceChart" class="w-100" height="200"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                 <div class="row">
                     <div class="col-12 col-lg-12 col-xl-12">
@@ -135,12 +150,13 @@
     <script src="{{ asset('js/calander.js') }}"></script>
     <script src="{{ asset('js/circle-progress.min.js') }}"></script>
 
-    {{-- ATTENDANCE GRAPH --}}
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="{{ asset('js/myjs/graph/studentAttendanceGraph.js') }}"></script>
-
-
     
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    {{-- ATTENDANCE GRAPH --}}
+    <script src="{{ asset('js/myjs/graph/studentAttendanceGraph.js') }}"></script>
+    {{-- PAYMENTS GRAPH --}}
+    <script src="{{ asset('js/myjs/graph/studentPaymentGraph.js') }}"></script>
+
 
 </body>
 

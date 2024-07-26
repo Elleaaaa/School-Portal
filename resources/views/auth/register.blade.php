@@ -27,7 +27,8 @@
         <div class="mt-4">
             <x-input-label for="usertype" :value="__('Usertype')" />
             <select id="usertype" name="usertype" class="block mt-1 w-full" required>
-                <option value="" {{ old('usertype') == 'admin' ? 'selected' : '' }}></option>
+                <option> </option>
+                <option value="superadmin" {{ old('usertype') == 'superadmin' ? 'selected' : '' }}>superadmin</option>
                 <option value="admin" {{ old('usertype') == 'admin' ? 'selected' : '' }}>admin</option>
                 <option value="student" {{ old('usertype') == 'student' ? 'selected' : '' }}>student</option>
                 <option value="teacher" {{ old('usertype') == 'teacher' ? 'selected' : '' }}>teacher</option>
