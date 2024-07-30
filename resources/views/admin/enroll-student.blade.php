@@ -82,7 +82,7 @@
                                                 <input type="text" class="form-control" name="suffixName" readonly>
                                             </div>
                                         </div>
-                                        <div class="col-12 col-sm-12">
+                                        <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label for="gradeLevel">Grade Level</label>
                                                 <select class="form-control" id="gradeLevel" name="gradeLevel" required>
@@ -93,6 +93,14 @@
                                                     <option value="Grade 10">Grade 10</option>
                                                     <option value="Grade 11">Grade 11</option>
                                                     <option value="Grade 12">Grade 12</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-sm-6">
+                                            <div class="form-group">
+                                                <label for="section">Section</label>
+                                                <select class="form-control" id="section" name="section" required>
+                                               {{-- section will be display here --}}
                                                 </select>
                                             </div>
                                         </div>
@@ -118,9 +126,12 @@
                                         </div>
                                         <div class="col-12 col-sm-4">
                                             <div class="form-group">
-                                                <label for="section">Section</label>
-                                                <select class="form-control" id="section" name="section" required>
-                                               {{-- section will be display here --}}
+                                                <label for="strand">Strand</label>
+                                                <select class="form-control" name="strand">
+                                                    <option></option>
+                                                    <option value="STEM">STEM</option>
+                                                    <option value="HUMSS">HUMSS</option>
+                                                    <option value="ABM">ABM</option>
                                                 </select>
                                             </div>
                                         </div>

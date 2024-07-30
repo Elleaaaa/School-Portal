@@ -56,8 +56,13 @@
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
-                                                <label>Subject Code</label>
-                                                <input name="subjectCode" type="text" class="form-control" value="{{$subject->subjectCode}}">
+                                                <label for="section">Section</label>
+                                                <select class="form-control" id="section" name="section" required>
+                                                    <option value=""></option>
+                                                    @foreach($sections as $section)
+                                                        <option value="{{ $section }}" {{ $subject->section === $section ? 'selected' : '' }}>{{ $section }}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6">
@@ -95,24 +100,7 @@
                                                 <input name="teacherId" id="teacherId" type="text" class="form-control" readonly >
                                             </div>
                                         </div>
-                                        {{-- <div class="col-12 col-sm-6">
-                                            <div class="form-group">
-                                                <label>Units</label>
-                                                <input readonly name="totalUnits" id="totalUnits" type="number" class="form-control" value="{{$subject->subjectUnit}}">
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-sm-6">
-                                            <div class="form-group">
-                                                <label>Lecture Unit</label>
-                                                <input name="lectureUnit" id="lectureUnit" type="number" class="form-control" value="{{$subject->subjectLectUnit}}">
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-sm-6">
-                                            <div class="form-group">
-                                                <label>Laboratory Unit</label>
-                                                <input name="labUnit" id="labUnit" type="number" class="form-control" value="{{$subject->subjectLabUnit}}">
-                                            </div>
-                                        </div> --}}
+                           
                                         <div class="col-12">
                                             <button type="submit" class="btn btn-primary">Submit</button>
                                         </div>
@@ -126,28 +114,6 @@
         </div>
 
     </div>
-
-
-    {{-- THIS IS FOR SUBJECT UNITS --}}
-    {{-- <script>
-        // Get references to the input fields
-        const lectureUnitInput = document.getElementById('lectureUnit');
-        const labUnitInput = document.getElementById('labUnit');
-        const totalUnitsInput = document.getElementById('totalUnits');
-    
-        // Function to calculate the total units
-        function calculateTotalUnits() {
-            const lectureUnit = parseInt(lectureUnitInput.value) || 0;
-            const labUnit = parseInt(labUnitInput.value) || 0;
-            const totalUnits = lectureUnit + labUnit;
-            totalUnitsInput.value = totalUnits; //.toFixed(2) Display the total units with 2 decimal places
-        }
-    
-        // Calculate the total units when the lecture or lab unit inputs change
-        lectureUnitInput.addEventListener('input', calculateTotalUnits);
-        labUnitInput.addEventListener('input', calculateTotalUnits);
-    </script> --}}
-
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -173,6 +139,46 @@
         subjectTeacherSelect.addEventListener('change', function() {
             populateTeacherId();
         });
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var gradeLevelSelect = document.getElementById('gradeLevel');
+        var sectionSelect = document.getElementById('section');
+
+        // Function to fetch and populate sections
+        function fetchSections(gradeLevel, selectedSection = null) {
+            sectionSelect.innerHTML = '<option value="">Loading...</option>';
+            fetch('/fetch-sections?gradeLevel=' + encodeURIComponent(gradeLevel))
+                .then(response => response.json())
+                .then(sections => {
+                    sectionSelect.innerHTML = '<option value="">Select Section</option>';
+                    sections.forEach(section => {
+                        var option = document.createElement('option');
+                        option.value = section.sectionName;
+                        option.text = section.sectionName;
+                        if (selectedSection && selectedSection === section.sectionName) {
+                            option.selected = true;
+                        }
+                        sectionSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching sections:', error);
+                    sectionSelect.innerHTML = '<option value="">No Section Available</option>';
+                });
+        }
+
+        // Fetch sections when grade level changes
+        gradeLevelSelect.addEventListener('change', function() {
+            fetchSections(this.value);
+        });
+
+        // Pre-populate sections if editing a subject
+        @if(isset($subject))
+            fetchSections('{{ $subject->gradeLevel }}', '{{ $subject->section }}');
+        @endif
     });
 </script>
 

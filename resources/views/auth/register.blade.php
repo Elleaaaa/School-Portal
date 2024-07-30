@@ -30,6 +30,7 @@
                 <option> </option>
                 <option value="superadmin" {{ old('usertype') == 'superadmin' ? 'selected' : '' }}>superadmin</option>
                 <option value="admin" {{ old('usertype') == 'admin' ? 'selected' : '' }}>admin</option>
+                <option value="cashier" {{ old('usertype') == 'cashier' ? 'selected' : '' }}>cashier</option>
                 <option value="student" {{ old('usertype') == 'student' ? 'selected' : '' }}>student</option>
                 <option value="teacher" {{ old('usertype') == 'teacher' ? 'selected' : '' }}>teacher</option>
             </select>

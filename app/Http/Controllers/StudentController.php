@@ -21,6 +21,7 @@ use Illuminate\Validation\Rules;
 use App\Mail\WelcomeEmail;
 use App\Models\Fee;
 use App\Models\FeeList;
+use App\Models\Subject;
 use Illuminate\Support\Facades\Mail;
 use PhpParser\Node\Stmt\Break_;
 
@@ -187,41 +188,51 @@ class StudentController extends Controller
 
 
     public function showSubjectList(string $studentId)
-    {
-        $subjects = Enrollee::where('studentId', $studentId)
-            ->where('status', 'Enrolled')
-            ->first();
-        $allSubjects = [];
-        if ($subjects) {
-            $sub = $subjects->subjects;
-            $subjectList = explode(' ', $sub);
-
-            foreach ($subjectList as $subject) {
-                // Append each subject to the $allSubjects array
-                $allSubjects[] = str_replace(',', '', ucwords(strtolower($subject))); //make it title format and remove ','
-            }
-
-            $gradeLevel = $subjects->gradeLevel;
-            $section = $subjects->section;
-            $subjectTeacher = Section::where('gradeLevel', $gradeLevel)
-                ->where('sectionName', $section)
+{
+    $enrollee = Enrollee::where('studentId', $studentId)
+        ->where('status', 'Enrolled')
+        ->first();
+    $allSubjects = [];
+    $subjectTeachers = [];
+    
+    if ($enrollee) {
+        $subjects = $enrollee->subjects;
+        $subjectList = explode(' ', $subjects);
+    
+        foreach ($subjectList as $subject) {
+            // Format the subject name
+            $formattedSubject = str_replace(',', '', ucwords(strtolower($subject)));
+            $allSubjects[] = $formattedSubject;
+    
+            $gradeLevel = $enrollee->gradeLevel;
+            $section = $enrollee->section;
+    
+            // Find the subject in the Subject table
+            $subjectTeacher = Subject::where('gradeLevel', $gradeLevel)
+                ->where('section', $section)
+                ->where('subjectTitle', $formattedSubject)
                 ->first();
-            // Get the teacher's name
+    
             if ($subjectTeacher) {
                 $teacherId = $subjectTeacher->teacherId;
                 $teacher = Teacher::where('teacherId', $teacherId)->first();
                 if ($teacher) {
-                    $subjectTeacherName = $teacher->firstName . ' ' . $teacher->lastName;
+                    $subjectTeachers[$formattedSubject] = $teacher->firstName . ' ' . $teacher->lastName;
                 } else {
-                    $subjectTeacherName = 'Teacher not found';
+                    $subjectTeachers[$formattedSubject] = 'Teacher not found';
                 }
             } else {
-                $subjectTeacherName = 'Teacher not assigned';
+                $subjectTeachers[$formattedSubject] = 'Teacher not assigned';
             }
-            return view('student.subject-list', compact('allSubjects', 'subjectTeacher', 'subjectTeacherName'));
         }
-        return view('student.subject-list', compact('allSubjects'));
+    
+        return view('student.subject-list', compact('allSubjects', 'subjectTeachers'));
     }
+    
+    return view('student.subject-list', compact('allSubjects'));
+}
+
+    
 
     public function showEditStudent(string $id)
     {

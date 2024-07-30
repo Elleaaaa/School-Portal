@@ -15,6 +15,7 @@ class Enrollee extends Model
         'subjects',
         'gradeLevel',
         'section',
+        'strand',
         'semester',
         'classType',
         'schoolYear',

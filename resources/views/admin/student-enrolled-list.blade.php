@@ -40,7 +40,8 @@
                                        <th>Student ID</th>
                                        <th>Name</th>
                                        <th>Subjects</th>
-                                       <th>Grade Level </th>
+                                       <th>Grade Level</th>
+                                       <th>Strand</th>
                                        <th>Section</th>
                                        <th class="text-right">Action</th>
                                     </tr>
@@ -52,6 +53,7 @@
                                        <td>{{$enrollee->name}}</td>
                                        <td>{{$enrollee->subjects}}</td>
                                        <td>{{$enrollee->gradeLevel}}
+                                       <td>{{$enrollee->strand}}
                                        <td>{{$enrollee->section}}</td>
                                        <td class="text-right">
                                           <div class="actions">

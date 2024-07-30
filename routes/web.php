@@ -18,6 +18,7 @@ use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\EnrolleesController;
 
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\CashierController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\SuperAdminController;
 
@@ -80,6 +81,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/mystudents', [TeacherController::class, 'showStudents'])->name('students.show');
 
     Route::get('/students/grades', [TeacherController::class, 'showStudentsGrade'])->name('studentsgrade.show');
+    Route::get('/students-grades/section', [TeacherController::class, 'showHandleSections'])->name('handleSections.show');
+
+    Route::get('/students-grades/{gradeLevel}/{section}', [TeacherController::class, 'showStudentsGradeBySection'])->name('studentgradebysection.show');
+
     Route::post('/students/grades/update/{id}', [GradeController::class, 'update'])->name('studentsgrade.update');
     Route::post('/students/grades/import', [GradeController::class, 'importGrade'])->name('grades.import');
 
@@ -116,10 +121,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/fetch-subjects', [SubjectController::class, 'fetchSubjects'])->name('subject.show');
 
-    Route::get('/admin/viewfees', [FeeListController::class, 'index'])->name('paymentList.show');
-    Route::post('/admin/addfeelist', [FeeListController::class, 'store'])->name('addfeelist.store');
-    Route::post('/toggle-status/{id}', [FeeListController::class, 'toggleStatus']);
-
     Route::get('/admin/edit-student/{id}', [StudentController::class, 'showEditStudent'])->name('edit-student.show');
     Route::post('/admin/edit-student/{id}', [StudentController::class, 'updateAdmin'])->name('edit-student.update');
     Route::get('/admin/addstudent', [StudentController::class, 'index'])->name('addstudent.show');
@@ -130,9 +131,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/addteacher', [TeacherController::class, 'index'])->name('addteacher.show');
     Route::post('/admin/addteacher', [TeacherController::class, 'store'])->name('addteacher.store');
 
-    Route::get('/payments/admin/history', [FeeController::class, 'paymentHistoryAdmin'])->name('paymenthistoryadmin.show');
-    Route::get('/admin/addfees', [FeeController::class, 'index'])->name('addfees.show');
-    Route::post('/admin/addfees/add', [FeeController::class, 'store'])->name('addfees.store');
     Route::post('/fetch-student-details', [FeeController::class, 'fetchStudentDetails']);
 
     Route::post('/fetch-student-grade-level', [FeeController::class, 'fetchStudentGlevel']);
@@ -177,6 +175,21 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/api/allpayments', [FeeController::class, 'getAllPaymentsAJAX']);
     Route::get('/api/allattendance', [AttendanceController::class, 'getallAttendanceAJAX']);
+});
+
+// CASHIER ROUTES
+Route::middleware('auth')->group(function () {
+    Route::get('/cashier-dashboard/{cashierId}', [CashierController::class, 'showDashboard'])->name('cashier-dashboard.show');
+    Route::get('/profile-cashier/{cashierId}', [CashierController::class, 'showProfile'])->name('profile-cashier.show');
+    Route::post('/profile-cashier/{cashierId}', [CashierController::class, 'update'])->name('profile-cashier.update');
+
+    Route::get('/payments/admin/history', [FeeController::class, 'paymentHistoryAdmin'])->name('paymenthistoryadmin.show');
+    Route::get('/admin/addfees', [FeeController::class, 'index'])->name('addfees.show');
+    Route::post('/admin/addfees/add', [FeeController::class, 'store'])->name('addfees.store');
+
+    Route::get('/admin/viewfees', [FeeListController::class, 'index'])->name('paymentList.show');
+    Route::post('/admin/addfeelist', [FeeListController::class, 'store'])->name('addfeelist.store');
+    Route::post('/toggle-status/{id}', [FeeListController::class, 'toggleStatus']);
 });
 
 //anyone who logged in can access

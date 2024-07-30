@@ -68,9 +68,9 @@
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
-                                                <label for="sectionTeacher">Section Teacher</label>
+                                                <label for="sectionTeacher">Section Adviser</label>
                                                 <select name="sectionTeacher" id="subjectTeacher" class="form-control">
-                                                    <option value="" selected disabled>Select Subject Teacher</option>
+                                                    <option value="" selected disabled>Select Teacher</option>
                                                     @foreach($teachers as $teacher)
                                                         <option value="{{ $teacher->teacherId }}">{{ $teacher->firstName . ' ' . $teacher->lastName }}</option>
                                                     @endforeach

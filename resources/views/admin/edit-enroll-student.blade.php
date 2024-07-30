@@ -116,7 +116,17 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        
+                                        <div class="col-12 col-sm-4">
+                                            <div class="form-group">
+                                                <label for="strand">Strand</label>
+                                                <select class="form-control" name="strand">
+                                                    <option></option>
+                                                    <option value="STEM" {{ $enrollees->strand == 'STEM' ? 'selected' : '' }}>STEM</option>
+                                                    <option value="HUMSS" {{ $enrollees->strand == 'HUMSS' ? 'selected' : '' }}>HUMSS</option>
+                                                    <option value="ABM" {{ $enrollees->strand == 'ABM' ? 'selected' : '' }}>ABM</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                         <div class="col-12 col-sm-4">
                                             <div class="form-group">
                                                 <label for="section">Section</label>

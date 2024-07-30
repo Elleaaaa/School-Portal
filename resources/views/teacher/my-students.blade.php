@@ -86,7 +86,7 @@
                                                     <td>
                                                         @foreach ($studentDetails as $studentDetail)
                                                             @if ($studentDetail->studentId == $student->studentId)
-                                                                {{ $studentDetail->religion }}
+                                                                {{ $studentDetail->section }}
                                                             @endif
                                                         @endforeach
                                                     </td>

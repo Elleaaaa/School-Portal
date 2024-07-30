@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Address;
 use App\Models\Admin;
+use App\Models\Cashier;
 use App\Models\Guardian;
 use App\Models\Student;
 use App\Models\SuperAdmin;
@@ -83,6 +84,12 @@ class RegisteredUserController extends Controller
                 'supAdminId'=> $request->id
             ]);
             event(new Registered($superadmin));
+        }
+        elseif ($request->usertype === 'cashier') {
+            $cashier = Cashier::create([
+                'cashierId'=> $request->id
+            ]);
+            event(new Registered($cashier));
         }
         
         event(new Registered($user));

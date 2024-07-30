@@ -41,6 +41,9 @@ class LoginController extends Controller
                 case 'admin':
                     return redirect()->intended(route('admin-dashboard.show', ['studentId' => $user->studentId]));
                     break;
+                case 'cashier':
+                    return redirect()->intended(route('cashier-dashboard.show', ['cashierId' => $user->studentId]));
+                    break;
                 case 'teacher':
                     return redirect()->intended(route('teacher-dashboard.show', ['teacherId' => $user->studentId]));
                     break;

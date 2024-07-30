@@ -66,7 +66,7 @@
                                     </div>
                                     <div class="db-info">
                                         <h3>{{$enrolledCount}}</h3>
-                                        <h6><a href="{{ route('studentlist.show') }}">Students</a></h6>
+                                        <h6><a href="{{ route('studentlist.show') }}">Enrolled Students</a></h6>
                                     </div>
                                 </div>
                             </div>

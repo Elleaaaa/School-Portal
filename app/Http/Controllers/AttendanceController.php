@@ -22,47 +22,49 @@ class AttendanceController extends Controller
         $id = Auth::user()->studentId;
         $advisorySection = Section::where('teacherId', $id)->first();
         $handleSubjects = Subject::where('teacherId', $id)->first();
-        $myStudents = null;
+        $myStudents = collect();
         $section = null;
-        if($advisorySection){
+    
+        if ($advisorySection) {
             $gradeLevel = $advisorySection->gradeLevel;
             $section = $advisorySection->sectionName;
             $myStudents = Enrollee::where('gradeLevel', $gradeLevel)
-                      ->where('section', $section)
-                      ->get();
-        }else
-        {
-            $subject = $handleSubjects->subjectTitle;
+                ->where('section', $section)
+                ->get();
+        } elseif ($handleSubjects) {
+            $subject = $handleSubjects->subject;
             $myStudents = Enrollee::whereRaw("FIND_IN_SET(?, REPLACE(subjects, ' ', ''))", [$subject])
-                      ->get();
+                ->get();
         }
-
+    
         $myStudentsIds = $myStudents->pluck('studentId')->toArray();
         $studentDetails = Student::whereIn('studentId', $myStudentsIds)->get();
         $images = User::all();
+    
         return view('teacher.attendance', compact('myStudents', 'images', 'studentDetails', 'section'));
     }
+    
 
     public function showAttendance()
     {
         $id = Auth::user()->studentId;
         $advisorySection = Section::where('teacherId', $id)->first();
         $handleSubjects = Subject::where('teacherId', $id)->first();
-        $myStudents = null;
+        $myStudents = collect();
         $section = null;
-        if($advisorySection){
+    
+        if ($advisorySection) {
             $gradeLevel = $advisorySection->gradeLevel;
             $section = $advisorySection->sectionName;
             $myStudents = Enrollee::where('gradeLevel', $gradeLevel)
-                      ->where('section', $section)
-                      ->get();
-        }else
-        {
+                ->where('section', $section)
+                ->get();
+        } elseif ($handleSubjects) {
             $subject = $handleSubjects->subjectTitle;
             $myStudents = Enrollee::whereRaw("FIND_IN_SET(?, REPLACE(subjects, ' ', ''))", [$subject])
-                      ->get();
+                ->get();
         }
-
+    
         $myStudentsIds = $myStudents->pluck('studentId')->toArray();
         $attendanceRecords = Attendance::whereIn('studentId', $myStudentsIds)->get();
         
@@ -70,10 +72,11 @@ class AttendanceController extends Controller
             $student->attendance = $attendanceRecords->where('studentId', $student->studentId);
             return $student;
         });
-
+    
         $images = User::all();
         return view('teacher.view-attendance', compact('myStudents', 'images', 'section', 'studentsWithAttendance'));
     }
+    
 
     public function showStudentAttendance(Request $request)
     {

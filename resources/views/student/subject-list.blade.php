@@ -40,30 +40,33 @@
                            <div class="table-responsive">
                               <table class="table table-hover table-center mb-0 datatable">
                                  <thead>
-                                    <tr>
-                                       <th>Subjects</th>
-                                       <th class="text-left">Teacher</th>
-                                    </tr>
+                                     <tr>
+                                         <th>Subjects</th>
+                                         <th class="text-left">Teacher</th>
+                                     </tr>
                                  </thead>
                                  <tbody>
-                                    @if($allSubjects)
-                                       @foreach ($allSubjects as $subject)
-                                       <tr>
-                                          <td>{{$subject}}</td>
-                                          <td class="text-left">
-                                             @if ($subjectTeacher)
-                                             {{ $subjectTeacherName }}
-                                             @else
-                                                   No Teacher Assigned
-                                             @endif
-                                          </td>
-                                       </tr>
-                                       @endforeach
-                                       @else
-                                          <td>You're not currently enrolled<td>
-                                    @endif
+                                     @if(count($allSubjects) > 0)
+                                         @foreach ($allSubjects as $subject)
+                                             <tr>
+                                                 <td>{{ $subject }}</td>
+                                                 <td class="text-left">
+                                                     @if (isset($subjectTeachers[$subject]))
+                                                         {{ $subjectTeachers[$subject] }}
+                                                     @else
+                                                         No Teacher Assigned
+                                                     @endif
+                                                 </td>
+                                             </tr>
+                                         @endforeach
+                                     @else
+                                         <tr>
+                                             <td colspan="2">You're not currently enrolled</td>
+                                         </tr>
+                                     @endif
                                  </tbody>
-                              </table>
+                             </table>
+                             
                            </div>
                         </div>
                      </div>

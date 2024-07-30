@@ -43,7 +43,7 @@
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label for="subjectType">Grade Level</label>
-                                                <select class="form-control" id="gradeLevel" name="gradeLevel">
+                                                <select class="form-control" id="gradeLevel" name="gradeLevel" required>
                                                     <option value=""></option>
                                                     <option value="Grade 7">Grade 7</option>
                                                     <option value="Grade 8">Grade 8</option>
@@ -56,8 +56,10 @@
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
-                                                <label>Subject Code</label>
-                                                <input name="subjectCode" type="text" class="form-control">
+                                                <label for="section">Section</label>
+                                                <select class="form-control" id="section" name="section" required>
+                                               {{-- section will be display here --}}
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6">
@@ -69,7 +71,7 @@
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label for="subjectType">Subject Type</label>
-                                                <select class="form-control" id="subjectType" name="subjectType">
+                                                <select class="form-control" id="subjectType" name="subjectType" required>
                                                     <option value=""></option>
                                                     <option value="Major Subject">Major Subject</option>
                                                     <option value="Minor Subject">Minor Subject</option>
@@ -80,7 +82,7 @@
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label for="subjectTeacher">Subject Teacher</label>
-                                                <select name="subjectTeacher" id="subjectTeacher" class="form-control">
+                                                <select name="subjectTeacher" id="subjectTeacher" class="form-control" required>
                                                     <option value="" selected disabled>Select Subject Teacher</option>
                                                     @foreach($teachers as $teacher)
                                                         <option value="{{ $teacher->teacherId }}" data-name="{{ $teacher->firstName . ' ' . $teacher->lastName }}">
@@ -100,26 +102,6 @@
                                                 <input name="teacherName" id="teacherName" class="form-control" hidden>
                                             </div>
                                         </div>
-                                        
-                                        
-                                        {{-- <div class="col-12 col-sm-6">
-                                            <div class="form-group">
-                                                <label>Lecture Unit</label>
-                                                <input name="lectureUnit" id="lectureUnit" type="number" class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-sm-6">
-                                            <div class="form-group">
-                                                <label>Laboratory Unit</label>
-                                                <input name="labUnit" id="labUnit" type="number" class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-sm-6">
-                                            <div class="form-group">
-                                                <label>Units</label>
-                                                <input readonly name="totalUnits" id="totalUnits" type="number" class="form-control">
-                                            </div>
-                                        </div> --}}
                                         <div class="col-12">
                                             <button type="submit" class="btn btn-primary">Add</button>
                                         </div>
@@ -134,25 +116,8 @@
 
     </div>
 
-    {{-- Getting the total Units --}}
-    {{-- <script>
-        // Get references to the input fields
-        const lectureUnitInput = document.getElementById('lectureUnit');
-        const labUnitInput = document.getElementById('labUnit');
-        const totalUnitsInput = document.getElementById('totalUnits');
-    
-        // Function to calculate the total units
-        function calculateTotalUnits() {
-            const lectureUnit = parseInt(lectureUnitInput.value) || 0;
-            const labUnit = parseInt(labUnitInput.value) || 0;
-            const totalUnits = lectureUnit + labUnit;
-            totalUnitsInput.value = totalUnits; //.toFixed(2) Display the total units with 2 decimal places
-        }
-    
-        // Calculate the total units when the lecture or lab unit inputs change
-        lectureUnitInput.addEventListener('input', calculateTotalUnits);
-        labUnitInput.addEventListener('input', calculateTotalUnits);
-    </script> --}}
+    {{-- FETCH SECTION BASED ON GRADE LEVEL --}}
+    <script src="{{ asset('js/myjs/fetchSection.js') }}"></script>
  
     {{-- FETCH TEACHER ID TO SAVE IN DB --}}
     <script src="{{ asset('js/myjs/fetchTeacherId.js') }}"></script>

@@ -28,10 +28,6 @@
                            <li class="breadcrumb-item active">Students</li>
                         </ul>
                      </div>
-                     <div class="col-auto text-right float-right ml-auto">
-                        
-                        <a href="add-student.html" class="btn btn-primary">add Student  &nbsp;<i class="fas fa-plus"></i></a>
-                     </div>
                   </div>
                </div>
                <div class="row">

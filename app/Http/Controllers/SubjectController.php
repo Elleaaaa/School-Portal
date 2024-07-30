@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Section;
 use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Teacher;
@@ -33,19 +34,33 @@ class SubjectController extends Controller
      */
     public function store(Request $request)
     {
+         // Check if the subject already exists
+            $existingSubject = Subject::where('teacherId', $request->input('teacherId'))
+            ->where('gradeLevel', $request->input('gradeLevel'))
+            ->where('section', $request->input('section'))
+            ->where('subject', $request->input('subjectTitle'))
+            ->first();
+
+        if ($existingSubject) {
+        // Optionally: Update the existing record
+        // $existingSubject->subjectType = $request->input('subjectType');
+        // $existingSubject->subjectTeacher = $request->input('teacherName');
+        // $existingSubject->save();
+
+        // Notify the user and redirect
+        notify()->warning('Subject already exists for this section!');
+        }
+
         // Add New Subject
         $subject = new Subject();
 
         $subject->studentId = null;
         $subject->teacherId = $request->input('teacherId');
-        $subject->subjectCode = $request->input('subjectCode');
         $subject->gradeLevel = $request->input('gradeLevel');
-        $subject->subjectTitle = $request->input('subjectTitle');
+        $subject->section = $request->input('section');
+        $subject->subject = $request->input('subjectTitle');
         $subject->subjectType = $request->input('subjectType');
         $subject->subjectTeacher = $request->input('teacherName');
-        $subject->subjectUnit = $request->input('totalUnits');
-        $subject->subjectLectUnit = $request->input('lectureUnit');
-        $subject->subjectLabUnit = $request->input('labUnit');
         $subject->save();
 
         notify()->success('Subject Added Successfully!');
@@ -60,12 +75,16 @@ class SubjectController extends Controller
     {
         $subject = Subject::find($id);
         $teachers = Teacher::all();
-        return view('admin.edit-subject', compact('subject', 'teachers'));
+        $sections = Section::all();
+        return view('admin.edit-subject', compact('subject', 'teachers', 'sections'));
     }
 
     public function fetchSubjects(Request $request) {
         $gradeLevel = $request->input('gradeLevel');
-        $subjects = Subject::where('gradeLevel', $gradeLevel)->get();
+        $section = $request->input('section');
+        $subjects = Subject::where('gradeLevel', $gradeLevel)
+                            ->where('section', $section)
+                            ->get();
         
         if ($subjects->isNotEmpty()) {
             return response()->json($subjects);
@@ -91,14 +110,11 @@ class SubjectController extends Controller
 
         $subject->studentId = null;
         $subject->teacherId = $request->input('teacherId');
-        $subject->subjectCode = $request->input('subjectCode');
         $subject->gradeLevel = $request->input('gradeLevel');
-        $subject->subjectTitle = $request->input('subjectTitle');
+        $subject->section = $request->input('section');
+        $subject->subject = $request->input('subjectTitle');
         $subject->subjectType = $request->input('subjectType');
         $subject->subjectTeacher = $request->input('subjectTeacher');
-        $subject->subjectUnit = $request->input('totalUnits');
-        $subject->subjectLectUnit = $request->input('lectureUnit');
-        $subject->subjectLabUnit = $request->input('labUnit');
         $subject->save();
 
         notify()->success('Subject Updated Successfully!');

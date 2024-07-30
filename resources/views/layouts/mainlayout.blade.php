@@ -33,7 +33,16 @@
                 <a href="{{ route('supadmin-dashboard.show', ['supAdminId' => Auth::user()->studentId]) }}" class="logo">
                     <img src="{{ asset('img/logo.png') }}" alt="Logo">
                 </a>
-                <a href="{{ route('admin-dashboard.show', ['studentId' => Auth::user()->studentId]) }}"
+                <a href="{{ route('supadmin-dashboard.show', ['supAdminId' => Auth::user()->studentId]) }}"
+                    class="logo logo-small">
+                    <img src="{{ asset('img/logo.png') }}" alt="Logo" width="30" height="30">
+                </a>
+            @endif
+            @if (Auth::user()->usertype == 'cashier')
+                <a href="{{ route('cashier-dashboard.show', ['cashierId' => Auth::user()->studentId]) }}" class="logo">
+                    <img src="{{ asset('img/logo.png') }}" alt="Logo">
+                </a>
+                <a href="{{ route('cashier-dashboard.show', ['cashierId' => Auth::user()->studentId]) }}"
                     class="logo logo-small">
                     <img src="{{ asset('img/logo.png') }}" alt="Logo" width="30" height="30">
                 </a>
@@ -140,6 +149,10 @@
                         <a class="dropdown-item"
                             href="{{ route('profile-superadmin.show', ['supAdminId' => Auth::user()->studentId]) }}">My
                             Profile</a>
+                    @elseif (Auth::user()->usertype == 'cashier')
+                        <a class="dropdown-item"
+                            href="{{ route('profile-cashier.show', ['cashierId' => Auth::user()->studentId]) }}">My
+                            Profile</a>
                     @endif
                     <form method="POST" action="{{ url('/logout') }}">
                         @csrf
@@ -164,13 +177,14 @@
                                    class="fas fa-user-graduate"></i><span>Dashboard</span></a>
                        </li>
                        <li class="submenu">
-                        <a href="#"><i class="fas fa-user-graduate"></i> <span> Enrollment</span> <span
-                                class="menu-arrow"></span></a>
-                        <ul>
-                            <li><a href="{{ route('enrolled-student-list.show') }}">Enrolled Student</a></li>
-                            <li><a href="{{ route('pending-student-list.show') }}">Pending Enrollment</a></li>
-                            {{-- <li><a href="{{ url('edit-student.html') }}">Student Edit</a></li> --}}
-                        </ul>
+                            <a href="#"><i class="fas fa-user-graduate"></i> <span> Enrollment</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="{{ route('enrolled-student-list.show') }}">Enrolled Student</a></li>
+                                <li><a href="{{ route('pending-student-list.show') }}">Pending Enrollment</a></li>
+                                {{-- <li><a href="{{ url('edit-student.html') }}">Student Edit</a></li> --}}
+                            </ul>
+                       </li>
                         <li class="submenu">
                             <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Teachers</span> <span
                                     class="menu-arrow"></span></a>
@@ -181,9 +195,50 @@
                                 {{-- <li><a href="{{ url('edit-teacher.html') }}">Teacher Edit</a></li> --}}
                             </ul>
                         </li>
-                    </li>
-                       
                    @endif
+
+                    {{-- CASHIER SIDEBAR --}}
+                    @if (Auth::user()->usertype == 'cashier')
+                     <li>
+                         <a href="{{ route('cashier-dashboard.show', ['cashierId' => Auth::user()->studentId]) }}"><i
+                                 class="fas fa-user-graduate"></i><span>Dashboard</span></a>
+                     </li>
+                     <li class="submenu">
+                          <a href="#"><i class="fas fa-user-graduate"></i> <span> Enrollment</span> <span
+                                  class="menu-arrow"></span></a>
+                          <ul>
+                              <li><a href="{{ route('enrolled-student-list.show') }}">Enrolled Student</a></li>
+                              <li><a href="{{ route('pending-student-list.show') }}">Pending Enrollment</a></li>
+                              {{-- <li><a href="{{ url('edit-student.html') }}">Student Edit</a></li> --}}
+                          </ul>
+                     </li>
+                      <li class="submenu">
+                          <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Teachers</span> <span
+                                  class="menu-arrow"></span></a>
+                          <ul>
+                              <li><a href="{{ route('teacherlist.show') }}">Teacher List</a></li>
+                              {{-- <li><a href="{{ url('teacher-details.html') }}">Teacher View</a></li> --}}
+                              <li><a href="{{ route('addteacher.show') }}">Teacher Add</a></li>
+                              {{-- <li><a href="{{ url('edit-teacher.html') }}">Teacher Edit</a></li> --}}
+                          </ul>
+                      </li>
+                    <li class="menu-title">
+                        <span>Management</span>
+                    </li>
+                    <li class="submenu">
+                        <a href="#"><i class="fas fa-file-invoice-dollar"></i> <span> Accounts</span> <span
+                                class="menu-arrow"></span></a>
+                        <ul>
+                            <li><a href="{{ route('paymenthistoryadmin.show') }}">Payments Collection</a></li>
+                            {{-- <li><a href="{{ url('expenses.html') }}">Expenses</a></li> --}}
+                            {{-- <li><a href="{{ url('salary.html') }}">Salary</a></li> --}}
+                            <li><a href="{{ route('addfees.show') }}">Add Fees</a></li>
+                            {{-- <li><a href="{{ url('add-expenses.html') }}">Add Expenses</a></li> --}}
+                            {{-- <li><a href="{{ url('add-salary.html') }}">Add Salary</a></li> --}}
+                            <li><a href="{{ route('paymentList.show') }}">Payment List</a></li>
+                        </ul>
+                    </li>
+                 @endif
 
                     {{-- ADMIN/REGISTRAR SIDEBAR --}}
                     @if (Auth::user()->usertype == 'admin')
@@ -331,9 +386,13 @@
                                 <span>My Students</span></a>
                         </li>
 
-                        <li>
-                            <a href="{{ route('studentsgrade.show') }}"><i class="fas fa-user-graduate"></i>
-                                <span>Students Grade</span></a>
+                        <li class="submenu">
+                            <a href="#"><i class="fas fa-user-graduate"></i> <span> Students Grade</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="{{ route('studentsgrade.show') }}">All</a></li>
+                                <li><a href="{{ route('handleSections.show') }}">Section</a></li>
+                            </ul>
                         </li>
 
                         <li>

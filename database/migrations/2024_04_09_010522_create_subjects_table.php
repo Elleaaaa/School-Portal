@@ -16,13 +16,11 @@ return new class extends Migration
             $table->string('studentId', 255)->nullable();
             $table->string('teacherId', 255)->nullable();
             $table->string('gradeLevel', 255)->nullable();
-            $table->string('subjectCode', 255)->nullable()->unique();
-            $table->string('subjectTitle', 255)->nullable()->unique();
+            $table->string('section', 255)->nullable();
+            $table->string('subjectCode', 255)->nullable();
+            $table->string('subject', 255)->nullable();
             $table->string('subjectTeacher', 255)->nullable();
             $table->string('subjectType', 255)->nullable();
-            $table->string('subjectUnit', 255)->nullable();
-            $table->string('subjectLectUnit', 255)->nullable();
-            $table->string('subjectLabUnit', 255)->nullable();
             $table->timestamps();
         });
     }

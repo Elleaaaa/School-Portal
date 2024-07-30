@@ -42,13 +42,10 @@
                                  <thead>
                                     <tr>
                                        <th>Grade <br>Level</th>
-                                       <th>Subject <br>Code</th>
-                                       <th>Subject Title </th>
+                                       <th>Section</th>
+                                       <th>Subject</th>
                                        <th>Type</th>
                                        <th>Teacher</th>
-                                       {{-- <th>Units</th>
-                                       <th>Lecture <br>Unit</th>
-                                       <th>Laboratory <br>Unit</th> --}}
                                        <th class="text-right">Action</th>
                                     </tr>
                                  </thead>
@@ -56,13 +53,10 @@
                                     @foreach ($subjects as $subject)
                                     <tr>
                                        <td>{{$subject->gradeLevel}}</td>
-                                       <td>{{$subject->subjectCode}}</td>
+                                       <td>{{$subject->section}}</td>
                                        <td>{{$subject->subjectTitle}}
                                        <td>{{$subject->subjectType}}</td>
                                        <td>{{$subject->subjectTeacher}}</td>
-                                       {{-- <td>{{$subject->subjectUnit}}</td>
-                                       <td>{{$subject->subjectLectUnit}}</td>
-                                       <td>{{$subject->subjectLabUnit}}</td> --}}
                                        <td class="text-right">
                                           <div class="actions">
                                              <a href="{{ route('edit-subject.show', ['id' => $subject->id]) }}" class="btn btn-sm bg-success-light mr-2">

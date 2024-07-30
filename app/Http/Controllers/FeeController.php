@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Admin;
+use App\Models\Cashier;
 use App\Models\Enrollee;
 use App\Models\Fee;
 use App\Models\FeeList;
@@ -10,8 +10,6 @@ use App\Models\Student;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Date;
-use Illuminate\Support\Facades\DB;
 
 
 class FeeController extends Controller
@@ -23,14 +21,14 @@ class FeeController extends Controller
         $studentId = $request->input('studentId');
         $students = Student::where('studentId', $studentId)->first();
 
-        $adminId = Auth::user()->studentId;
-        //$admins = DB::table('admins')->where('adminId', $adminId)->first(); // you can use this 
-        $admins = Admin::where('adminId', $adminId)->first();                 // or this to get admin details
+        $cashierId = Auth::user()->studentId;
+       
+        $cashiers = Cashier::where('cashierId', $cashierId)->first();
 
         $feeLists = FeeList::where('status', 'active')->get();
 
-        $feeHistory = Fee::where('studentId', $adminId)->get();
-        return view('admin.add-fees', compact('students', 'admins', 'feeLists', 'feeHistory'));
+        $feeHistory = Fee::where('studentId', $cashierId)->get();
+        return view('cashier.add-fees', compact('students', 'cashiers', 'feeLists', 'feeHistory'));
     }
 
     public function paymentHistory(){

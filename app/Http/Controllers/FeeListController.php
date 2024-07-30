@@ -13,7 +13,7 @@ class FeeListController extends Controller
     public function index()
     {
         $feeLists = FeeList::all();
-        return view('admin.fee-list', compact('feeLists'));
+        return view('cashier.fee-list', compact('feeLists'));
     }
 
     /**

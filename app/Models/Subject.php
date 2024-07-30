@@ -14,12 +14,9 @@ class Subject extends Model
     protected $fillable = [
         'studentId',
         'gradeLevel',
-        'subjectCode',
-        'subjectTitle',
+        'section',
+        'subject',
         'subjectTeacher',
         'subjectType',
-        'subjectUnit',
-        'subjectLectUnit',
-        'subjectLabUnit',
     ];
 }

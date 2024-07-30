@@ -69,6 +69,7 @@ class EnrolleesController extends Controller
             $enrollee->gradeLevel = $request->input('gradeLevel');
             $enrollee->section = $request->input('section');
             $enrollee->semester = $request->input('semester');
+            $enrollee->strand = $request->input('strand');
             $enrollee->classType = $request->input('classType');
             $enrollee->schoolYear = $schoolYear;
             $enrollee->status = $request->input('status');
@@ -85,6 +86,8 @@ class EnrolleesController extends Controller
 
         // create row for each subjects
         $subjects = explode(',', $request->input('subjects'));
+        // Remove any extra spaces around each subject
+        $subjects = array_map('trim', $subjects);
         foreach ($subjects as $subject) {
             $grade = new Grade();
             $grade->studentId = $request->input('studentId');
@@ -96,7 +99,7 @@ class EnrolleesController extends Controller
             $grade->secondQGrade = 'not yet graded';
             $grade->thirdQGrade = 'not yet graded';
             $grade->fourthQGrade = 'not yet graded';
-            $grade->schoolYear = null;
+            $grade->schoolYear = $schoolYear;
             $grade->save();
         }
 
@@ -112,6 +115,16 @@ class EnrolleesController extends Controller
         $sName = $request->input('suffixName');
         $fullName = $fName.' '.$mName.' '.$lName.' '.$sName;
 
+          // Check if the student is already enrolled this SY
+          $year = date('Y');
+          $month = date('m');
+  
+          if ($month <= 6) {
+              $schoolYear = ($year - 1) . '-' . $year;
+          } else {
+              $schoolYear = $year . '-' . ($year + 1);
+          }
+
         // Enroll Student
         $enrollee = new Enrollee();
        
@@ -121,6 +134,7 @@ class EnrolleesController extends Controller
         $enrollee->gradeLevel = $request->input('gradeLevel');
         $enrollee->section = $request->input('section');
         $enrollee->semester = $request->input('semester');
+        $enrollee->strand = $request->input('strand');
         $enrollee->classType = $request->input('classType');
         $enrollee->status = $request->input('status');
         $enrollee->save();
@@ -146,7 +160,7 @@ class EnrolleesController extends Controller
             $grade->secondQGrade = 'not yet graded';
             $grade->thirdQGrade = 'not yet graded';
             $grade->fourthQGrade = 'not yet graded';
-            $grade->schoolYear = null;
+            $grade->schoolYear = $schoolYear;
             $grade->save();
         }
 
@@ -225,6 +239,16 @@ class EnrolleesController extends Controller
         $sName = $request->input('suffixName');
         $fullName = $fName.' '.$mName.' '.$lName.' '.$sName;
 
+          // Check if the student is already enrolled this SY
+          $year = date('Y');
+          $month = date('m');
+  
+          if ($month <= 6) {
+              $schoolYear = ($year - 1) . '-' . $year;
+          } else {
+              $schoolYear = $year . '-' . ($year + 1);
+          }
+
         // Enroll Student
         $enrollee = Enrollee::find($id);
        
@@ -234,6 +258,7 @@ class EnrolleesController extends Controller
         $enrollee->gradeLevel = $request->input('gradeLevel');
         $enrollee->section = $request->input('section');
         $enrollee->semester = $request->input('semester');
+        $enrollee->strand = $request->input('strand');
         $enrollee->classType = $request->input('classType');
         $enrollee->status = $request->input('status');
         $enrollee->save();
@@ -256,7 +281,7 @@ class EnrolleesController extends Controller
             $grade->secondQGrade = 'not yet graded';
             $grade->thirdQGrade = 'not yet graded';
             $grade->fourthQGrade = 'not yet graded';
-            $grade->schoolYear = null;
+            $grade->schoolYear = $schoolYear;
             $grade->save();
          }
 
