@@ -224,35 +224,35 @@
                                             <div class="form-group">
                                                 <label>Mother's First Name</label>
                                                 <input name="mothersFirstName" type="text" class="form-control"
-                                                value="{{ $guardians-> mothersFirstName}}">
+                                                value="{{ $guardians->mothersFirstName}}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-6">
                                             <div class="form-group">
                                                 <label>Mother's Last Name</label>
                                                 <input name="mothersLastName" type="text" class="form-control"
-                                                value="{{ $guardians-> mothersLastName}}">
+                                                value="{{ $guardians->mothersLastName}}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-4">
                                             <div class="form-group">
                                                 <label>Occupation</label>
                                                 <input name="mothersOccupation" type="text" class="form-control"
-                                                value="{{ $guardians-> mothersOccupation}}">
+                                                value="{{ $guardians->mothersOccupation}}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-4">
                                             <div class="form-group">
                                                 <label>Mobile Number</label>
                                                 <input name="mothersMobile" type="text" class="form-control"
-                                                value="{{ $guardians-> mothersMobile}}">
+                                                value="{{ $guardians->mothersMobile}}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-4">
                                             <div class="form-group">
                                                 <label>Age</label>
                                                 <input name="mothersAge" type="text" class="form-control"
-                                                value="{{ $guardians-> mothersAge}}">
+                                                value="{{ $guardians->mothersAge}}">
                                             </div>
                                         </div>
                                         <div class="col-12">
@@ -279,14 +279,14 @@
                                             <div class="form-group">
                                                 <label>Father's First Name</label>
                                                 <input name="fathersFirstName" type="text" class="form-control"
-                                                value="{{ $guardians-> fathersFirstName}}">
+                                                value="{{ $guardians->fathersFirstName}}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-6">
                                             <div class="form-group">
                                                 <label>Father's Last Name</label>
                                                 <input name="fathersLastName" type="text" class="form-control"
-                                                value="{{ $guardians-> fathersLastName}}"
+                                                value="{{ $guardians->fathersLastName}}"
                                                     placeholder="include extension name in Last Name">
                                             </div>
                                         </div>
@@ -294,21 +294,21 @@
                                             <div class="form-group">
                                                 <label>Occupation</label>
                                                 <input name="fathersOccupation" type="text" class="form-control"
-                                                value="{{ $guardians-> fathersOccupation}}">
+                                                value="{{ $guardians->fathersOccupation}}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-4">
                                             <div class="form-group">
                                                 <label>Mobile Number</label>
                                                 <input name="fathersMobile" type="text" class="form-control"
-                                                value="{{ $guardians-> fathersMobile}}">
+                                                value="{{ $guardians->fathersMobile}}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-4">
                                             <div class="form-group">
                                                 <label>Age</label>
                                                 <input name="fathersAge" type="text" class="form-control"
-                                                value="{{ $guardians-> fathersAge}}">
+                                                value="{{ $guardians->fathersAge}}">
                                             </div>
                                         </div>
                                         <div class="col-12">
@@ -335,14 +335,14 @@
                                             <div class="form-group">
                                                 <label>Name of School</label>
                                                 <input name="lastSchool" type="text" class="form-control"
-                                                value="{{ $lastSchool-> school}}">
+                                                value="{{ $lastSchool->school}}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-6">
                                             <div class="form-group">
                                                 <label>General Average</label>
                                                 <input name="lastSchoolAverage" type="text" class="form-control"
-                                                value="{{ $lastSchool-> genAverage}}">
+                                                value="{{ $lastSchool->genAverage}}">
                                             </div>
                                         </div>
 

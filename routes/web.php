@@ -19,6 +19,7 @@ use App\Http\Controllers\EnrolleesController;
 
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\CashierController;
+use App\Http\Controllers\FormController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\SuperAdminController;
 
@@ -43,10 +44,15 @@ Route::middleware('guest')->group(function () {
 // STUDENT ROUTES
 Route::middleware('auth')->group(function () {
     Route::get('/profile-details/{studentId}', [StudentController::class, 'showProfile'])->name('profile-details.show');
-    Route::get('/student-dashboard/{studentId}', [StudentController::class, 'showDashboard'])->name('student-dashboard.show');
-    Route::get('/student-subjectlist/{studentId}', [StudentController::class, 'showSubjectList'])->name('student-subjectlist.show');
+    Route::get('/student-dashboard', [StudentController::class, 'showDashboard'])->name('student-dashboard.show');
+    Route::get('/student-subjectlist', [StudentController::class, 'showSubjectList'])->name('student-subjectlist.show');
 
-    Route::get('/student-grades/{studentId}', [StudentController::class, 'showGrades'])->name('student-grades.show');
+    Route::get('/student-grades', [StudentController::class, 'showGrades'])->name('student-grades.show');
+    Route::get('/student-grades/jhs', [GradeController::class, 'showJHSGrades'])->name('student-grades-jhs.show');
+    Route::get('/student-grades/shs', [GradeController::class, 'showSHSGrades'])->name('student-grades-shs.show');
+    Route::get('/get-jhs-grades', [GradeController::class, 'getJHSGrades'])->name('getJHSGrades');
+    Route::get('/get-shs-grades', [GradeController::class, 'getSHSGrades'])->name('getSHSGrades');
+
 
     // update personal details for students
     Route::post('/profile-details/{id}', [StudentController::class, 'update'])->name('profile-details.update');
@@ -150,6 +156,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/enrolled-student-list', [AdminController::class, 'showEnrolledStudents'])->name('enrolled-student-list.show');
     Route::get('/admin/pending-student-list', [AdminController::class, 'showPendingStudents'])->name('pending-student-list.show');
 
+    Route::post('/check-payment-status', [EnrolleesController::class, 'checkPaymentStatus'])->name('checkpayment.status');
+
+
     Route::get('/admin/calendar', [CalendarController::class, 'schedule'])->name('calendar.show');
     Route::post('/admin/calendar', [CalendarController::class, 'schedule'])->name('calendar.get');
 
@@ -165,6 +174,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/get-events', [EventController::class, 'getEvents'])->name('events.get');
     Route::post('/add-event', [EventController::class, 'store'])->name('events.store');
 
+
+    //FORMS
+    Route::get('/cor', [FormController::class, 'printCOR'])->name('cor.get');
+    Route::get('/request/cor', [FormController::class, 'requestCOR'])->name('correquest.show');
 });
 
 // SUPERADMIN ROUTES

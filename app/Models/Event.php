@@ -13,9 +13,7 @@ class Event extends Model
         'eventName',
         'status',
         'category',
-        'start_time',
-        'end_time',
-        'start_date',
-        'end_date',
+        'start_datetime',
+        'end_datetime',
     ];
 }

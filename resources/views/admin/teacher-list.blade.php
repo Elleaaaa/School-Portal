@@ -84,7 +84,7 @@
                                                 <td>
                                                     @foreach ($subjects as $subject)
                                                         @if ($subject->teacherId == $teacher->teacherId)
-                                                            {{ $subject->subjectTitle }}
+                                                            {{ $subject->subject }}
                                                             <br>
                                                         @endif
                                                     @endforeach

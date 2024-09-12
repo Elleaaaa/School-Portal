@@ -14,8 +14,8 @@
             subjectSelect.innerHTML = '<option value="">Select Subject</option>';
             subjects.forEach(subject => {
                 var option = document.createElement('option');
-                option.value = subject.subjectTitle;
-                option.text = subject.subjectTitle;
+                option.value = subject.subject;
+                option.text = subject.subject;
                 subjectSelect.appendChild(option);
             });
         })

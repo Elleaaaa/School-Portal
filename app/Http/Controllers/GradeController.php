@@ -2,27 +2,64 @@
 
 namespace App\Http\Controllers;
 
-use App\Imports\GradesImport;
 use App\Models\Grade;
+use App\Models\Enrollee;
 use Illuminate\Http\Request;
+use App\Imports\GradesImport;
+use App\Models\SHSGrade;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class GradeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+
+    public function showJHSGrades()
     {
-        //
+        $studentId = Auth::user()->studentId;
+
+        //get the school years of the student
+        $schoolYears = Grade::where('studentId', $studentId)
+                            ->distinct()
+                            ->pluck('schoolYear')
+                            ->toArray();
+
+        return view('student.grades-jhs', compact('schoolYears'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function getJHSGrades(Request $request)
     {
-        //
+        $studentId = Auth::user()->studentId;
+        $schoolYear = $request->input('schoolYear');
+        $grades = Grade::where('studentId', $studentId)
+                    ->where('schoolYear', $schoolYear)
+                    ->get();
+
+        return response()->json($grades);
+    }
+
+     public function showSHSGrades()
+    {
+        $studentId = Auth::user()->studentId;
+
+        //get the school years of the student
+        $schoolYears = SHSGrade::where('studentId', $studentId)
+                            ->distinct()
+                            ->pluck('schoolYear')
+                            ->toArray();
+
+        return view('student.grades-shs', compact('schoolYears'));
+    }
+
+    public function getSHSGrades(Request $request)
+    {
+        $studentId = Auth::user()->studentId;
+        $schoolYear = $request->input('schoolYear');
+        $grades = SHSGrade::where('studentId', $studentId)
+                    ->where('schoolYear', $schoolYear)
+                    ->get();
+
+        return response()->json($grades);
     }
 
     /**

@@ -53,36 +53,36 @@
         width: 50px;
         height: 50px;
         position: relative; /* To position the tooltip */
-    }
-
-    .uploadButton::after {
-        content: "upload file";
-        position: absolute;
-        bottom: 100%; /* Position above the button */
-        left: 50%;
-        transform: translateX(-50%);
-        background-color: black;
-        color: white;
-        padding: 5px;
-        border-radius: 4px;
-        white-space: nowrap;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.3s, visibility 0.3s;
-        font-size: 0.8rem;
-        z-index: 10; /* Ensure tooltip is on top */
-    }
-
-    .uploadButton:hover::after {
-        opacity: 1;
-        visibility: visible;
-    }
-
-
-
-        .file-input-wrapper {
-            display: inline-block;
         }
+
+        .uploadButton::after {
+            content: "upload file";
+            position: absolute;
+            bottom: 100%; /* Position above the button */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: black;
+            color: white;
+            padding: 5px;
+            border-radius: 4px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            font-size: 0.8rem;
+            z-index: 10; /* Ensure tooltip is on top */
+        }
+
+        .uploadButton:hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
+
+
+
+            .file-input-wrapper {
+                display: inline-block;
+            }
     </style>
 </head>
 

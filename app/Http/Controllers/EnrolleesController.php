@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Enrollee;
+use App\Models\Fee;
 use App\Models\Grade;
 use App\Models\Notification;
+use App\Models\SHSGrade;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rules\Exists;
 use PhpParser\Builder\Function_;
 
 class EnrolleesController extends Controller
@@ -84,30 +87,58 @@ class EnrolleesController extends Controller
             $notif->save();
         }
 
+        $gradeLevel = $request->input('gradeLevel');
         // create row for each subjects
         $subjects = explode(',', $request->input('subjects'));
         // Remove any extra spaces around each subject
         $subjects = array_map('trim', $subjects);
-        foreach ($subjects as $subject) {
-            $grade = new Grade();
-            $grade->studentId = $request->input('studentId');
-            $grade->gradeLevel = $request->input('gradeLevel');
-            $grade->section = $request->input('section');
-            $grade->semester = $request->input('semester');
-            $grade->subject = $subject;
-            $grade->firstQGrade = 'not yet graded';
-            $grade->secondQGrade = 'not yet graded';
-            $grade->thirdQGrade = 'not yet graded';
-            $grade->fourthQGrade = 'not yet graded';
-            $grade->schoolYear = $schoolYear;
-            $grade->save();
+        if ($gradeLevel == "Grade 11" || $gradeLevel == "Grade 12") {
+            foreach ($subjects as $subject) {
+                $grade = new SHSGrade();
+                $grade->studentId = $request->input('studentId');
+                $grade->gradeLevel = $gradeLevel;
+                $grade->section = $request->input('section');
+                $grade->semester = $request->input('semester');
+                $grade->subject = $subject;
+                $grade->midterm = 'not yet graded';
+                $grade->finals = 'not yet graded';
+                $grade->schoolYear = $schoolYear;
+                $grade->save();
+            }
+        } else {
+            foreach ($subjects as $subject) {
+                $grade = new Grade();
+                $grade->studentId = $request->input('studentId');
+                $grade->gradeLevel = $gradeLevel;
+                $grade->section = $request->input('section');
+                $grade->semester = $request->input('semester');
+                $grade->subject = $subject;
+                $grade->firstQGrade = 'not yet graded';
+                $grade->secondQGrade = 'not yet graded';
+                $grade->thirdQGrade = 'not yet graded';
+                $grade->fourthQGrade = 'not yet graded';
+                $grade->schoolYear = $schoolYear;
+                $grade->save();
+            }
         }
 
         notify()->success('Student Enrolled Successfully!');
         return redirect()->route('enroll-student.show');
     }
 
-    public function selfEnroll(Request $request)
+    public function checkPaymentStatus(Request $request)
+    {
+        $studentId = $request->input('studentId');
+        $hasPaid = Fee::where('studentId', $studentId)->exists();
+    
+        if (!$hasPaid) {
+            return response()->json(['message' => 'Student Not Yet Paid!']);
+        }
+    
+        return response()->noContent();
+    }
+
+    public function selfEnroll(Request $request) // backend for self enroll of the student
     {
         $fName = $request->input('firstName');
         $mName = $request->input('middleName');
@@ -194,7 +225,7 @@ class EnrolleesController extends Controller
     }
 
 
-    public function selfEnrollment()
+    public function selfEnrollment() //display the enroll page in student
     {
         $userId = Auth::id();
         $students = User::where('id', $userId)->first();

@@ -42,7 +42,7 @@
                     <div class="col-sm-12">
                         <div class="card">
                             <div class="card-body">
-                                <form method="POST" action="{{ route('enroll-student.store') }}">
+                                <form  id="check-payment-form" method="POST" action="{{ route('enroll-student.store') }}">
                                     @csrf
                                     <div class="row">
                                         <div class="col-12">
@@ -179,6 +179,9 @@
 
     {{-- Auto populate student details when student ID is entered --}}
     <script src="{{ asset('js/myjs/populateStudentDetails.js') }}"></script>
+
+    {{-- CHECK IF STUDENT HAS PAID ALREADY --}}
+    <script src="{{ asset('js/myjs/checkpaymentstatus.js') }}"></script>
 </body>
 
 </html>

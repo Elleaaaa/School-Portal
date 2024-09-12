@@ -49,7 +49,7 @@ class LoginController extends Controller
                     break;
                 default:
                 if ($user->completeProfile == True) {
-                    return redirect()->route('student-dashboard.show', ['studentId' => $user->studentId]);
+                    return redirect()->route('student-dashboard.show');
                 }
                 else
                     notify()->warning('Please Complete your Details First!');

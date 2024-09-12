@@ -156,8 +156,8 @@
 
     {{-- FETCH SECTION BASED ON GRADE LEVEL --}}
     <script src="{{ asset('js/myjs/fetchSection.js') }}"></script>
-    {{-- FETCH Subject BASED ON GRADE LEVEL --}}
-    <script src="{{ asset('js/myjs/fetchSubject.js') }}"></script>
+    {{-- FETCH Subject BASED ON GRADE LEVEL AND SECTION--}}
+    <script src="{{ asset('js/myjs/subject.js') }}"></script>
 
 </body>
 

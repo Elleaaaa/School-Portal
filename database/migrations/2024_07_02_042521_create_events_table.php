@@ -16,10 +16,8 @@ return new class extends Migration
             $table->string('eventName', 255)->nullable();
             $table->string('status', 255)->nullable()->default('active');
             $table->string('category', 255)->nullable();
-            $table->time('start_time')->nullable();
-            $table->time('end_time')->nullable();
-            $table->date('start_date')->nullable();
-            $table->date('end_date')->nullable();
+            $table->dateTime('start_datetime')->nullable();
+            $table->dateTime('end_datetime')->nullable();
             $table->timestamps();
         });
     }

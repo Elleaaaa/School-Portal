@@ -158,8 +158,9 @@ class StudentController extends Controller
 
     }
 
-    public function showDashboard(string $studentId)
+    public function showDashboard()
     {
+        $studentId = Auth::user()->studentId;
         $student = Student::where('studentId', $studentId)->first();
 
         $subjectCount = Enrollee::where('studentId', $studentId)
@@ -169,11 +170,14 @@ class StudentController extends Controller
 
         $subjectCount = $subjectCount ? $subjectCount->subject_count : 0;
 
-        return view('student.dashboard', compact('student', 'subjectCount'));
+        $studentName = $student->firstName ." ". $student->lastName." ". $student->suffixName;
+
+        return view('student.dashboard', compact('student', 'subjectCount', 'studentName'));
     }
 
-    public function showGrades(string $studentId)
+    public function showGrades()
     {
+        $studentId = Auth::user()->studentId;
         $enrolled = Enrollee::where('studentId', $studentId)
             ->where('status', 'Enrolled')
             ->get();
@@ -187,50 +191,51 @@ class StudentController extends Controller
     }
 
 
-    public function showSubjectList(string $studentId)
-{
-    $enrollee = Enrollee::where('studentId', $studentId)
-        ->where('status', 'Enrolled')
-        ->first();
-    $allSubjects = [];
-    $subjectTeachers = [];
-    
-    if ($enrollee) {
-        $subjects = $enrollee->subjects;
-        $subjectList = explode(' ', $subjects);
-    
-        foreach ($subjectList as $subject) {
-            // Format the subject name
-            $formattedSubject = str_replace(',', '', ucwords(strtolower($subject)));
-            $allSubjects[] = $formattedSubject;
-    
-            $gradeLevel = $enrollee->gradeLevel;
-            $section = $enrollee->section;
-    
-            // Find the subject in the Subject table
-            $subjectTeacher = Subject::where('gradeLevel', $gradeLevel)
-                ->where('section', $section)
-                ->where('subjectTitle', $formattedSubject)
-                ->first();
-    
-            if ($subjectTeacher) {
-                $teacherId = $subjectTeacher->teacherId;
-                $teacher = Teacher::where('teacherId', $teacherId)->first();
-                if ($teacher) {
-                    $subjectTeachers[$formattedSubject] = $teacher->firstName . ' ' . $teacher->lastName;
+    public function showSubjectList()
+    {
+        $studentId = Auth::user()->studentId;
+        $enrollee = Enrollee::where('studentId', $studentId)
+            ->where('status', 'Enrolled')
+            ->first();
+        $allSubjects = [];
+        $subjectTeachers = [];
+        
+        if ($enrollee) {
+            $subjects = $enrollee->subjects;
+            $subjectList = explode(' ', $subjects);
+        
+            foreach ($subjectList as $subject) {
+                // Format the subject name
+                $formattedSubject = str_replace(',', '', ucwords(strtolower($subject)));
+                $allSubjects[] = $formattedSubject;
+        
+                $gradeLevel = $enrollee->gradeLevel;
+                $section = $enrollee->section;
+        
+                // Find the subject in the Subject table
+                $subjectTeacher = Subject::where('gradeLevel', $gradeLevel)
+                    ->where('section', $section)
+                    ->where('subject', $formattedSubject)
+                    ->first();
+        
+                if ($subjectTeacher) {
+                    $teacherId = $subjectTeacher->teacherId;
+                    $teacher = Teacher::where('teacherId', $teacherId)->first();
+                    if ($teacher) {
+                        $subjectTeachers[$formattedSubject] = $teacher->firstName . ' ' . $teacher->lastName;
+                    } else {
+                        $subjectTeachers[$formattedSubject] = 'Teacher not found';
+                    }
                 } else {
-                    $subjectTeachers[$formattedSubject] = 'Teacher not found';
+                    $subjectTeachers[$formattedSubject] = 'Teacher not assigned';
                 }
-            } else {
-                $subjectTeachers[$formattedSubject] = 'Teacher not assigned';
             }
+        
+            return view('student.subject-list', compact('allSubjects', 'subjectTeachers'));
         }
-    
-        return view('student.subject-list', compact('allSubjects', 'subjectTeachers'));
+        
+        return view('student.subject-list', compact('allSubjects'));
     }
-    
-    return view('student.subject-list', compact('allSubjects'));
-}
 
     
 

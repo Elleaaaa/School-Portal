@@ -54,7 +54,7 @@
                                     <tr>
                                        <td>{{$subject->gradeLevel}}</td>
                                        <td>{{$subject->section}}</td>
-                                       <td>{{$subject->subjectTitle}}
+                                       <td>{{$subject->subject}}
                                        <td>{{$subject->subjectType}}</td>
                                        <td>{{$subject->subjectTeacher}}</td>
                                        <td class="text-right">

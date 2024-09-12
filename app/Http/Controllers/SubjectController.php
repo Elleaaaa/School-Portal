@@ -85,7 +85,6 @@ class SubjectController extends Controller
         $subjects = Subject::where('gradeLevel', $gradeLevel)
                             ->where('section', $section)
                             ->get();
-        
         if ($subjects->isNotEmpty()) {
             return response()->json($subjects);
         } else {
