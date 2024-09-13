@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Mail;
 
 class TeacherController extends Controller
 {
+
+    public $studentTotalCount;
     /**
      * Display a listing of the resource.
      */
@@ -128,7 +130,16 @@ class TeacherController extends Controller
     public function showDashboard(string $teacherId)
     {
         $teacher = Teacher::where('teacherId', $teacherId)->first();
-        return view('teacher.dashboard', compact('teacher'));
+
+        $this->showStudentsGrade();
+        $studentTotalCount = $this->studentTotalCount;
+
+        $handleSections = Subject::where('teacherId', $teacherId)
+        ->select('gradeLevel', 'section')
+        ->distinct()
+        ->count();
+
+        return view('teacher.dashboard', compact('teacher', 'studentTotalCount', 'handleSections'));
     }
 
     public function showEditTeacher(string $id)
@@ -246,6 +257,10 @@ class TeacherController extends Controller
     
         // Retrieve images (assuming they are stored in User model)
         $images = User::all();
+
+        // this is for passing the value to the showDashboard() method
+        $studentTotalCount = $myStudents->count();
+        $this->studentTotalCount = $studentTotalCount;
     
         return view('teacher.grading', compact('images', 'studentGrade', 'students', 'grades'));
     }

@@ -415,16 +415,16 @@ button.bg-danger:hover {
     color: #757575 !important;
 }
 .btn-primary {
-	background-color: #FFBC53;
-	border: 1px solid #FFBC53;
+	background-color: #36adf7;
+	border: 1px solid #36adf7;
 }
 .btn-primary:hover,
 .btn-primary:focus,
 .btn-primary.active,
 .btn-primary:active,
 .open > .dropdown-toggle.btn-primary {
-	background-color: #18aefa;
-	border: 1px solid #18aefa;
+	background-color: #0873b5;
+	border: 1px solid #0873b5;
 }
 .btn-primary.active.focus,
 .btn-primary.active:focus,
@@ -435,14 +435,14 @@ button.bg-danger:hover {
 .open > .dropdown-toggle.btn-primary.focus,
 .open > .dropdown-toggle.btn-primary:focus,
 .open > .dropdown-toggle.btn-primary:hover {
-	background-color: #18aefa;
-	border: 1px solid #18aefa;
+	background-color: #0873b5;
+	border: 1px solid #0873b5;
 }
 .btn-primary.active:not(:disabled):not(.disabled),
 .btn-primary:active:not(:disabled):not(.disabled),
 .show > .btn-primary.dropdown-toggle {
-	background-color: #18aefa;
-	border-color: #18aefa;
+	background-color: #0873b5;
+	border-color: #0873b5;
 	color: #fff;
 }
 .btn-primary.active:focus:not(:disabled):not(.disabled), 
@@ -451,8 +451,8 @@ button.bg-danger:hover {
 	box-shadow: unset;
 }
 .btn-primary.disabled, .btn-primary:disabled {
-    background-color: #FFBC53;
-    border-color: #FFBC53;
+    background-color: #0873b5;
+    border-color: #0873b5;
     color: #fff;
 }
 .btn-secondary.active:focus:not(:disabled):not(.disabled), 
@@ -809,7 +809,7 @@ button.bg-danger:hover {
 	background-color: #fff;
 }
 .dropdown-item.active, .dropdown-item:active {
-    background-color: #FFBC53;
+    background-color: #065789;
 }
 .navbar-nav .open .dropdown-menu {
 	border: 0;
@@ -1435,11 +1435,11 @@ div.dataTables_wrapper div.dataTables_info {
     padding: 10px 15px;
 }
 .user-menu .dropdown-menu .dropdown-item:hover {
-    color: #FFBC53;
+    color: #87cefa;
 }
 .header .dropdown-menu > li > a:focus,
 .header .dropdown-menu > li > a:hover {
-	background-color: #FFBC53;
+	background-color: #87cefa;
 	color: #fff;
 }
 .header .dropdown-menu > li > a:focus i,
@@ -1995,7 +1995,7 @@ footer p {
 	color: #333;
 }
 .user-menu.nav > li > a .badge {
-	background-color: #FFBC53;
+	background-color: #87cefa;
     display: block;
     font-size: 10px;
     font-weight: bold;

@@ -63,7 +63,7 @@
                                         <i class="fas fa-chalkboard"></i>
                                     </div>
                                     <div class="db-info">
-                                        <h3>04/06</h3>
+                                        <h3>{{ $handleSections }}</h3>
                                         <h6>Total Classes</h6>
                                     </div>
                                 </div>
@@ -78,7 +78,7 @@
                                         <i class="fas fa-user-graduate"></i>
                                     </div>
                                     <div class="db-info">
-                                        <h3>40/60</h3>
+                                        <h3>{{ $studentTotalCount }}</h3>
                                         <h6>Total Students</h6>
                                     </div>
                                 </div>
