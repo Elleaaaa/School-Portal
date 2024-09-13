@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <title>Smartious - Edit Students</title>
+    <title>My Profile</title>
     <link rel="shortcut icon" href="assets/img/favicon.png">
 </head>
 
@@ -33,7 +33,7 @@
                                  @csrf
                                     <div class="row">
                                         <div class="col-12">
-                                            <h5 class="form-title"><span>Student Information</span></h5>
+                                            <h5 class="form-title"><span>Personal Information</span></h5>
                                         </div>
                                         {{-- Student Information --}}
                                         <div class="col-4">

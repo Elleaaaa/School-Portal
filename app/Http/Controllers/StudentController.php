@@ -202,11 +202,11 @@ class StudentController extends Controller
         
         if ($enrollee) {
             $subjects = $enrollee->subjects;
-            $subjectList = explode(' ', $subjects);
+            $subjectList = explode(',', $subjects);
         
             foreach ($subjectList as $subject) {
                 // Format the subject name
-                $formattedSubject = str_replace(',', '', ucwords(strtolower($subject)));
+                $formattedSubject = ucwords(strtolower(trim($subject)));
                 $allSubjects[] = $formattedSubject;
         
                 $gradeLevel = $enrollee->gradeLevel;

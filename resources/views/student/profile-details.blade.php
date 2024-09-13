@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <title>Smartious - Edit Students</title>
+    <title>My Profile</title>
     <link rel="shortcut icon" href="assets/img/favicon.png">
     <style>
         #sidebar {
@@ -21,10 +21,10 @@
                 <div class="page-header">
                     <div class="row align-items-center">
                         <div class="col">
-                            <h3 class="page-title">Edit Students</h3>
+                            <h3 class="page-title">Edit Profile</h3>
                             <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="students.html">Students</a></li>
-                                <li class="breadcrumb-item active">Edit Students</li>
+                                <li class="breadcrumb-item"><a href="students.html">Profile</a></li>
+                                <li class="breadcrumb-item active">Edit Profile</li>
                             </ul>
                         </div>
                     </div>

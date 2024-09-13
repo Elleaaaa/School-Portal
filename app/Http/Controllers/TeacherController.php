@@ -304,7 +304,7 @@ class TeacherController extends Controller
         $images = User::whereIn('studentId', $myStudentsIds)->get();
     
         // Return the view with the required data
-        return view('teacher.grading-by-section', compact('subjects', 'grades', 'students', 'images'));
+        return view('teacher.grading-by-section', compact('subjects', 'grades', 'students', 'images', 'section'));
     }
 
 

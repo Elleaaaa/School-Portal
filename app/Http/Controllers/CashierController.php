@@ -25,8 +25,10 @@ class CashierController extends Controller
                             ->where('status', 'Not Fully Paid')
                             ->distinct('studentId')
                             ->count();
+                            
+        $cashierName = Cashier::where('cashierId', $cashierId)->first();
 
-        return view('cashier.dashboard', compact('cashier', 'enrolledCount', 'teachersCount', 'tuitionTotalPaidCount', 'tuitionTotalNotPaidCount'));
+        return view('cashier.dashboard', compact('cashier', 'cashierName', 'enrolledCount', 'teachersCount', 'tuitionTotalPaidCount', 'tuitionTotalNotPaidCount'));
     }
 
     public function showProfile(string $cashierId)

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <title>All Students</title>
+    <title>All Students Grade</title>
     <link rel="shortcut icon" href="assets/img/favicon.png">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;1,400&amp;display=swap">
@@ -52,6 +52,7 @@
                         <div class="form-group">
                             <input type="file" name="gradeImport">
                             <button type="submit" class="btn btn-primary">Submit</button>
+                            <p style="color: red">*remove first the first row "All Students" when importing file<p>
                         </div>
                     </form>
                 </div>

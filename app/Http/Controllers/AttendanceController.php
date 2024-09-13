@@ -67,7 +67,7 @@ class AttendanceController extends Controller
         // Fetch user images only for relevant students
         $images = User::whereIn('studentId', $myStudentsIds)->get();
     
-        return view('teacher.attendance', compact('myStudents', 'images', 'studentDetails'));
+        return view('teacher.attendance', compact('myStudents', 'images', 'studentDetails', 'section'));
     }
 
     public function showAttendance()

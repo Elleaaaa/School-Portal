@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <title>Dashboard</title>
+    <title>My Schedule</title>
     <link rel="shortcut icon" href="assets/img/favicon.png">
 
 </head>
@@ -17,10 +17,10 @@
                <div class="page-header">
                   <div class="row align-items-center">
                      <div class="col">
-                        <h3 class="page-title">Calendar</h3>
+                        <h3 class="page-title">Schedule</h3>
                         <ul class="breadcrumb">
                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                           <li class="breadcrumb-item active">Calendar</li>
+                           <li class="breadcrumb-item active">Schedule</li>
                         </ul>
                      </div>
                      
