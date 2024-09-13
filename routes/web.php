@@ -97,6 +97,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/schedule', [CalendarController::class, 'teacherSchedule'])->name('teacherSchedule.show');
 
     //attendance
+    Route::get('/students-attendance/{gradeLevel}/{section}', [AttendanceController::class, 'showAttendaceBySection'])->name('studentattendancebysection.show');
+
     Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
     Route::post('/attendance', [AttendanceController::class, 'store'])->name('attendance.store');
     Route::get('/view-attendance', [AttendanceController::class, 'showAttendance'])->name('view-attendance.show');
@@ -176,8 +178,11 @@ Route::middleware('auth')->group(function () {
 
 
     //FORMS
-    Route::get('/cor', [FormController::class, 'printCOR'])->name('cor.get');
     Route::get('/request/cor', [FormController::class, 'requestCOR'])->name('correquest.show');
+    Route::get('/cor', [FormController::class, 'printCOR'])->name('cor.get');
+
+    Route::get('/request/goodmoral', [FormController::class, 'requestGoodMoral'])->name('goodmoralrequest.show');
+    Route::get('/goodmoral', [FormController::class, 'printGoodMoral'])->name('goodmoral.get');
 });
 
 // SUPERADMIN ROUTES

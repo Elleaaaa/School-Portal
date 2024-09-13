@@ -8,6 +8,7 @@ use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Enrollee;
 use App\Models\Attendance;
+use App\Models\Grade;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -20,30 +21,54 @@ class AttendanceController extends Controller
     public function index()
     {
         $id = Auth::user()->studentId;
-        $advisorySection = Section::where('teacherId', $id)->first();
-        $handleSubjects = Subject::where('teacherId', $id)->first();
-        $myStudents = collect();
-        $section = null;
+        $handleSections = Subject::where('teacherId', $id)
+            ->select('gradeLevel', 'section')
+            ->distinct()
+            ->get();
+        return view('teacher.attendance-by-section', compact('handleSections'));
+    }
+
+    public function showAttendaceBySection(string $gradeLevel, string $section)
+    {
+        $id = Auth::user()->studentId;
     
-        if ($advisorySection) {
-            $gradeLevel = $advisorySection->gradeLevel;
-            $section = $advisorySection->sectionName;
-            $myStudents = Enrollee::where('gradeLevel', $gradeLevel)
+        // Fetch subjects for the given teacher, grade level, and section
+        $subjects = Subject::where('teacherId', $id)
+            ->where('gradeLevel', $gradeLevel)
+            ->where('section', $section)
+            ->get();
+    
+        // Fetch students enrolled in the specified grade level and section
+        $myStudents = Enrollee::where('gradeLevel', $gradeLevel)
+            ->where('section', $section)
+            ->get();
+    
+        // Get student IDs
+        $myStudentsIds = $myStudents->pluck('studentId')->toArray();
+    
+        // Initialize an empty collection for grades
+        $grades = collect();
+    
+        // Fetch grades for each subject only once, filtered by student ID
+        foreach ($subjects as $subject) {
+            $subjectGrades = Grade::where('subject', $subject->subject)
+                ->where('gradeLevel', $gradeLevel)
                 ->where('section', $section)
+                ->whereIn('studentId', $myStudentsIds) // Ensure grades are only for enrolled students
                 ->get();
-        } elseif ($handleSubjects) {
-            $subject = $handleSubjects->subject;
-            $myStudents = Enrollee::whereRaw("FIND_IN_SET(?, REPLACE(subjects, ' ', ''))", [$subject])
-                ->get();
+    
+            // Merge grades into the $grades collection
+            $grades = $grades->merge($subjectGrades);
         }
     
-        $myStudentsIds = $myStudents->pluck('studentId')->toArray();
+        // Fetch student details based on IDs
         $studentDetails = Student::whereIn('studentId', $myStudentsIds)->get();
-        $images = User::all();
     
-        return view('teacher.attendance', compact('myStudents', 'images', 'studentDetails', 'section'));
+        // Fetch user images only for relevant students
+        $images = User::whereIn('studentId', $myStudentsIds)->get();
+    
+        return view('teacher.attendance', compact('myStudents', 'images', 'studentDetails'));
     }
-    
 
     public function showAttendance()
     {

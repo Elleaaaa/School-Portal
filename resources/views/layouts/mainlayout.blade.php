@@ -293,6 +293,7 @@
                                     class="menu-arrow"></span></a>
                             <ul>
                                 <li><a href="{{ route('correquest.show') }}">COR</a></li>
+                                <li><a href="{{ route('goodmoralrequest.show') }}">Good Moral</a></li>
                             </ul>
                         </li>
 

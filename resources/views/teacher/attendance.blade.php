@@ -43,7 +43,6 @@
                             <thead>
                                 <tr>
                                     <th>Student Name</th>
-                                    <th>Section</th>
                                     <th class="text-center">Present</th>
                                     <th class="text-center">Absent</th>
                                 </tr>
@@ -52,7 +51,6 @@
                                 @foreach ($myStudents as $student)
                                     <tr>
                                         <td>{{ $student->name }}</td>
-                                        <td>{{ $section }}</td>
                                         <td class="text-center">
                                             <div class="custom-radio">
                                                 <input type="radio" name="attendance[{{ $student->studentId }}]" value="1" required>

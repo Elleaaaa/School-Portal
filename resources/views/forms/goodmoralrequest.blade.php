@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <title>COR Request</title>
+    <title>Good Moral Request</title>
 
 </head>
 
@@ -19,7 +19,7 @@
                             <h3 class="page-title">Forms</h3>
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="students.html">Form Request</a></li>
-                                <li class="breadcrumb-item active">COR</li>
+                                <li class="breadcrumb-item active">Good Moral</li>
                             </ul>
                         </div>
                     </div>
@@ -28,7 +28,7 @@
                     <div class="col-sm-12">
                         <div class="card">
                             <div class="card-body">
-                                <form method="GET" action="{{ route('cor.get') }}">
+                                <form method="GET" action="{{ route('goodmoral.get') }}">
                                     @csrf
                                     <div class="row">
                                          {{-- Student Information --}}
@@ -86,14 +86,6 @@
                                                     value="{{ old('strand') }}">
                                             </div>
                                         </div>
-                                        <div class="col-12 col-sm-6 col-md-6">
-                                            <div class="form-group">
-                                                <label>Purpose</label>
-                                                <input name="purpose" type="text" class="form-control"
-                                                    value="{{ old('purpose') }}" required>
-                                            </div>
-                                        </div>
-
                                         <div class="col-12">
                                             <button type="submit" class="btn btn-primary">Submit</button>
                                         </div>
