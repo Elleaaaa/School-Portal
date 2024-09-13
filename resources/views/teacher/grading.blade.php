@@ -77,7 +77,7 @@
                                         <tbody>
                                             @foreach ($students as $student)
                                                 {{-- @foreach ($studentGrade->where('studentId', $student->studentId) as $grade) --}}
-                                                @foreach ($grade->where('studentId', $student->studentId) as $grade)
+                                                @foreach ($grades->where('studentId', $student->studentId) as $grade)
                                                     <tr>
                                                         <td class="text-left" hidden>
                                                             {{ $grade->id }}

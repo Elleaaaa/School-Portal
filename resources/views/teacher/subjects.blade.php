@@ -48,7 +48,7 @@
                                     @if($subjects)
                                        @foreach ($subjects as $subject)
                                        <tr>
-                                          <td><a href="{{ route('teacher-subjectdetails.show', ['subjectId' => $subject->id]) }}"> {{$subject->subject}}</a></td>
+                                          <td><a href="{{ route('teacher-subjectdetails.show', ['subjectId' => $subject->id]) }}"> {{$subject->subject}} - {{$subject->gradeLevel}} - {{$subject->section}}</a></td>
                                        </tr>
                                        @endforeach
                                        @else

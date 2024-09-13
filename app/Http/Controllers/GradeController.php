@@ -110,15 +110,22 @@ class GradeController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // Retrieve the grade record
         $grade = Grade::where('id', $id)->first();
-        $grade->firstQGrade = $request->input('firstQGrade') !== null ? $request->input('firstQGrade') : 'not yet graded';
-        $grade->secondQGrade = $request->input('secondQGrade') !== null ? $request->input('secondQGrade') : 'not yet graded';
-        $grade->thirdQGrade = $request->input('thirdQGrade') !== null ? $request->input('thirdQGrade') : 'not yet graded';
-        $grade->fourthQGrade = $request->input('fourthQGrade') !== null ? $request->input('fourthQGrade') : 'not yet graded';
+    
+        // Only update if the input value is not null, otherwise keep the existing value
+        $grade->firstQGrade = $request->input('firstQGrade') !== null ? $request->input('firstQGrade') : $grade->firstQGrade;
+        $grade->secondQGrade = $request->input('secondQGrade') !== null ? $request->input('secondQGrade') : $grade->secondQGrade;
+        $grade->thirdQGrade = $request->input('thirdQGrade') !== null ? $request->input('thirdQGrade') : $grade->thirdQGrade;
+        $grade->fourthQGrade = $request->input('fourthQGrade') !== null ? $request->input('fourthQGrade') : $grade->fourthQGrade;
+    
+        // Save the updated grades
         $grade->save();
-
-        return redirect()->route('studentsgrade.show');
+    
+        // Redirect to the students grade page
+        return redirect()->back();
     }
+    
 
     /**
      * Remove the specified resource from storage.

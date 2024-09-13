@@ -35,11 +35,11 @@ class SubjectController extends Controller
     public function store(Request $request)
     {
          // Check if the subject already exists
-            $existingSubject = Subject::where('teacherId', $request->input('teacherId'))
-            ->where('gradeLevel', $request->input('gradeLevel'))
-            ->where('section', $request->input('section'))
-            ->where('subject', $request->input('subjectTitle'))
-            ->first();
+        $existingSubject = Subject::where('teacherId', $request->input('teacherId'))
+        ->where('gradeLevel', $request->input('gradeLevel'))
+        ->where('section', $request->input('section'))
+        ->where('subject', $request->input('subjectTitle'))
+        ->first();
 
         if ($existingSubject) {
         // Optionally: Update the existing record
@@ -49,8 +49,8 @@ class SubjectController extends Controller
 
         // Notify the user and redirect
         notify()->warning('Subject already exists for this section!');
-        }
-
+        } else
+        {
         // Add New Subject
         $subject = new Subject();
 
@@ -64,8 +64,8 @@ class SubjectController extends Controller
         $subject->save();
 
         notify()->success('Subject Added Successfully!');
-        return redirect()->route('subjectlist.show');
-
+        }
+        return redirect()->back();
     }
 
     /**

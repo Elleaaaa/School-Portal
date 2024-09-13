@@ -141,38 +141,54 @@ class TeacherController extends Controller
         return view('admin.edit-teacher', compact('teacher', 'address'));
     }
 
-    // this will display student based on handle section, if there is no section, it will based on handle subjects
+    // this will display student based on handle subjects
     public function showStudents()
     {
         $id = Auth::user()->studentId;
-        $handleStudents = Section::where('teacherId', $id)->first();
-        $handleSubjects = Subject::where('teacherId', $id)->first();
-        $myStudents = null;
-
-        if ($handleStudents) {
-            $gradeLevel = $handleStudents->gradeLevel;
-            $section = $handleStudents->sectionName;
-            $myStudents = Enrollee::where('gradeLevel', $gradeLevel)
-                ->where('section', $section)
-                ->get();
-        } elseif ($handleSubjects) {
-            $subject = $handleSubjects->subject;
-            $myStudents = Enrollee::whereRaw("FIND_IN_SET(?, REPLACE(subjects, ' ', ''))", [$subject])
-                ->get();
-        } else {
-            return view('teacher.my-students', [
-                'myStudents' => collect(),
-                'images' => User::all(),
-                'studentDetails' => collect(),
-                'message' => 'No Students Yet',
-            ]);
+        
+        // Fetch distinct sections for the teacher
+        $handleSections = Subject::where('teacherId', $id)
+            ->select('gradeLevel', 'section')
+            ->distinct()
+            ->get();
+    
+        // Initialize an empty collection for students
+        $myStudents = collect();
+    
+        // Fetch subjects handled by the teacher
+        $handleSubjects = Subject::where('teacherId', $id)->get();
+    
+        if ($handleSubjects->isNotEmpty()) {
+            // Loop through each section
+            foreach ($handleSections as $section) {
+                // Find students for each subject and section
+                foreach ($handleSubjects as $subject) {
+                    $students = Enrollee::whereRaw("FIND_IN_SET(?, REPLACE(subjects, ' ', ''))", [$subject->subject])
+                        ->where('gradeLevel', $section->gradeLevel)
+                        ->where('section', $section->section)
+                        ->get();
+    
+                    // Merge the found students into the $myStudents collection
+                    $myStudents = $myStudents->merge($students);
+                }
+            }
         }
-
+    
+        // Remove duplicates by student ID
+        $myStudents = $myStudents->unique('studentId');
+    
+        // Get unique student IDs from the merged students collection
         $myStudentsIds = $myStudents->pluck('studentId')->toArray();
+        // Fetch student details based on IDs
         $studentDetails = Student::whereIn('studentId', $myStudentsIds)->get();
-        $images = User::all();
+    
+        // Retrieve images only for the relevant students
+        $images = User::whereIn('studentId', $myStudentsIds)->get();
+    
+        // Return the view with the required data
         return view('teacher.my-students', compact('myStudents', 'images', 'studentDetails'));
     }
+     
 
 
     /**
@@ -181,46 +197,61 @@ class TeacherController extends Controller
     public function showStudentsGrade()
     {
         $id = Auth::user()->studentId;
-        $advisorySection = Section::where('teacherId', $id)->first();
-        $handleSubjects = Subject::where('teacherId', $id)->first();
-        $myStudents = collect(); // Initialize as an empty collection
+        $handleSubjects = Subject::where('teacherId', $id)->get();
+        $myStudents = collect(); // Initialize an empty collection for students
+        $grades = collect(); // Initialize an empty collection for grades
+        
+        $handleSections = Subject::where('teacherId', $id)
+            ->select('gradeLevel', 'section')
+            ->distinct()
+            ->get();
     
-        if ($advisorySection) {
-            $gradeLevel = $advisorySection->gradeLevel;
-            $section = $advisorySection->sectionName;
-            $myStudents = Enrollee::where('gradeLevel', $gradeLevel)
-                ->where('section', $section)
-                ->get();
-        } elseif ($handleSubjects) {
-            $subject = $handleSubjects->subject;
-            $myStudents = Enrollee::whereRaw("FIND_IN_SET(?, REPLACE(subjects, ' ', ''))", [$subject])
-                ->get();
+        if ($handleSubjects->isNotEmpty()) { // Check if collection is not empty
+            // Loop through each section
+            foreach ($handleSections as $section) {
+                // Loop through each subject and find students and grades
+                foreach ($handleSubjects as $subject) {
+                    // Find students for each subject and section
+                    $students = Enrollee::whereRaw("FIND_IN_SET(?, REPLACE(subjects, ' ', ''))", [$subject->subject])
+                        ->where('gradeLevel', $section->gradeLevel)
+                        ->where('section', $section->section)
+                        ->get();
+    
+                    // Merge the found students into the $myStudents collection
+                    $myStudents = $myStudents->merge($students);
+    
+                    // Find grades for each subject and section
+                    $subjectGrades = Grade::whereRaw("FIND_IN_SET(?, REPLACE(subject, ' ', ''))", [$subject->subject])
+                        ->where('gradeLevel', $section->gradeLevel)
+                        ->where('section', $section->section)
+                        ->get();
+    
+                    // Merge the found grades into the $grades collection
+                    $grades = $grades->merge($subjectGrades);
+                }
+            }
         }
+        
+        // Remove duplicates by student ID
+        $myStudents = $myStudents->unique('studentId');
+        $grades = $grades->unique('studentId');
     
+        // Get unique student IDs from the merged students collection
         $myStudentsIds = $myStudents->pluck('studentId')->toArray();
         $students = Student::whereIn('studentId', $myStudentsIds)->get();
-        $images = User::all();
     
-        // Show the grade of the student
-        $grade = collect(); // Initialize as an empty collection
-    
-        if ($advisorySection) {
-            $gradeLevel = $advisorySection->gradeLevel;
-            $section = $advisorySection->sectionName;
-            $grade = Grade::where('gradeLevel', $gradeLevel)
-                ->where('section', $section)
-                ->get();
-        } elseif ($handleSubjects) {
-            $subject = $handleSubjects->subjectTitle;
-            $grade = Grade::whereRaw("FIND_IN_SET(?, REPLACE(subject, ' ', ''))", [$subject])
-                ->get();
-        }
-    
-        $gradeStudentsIds = $grade->pluck('studentId')->toArray();
+        // Get unique student IDs from the merged grades collection
+        $gradeStudentsIds = $grades->pluck('studentId')->toArray();
         $studentGrade = Grade::whereIn('studentId', $gradeStudentsIds)->get();
     
-        return view('teacher.grading', compact('images', 'studentGrade', 'students', 'grade'));
+        // Retrieve images (assuming they are stored in User model)
+        $images = User::all();
+    
+        return view('teacher.grading', compact('images', 'studentGrade', 'students', 'grades'));
     }
+    
+    
+    
     
 
     public function showHandleSections()
@@ -236,51 +267,45 @@ class TeacherController extends Controller
     public function showStudentsGradeBySection(string $gradeLevel, string $section)
     {
         $id = Auth::user()->studentId;
-
+    
         // Fetch subjects for the given teacher, grade level, and section
         $subjects = Subject::where('teacherId', $id)
             ->where('gradeLevel', $gradeLevel)
             ->where('section', $section)
             ->get();
-
+    
         // Fetch students enrolled in the specified grade level and section
         $myStudents = Enrollee::where('gradeLevel', $gradeLevel)
             ->where('section', $section)
             ->get();
-
+    
+        // Get student IDs
+        $myStudentsIds = $myStudents->pluck('studentId')->toArray();
+    
         // Initialize an empty collection for grades
-        $grade = collect();
-
-        // Fetch grades for each subject
+        $grades = collect();
+    
+        // Fetch grades for each subject only once, filtered by student ID
         foreach ($subjects as $subject) {
             $subjectGrades = Grade::where('subject', $subject->subject)
                 ->where('gradeLevel', $gradeLevel)
                 ->where('section', $section)
+                ->whereIn('studentId', $myStudentsIds) // Ensure grades are only for enrolled students
                 ->get();
-
+    
             // Merge grades into the $grades collection
-            $grade = $grade->merge($subjectGrades);
+            $grades = $grades->merge($subjectGrades);
         }
-
-        // Get the IDs of students
-        $myStudentsIds = $myStudents->pluck('studentId')->toArray();
+    
         // Fetch student details based on IDs
         $students = Student::whereIn('studentId', $myStudentsIds)->get();
-        // Fetch user images for relevant users if needed
-        $images = User::all();
-
-        // foreach($students as $student)
-        // {
-        //     dd($student->firstName);
-        // }
-
+    
+        // Fetch user images only for relevant students
+        $images = User::whereIn('studentId', $myStudentsIds)->get();
+    
         // Return the view with the required data
-        return view('teacher.grading-by-section', compact('subjects', 'grade', 'students', 'images'));
+        return view('teacher.grading-by-section', compact('subjects', 'grades', 'students', 'images'));
     }
-
-
-
-
 
 
     public function showSubjectList(string $teacherId)

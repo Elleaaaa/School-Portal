@@ -38,7 +38,7 @@
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label for="studentId">Student ID</label>
-                                                <input type="text" class="form-control" name="studentId" id="studentId" required>
+                                                <input type="text" class="form-control" name="studentId" id="studentId" >
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6">
@@ -90,7 +90,7 @@
                                             <div class="form-group">
                                                 <label>Purpose</label>
                                                 <input name="purpose" type="text" class="form-control"
-                                                    value="{{ old('purpose') }}" required>
+                                                    value="{{ old('purpose') }}" >
                                             </div>
                                         </div>
 
