@@ -33,7 +33,7 @@ Route::get('/login', function () {
 //Limit the request of the users
 Ratelimiter::for('auth_limited', function (Request $request) {
     if ($user = $request->user()) {
-        return Limit::perMinute(10)->by($user->id);
+        return Limit::perMinute(60)->by($user->id);
     }
     return Limit::none();
 });
@@ -45,7 +45,7 @@ Route::middleware(['auth', 'throttle:auth_limited'])->group(function (){
 });
 
 
-Route::middleware(['guest', 'throttle:auth_limited'])->group(function () {
+Route::middleware(['guest'])->group(function () {
     // FOR LOGGING IN
     Route::get('/', [LoginController::class, 'index'])->name('login');
     Route::post('/login1', [LoginController::class, 'login'])->name('login1');
@@ -88,7 +88,6 @@ Route::middleware(['auth', 'throttle:auth_limited'])->group(function () {
 
 
 // TEACHER ROUTES
-
 Route::middleware(['auth', 'throttle:auth_limited'])->group(function (){
     Route::get('/teacher-dashboard/{teacherId}', [TeacherController::class, 'showDashboard'])->name('teacher-dashboard.show');
 
