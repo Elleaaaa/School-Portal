@@ -77,7 +77,7 @@
                             <div class="card-body">
                                 <div class="db-widgets d-flex justify-content-between align-items-center">
                                     <div class="db-icon">
-                                        <i class="fas fa-crown"></i>
+                                        <i class="fas fa-chalkboard-teacher"></i>
                                     </div>
                                     <div class="db-info">
                                         <h3>{{$teachersCount}}</h3>

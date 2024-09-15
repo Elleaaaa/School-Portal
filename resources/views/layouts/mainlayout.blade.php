@@ -13,12 +13,32 @@
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
+    <script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
     {{-- use for the toast --}}
     @notifyCss
     <style>
         .notify {
             z-index: 9999;
         }
+        
+        body.darkmode {
+            background-color: #333333 !important;  /* Customize your dark background */
+            color: #e0e0e0 !important;  /* Customize text color */
+        }
+
+        header.darkmode {
+            background-color: #333333 !important; /* Change header background in dark mode */
+        }
+
+        footer.darkmode {
+            background-color: #444444 !important; /* Change footer background in dark mode */
+        }
+
+        .darkmode-layer, .darkmode-toggle {
+            z-index: 9999 !important; /* Apply a higher z-index */
+        }
+
     </style>
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -31,51 +51,51 @@
         <div class="header-left">
             @if (Auth::user()->usertype == 'superadmin')
                 <a href="{{ route('supadmin-dashboard.show', ['supAdminId' => Auth::user()->studentId]) }}" class="logo">
-                    <img src="{{ asset('img/logo.png') }}" alt="Logo">
+                    <img src="{{ asset('img/LICEO.png') }}" alt="Logo">
                 </a>
                 <a href="{{ route('supadmin-dashboard.show', ['supAdminId' => Auth::user()->studentId]) }}"
                     class="logo logo-small">
-                    <img src="{{ asset('img/logo.png') }}" alt="Logo" width="30" height="30">
+                    <img src="{{ asset('img/Liceo-sm.png') }}" alt="Logo" width="30" height="30">
                 </a>
             @endif
             @if (Auth::user()->usertype == 'cashier')
                 <a href="{{ route('cashier-dashboard.show', ['cashierId' => Auth::user()->studentId]) }}" class="logo">
-                    <img src="{{ asset('img/logo.png') }}" alt="Logo">
+                    <img src="{{ asset('img/LICEO.png') }}" alt="Logo">
                 </a>
                 <a href="{{ route('cashier-dashboard.show', ['cashierId' => Auth::user()->studentId]) }}"
                     class="logo logo-small">
-                    <img src="{{ asset('img/logo.png') }}" alt="Logo" width="30" height="30">
+                    <img src="{{ asset('img/Liceo-sm.png') }}" alt="Logo" width="30" height="30">
                 </a>
             @endif
             @if (Auth::user()->usertype == 'admin')
                 <a href="{{ route('admin-dashboard.show', ['studentId' => Auth::user()->studentId]) }}" class="logo">
-                    <img src="{{ asset('img/logo.png') }}" alt="Logo">
+                    <img src="{{ asset('img/LICEO.png') }}" alt="Logo">
                 </a>
                 <a href="{{ route('admin-dashboard.show', ['studentId' => Auth::user()->studentId]) }}"
                     class="logo logo-small">
-                    <img src="{{ asset('img/logo.png') }}" alt="Logo" width="30" height="30">
+                    <img src="{{ asset('img/Liceo-sm.png') }}" alt="Logo" width="30" height="30">
                 </a>
             @endif
 
             @if (Auth::user()->usertype == 'teacher')
                 <a href="{{ route('teacher-dashboard.show', ['teacherId' => Auth::user()->studentId]) }}"
                     class="logo">
-                    <img src="{{ asset('img/logo.png') }}" alt="Logo">
+                    <img src="{{ asset('img/LICEO.png') }}" alt="Logo">
                 </a>
                 <a href="{{ route('teacher-dashboard.show', ['teacherId' => Auth::user()->studentId]) }}"
                     class="logo logo-small">
-                    <img src="{{ asset('img/logo.png') }}" alt="Logo" width="30" height="30">
+                    <img src="{{ asset('img/Liceo-sm.png') }}" alt="Logo" width="30" height="30">
                 </a>
             @endif
 
             @if (Auth::user()->usertype == 'student')
                 <a href="{{ route('student-dashboard.show') }}"
                     class="logo">
-                    <img src="{{ asset('img/logo.png') }}" alt="Logo">
+                    <img src="{{ asset('img/LICEO.png') }}" alt="Logo">
                 </a>
                 <a href="{{ route('student-dashboard.show') }}"
                     class="logo logo-small">
-                    <img src="{{ asset('img/logo.png') }}" alt="Logo" width="30" height="30">
+                    <img src="{{ asset('img/Liceo-sm.png') }}" alt="Logo" width="30" height="30">
                 </a>
             @endif
         </div>
@@ -483,6 +503,27 @@
         }
     })});
     </script>
+
+<script>
+    // Initialize dark mode options (customize if needed)
+    const options = {
+      bottom: '32px', // Position of the darkmode switch
+      right: '32px', // Distance from right edge
+      left: 'unset', // Distance from left edge
+      time: '0.5s',  // Transition time
+      mixColor: '#fff', // Default color for transitions
+      backgroundColor: '#fff',  // Default light mode background color
+      buttonColorDark: '#100f2c',  // Dark mode button color
+      buttonColorLight: '#fff',   // Light mode button color
+      saveInCookies: true,  // Save user's dark mode preference
+      label: '🌓',  // The label on the switch button
+      autoMatchOsTheme: true // Automatically match OS theme setting
+    };
+  
+    const darkmode = new Darkmode(options);
+    darkmode.showWidget(); // This will show the dark mode toggle button
+  </script>
+  
 </body>
 
 </html>

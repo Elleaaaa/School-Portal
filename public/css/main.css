@@ -159,7 +159,7 @@ iframe {
   height: 100%;
   top: 0;
   left: 0;
-  background-color: rgba(255,255,255,0.9);
+  background-color: rgba(255,255,255,0.5);
 }
 
 .wrap-login100 {
@@ -265,7 +265,8 @@ iframe {
 }
 
 .focus-input100::after {
-  font-family: 'Font Awesome 6 Free';
+  font-family: 'Font Awesome 6 Free'; /* Font Awesome font family */
+  font-weight: 900;
   font-size: 22px;
   color: #fff;
 

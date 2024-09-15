@@ -16,24 +16,36 @@ use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\EnrolleesController;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Http\Request;
 
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\CashierController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\SuperAdminController;
+use Illuminate\Cache\RateLimiting\Limit;
 
 Route::get('/login', function () {
     return view('login');
 })->middleware(['auth', 'verified'])->name('login'); // will redirect here after register
 
-Route::middleware('auth')->group(function () {
+//Limit the request of the users
+Ratelimiter::for('auth_limited', function (Request $request) {
+    if ($user = $request->user()) {
+        return Limit::perMinute(10)->by($user->id);
+    }
+    return Limit::none();
+});
+
+Route::middleware(['auth', 'throttle:auth_limited'])->group(function (){
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware('guest')->group(function () {
+
+Route::middleware(['guest', 'throttle:auth_limited'])->group(function () {
     // FOR LOGGING IN
     Route::get('/', [LoginController::class, 'index'])->name('login');
     Route::post('/login1', [LoginController::class, 'login'])->name('login1');
@@ -42,7 +54,7 @@ Route::middleware('guest')->group(function () {
 
 
 // STUDENT ROUTES
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'throttle:auth_limited'])->group(function () {
     Route::get('/profile-details/{studentId}', [StudentController::class, 'showProfile'])->name('profile-details.show');
     Route::get('/student-dashboard', [StudentController::class, 'showDashboard'])->name('student-dashboard.show');
     Route::get('/student-subjectlist', [StudentController::class, 'showSubjectList'])->name('student-subjectlist.show');
@@ -75,10 +87,9 @@ Route::middleware('auth')->group(function () {
 });
 
 
-
-
 // TEACHER ROUTES
-Route::middleware('auth')->group(function () {
+
+Route::middleware(['auth', 'throttle:auth_limited'])->group(function (){
     Route::get('/teacher-dashboard/{teacherId}', [TeacherController::class, 'showDashboard'])->name('teacher-dashboard.show');
 
     Route::get('/profile-teacher/{teacherId}', [TeacherController::class, 'showProfile'])->name('profile-teacher.show');
@@ -110,8 +121,9 @@ Route::middleware('auth')->group(function () {
 });
 
 
+
 // ADMIN ROUTES
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'throttle:auth_limited'])->group(function () {
     Route::get('/admin-dashboard/studentlist', [AdminController::class, 'showStudentList'])->name('studentlist.show');
     Route::get('/admin-dashboard/teacherlist', [AdminController::class, 'showTeacherList'])->name('teacherlist.show');
 
@@ -185,8 +197,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/goodmoral', [FormController::class, 'printGoodMoral'])->name('goodmoral.get');
 });
 
+
 // SUPERADMIN ROUTES
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'throttle:auth_limited'])->group(function () {
     Route::get('/superadmin-dashboard/{supAdminId}', [SuperAdminController::class, 'showDashboard'])->name('supadmin-dashboard.show');
     Route::get('/profile-superadmin/{supAdminId}', [SuperAdminController::class, 'showProfile'])->name('profile-superadmin.show');
     Route::post('/profile-superadmin/{supAdminId}', [SuperAdminController::class, 'update'])->name('profile-superadmin.update');
@@ -195,8 +208,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/api/allattendance', [AttendanceController::class, 'getallAttendanceAJAX']);
 });
 
+
 // CASHIER ROUTES
-Route::middleware('auth')->group(function () {
+
+Route::middleware(['auth', 'throttle:auth_limited'])->group(function (){
     Route::get('/cashier-dashboard/{cashierId}', [CashierController::class, 'showDashboard'])->name('cashier-dashboard.show');
     Route::get('/profile-cashier/{cashierId}', [CashierController::class, 'showProfile'])->name('profile-cashier.show');
     Route::post('/profile-cashier/{cashierId}', [CashierController::class, 'update'])->name('profile-cashier.update');
@@ -210,17 +225,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/toggle-status/{id}', [FeeListController::class, 'toggleStatus']);
 });
 
-//anyone who logged in can access
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'throttle:auth_limited'])->group(function (){
+    //anyone who logged in can access
     Route::get('/notifications', [NotificationController::class, 'index']);
     Route::get('/notifications/all', [NotificationController::class, 'displayNotif'])->name('notifications.show');
     Route::post('/notifications/mark-as-read/{id}', [NotificationController::class, 'markAsRead']);
     Route::post('/notifications/clear-all', [NotificationController::class, 'clearAll']);
 });
-
-
-
-
 
 
 Route::get('/fees-collection', function() {

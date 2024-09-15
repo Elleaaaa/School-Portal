@@ -114,7 +114,7 @@
                             <tr>
                                 <td>{{$FH->feeReceiptId}}</td>
                                 <td>{{ number_format(($FH->amountPaid),2) }}</td>
-                                <td>{{$FH->created_at}}</td>
+                                <td>{{ $FH->created_at->setTimezone('Asia/Manila')->format('Y-m-d H:i:s') }}</td>
                                 <td>{{$FH->reciever}}</td>
                                 <td>{{$FH->status}}</td>
                             </tr>

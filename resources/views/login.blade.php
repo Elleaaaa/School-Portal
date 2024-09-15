@@ -14,7 +14,7 @@
 </head>
 <body>
 <div class="limiter">
-		<div class="container-login100" style="background-image: url('images/bg-01.jpg');">
+		<div class="container-login100" style="background-image: url('img/backgroundgrad.jpg');">
 			<div class="wrap-login100">
 				<form method="POST" action="{{ url('/login1') }}" class="login100-form validate-form">
 					@csrf
@@ -32,7 +32,7 @@
 					
 					<div class="wrap-input100 validate-input" data-validate="Enter password">
 						<input class="input100" type="password" name="password" placeholder="Password" required>
-						<span class="focus-input100" data-placeholder="&#xf191;"></span>
+						<span class="focus-input100" data-placeholder="&#xf023;"></span>
 					</div>
 					@if ($errors->has('email'))
 						<div class="text-danger">{{ $errors->first('email') }}</div>

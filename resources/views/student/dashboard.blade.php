@@ -52,6 +52,7 @@
                             </div>
                         </div>
                     </div>
+                    
                     <div class="col-xl-3 col-sm-6 col-12 d-flex">
                         <div class="card bg-six w-100">
                             <div class="card-body">
