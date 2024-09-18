@@ -333,6 +333,9 @@
                             <li class="{{ Route::currentRouteName() == 'goodmoralrequest.show' ? 'active' : '' }}">
                                 <a href="{{ route('goodmoralrequest.show') }}">Good Moral</a>
                             </li>
+                            <li class="{{ Route::currentRouteName() == 'sf9jhsrequest.show' ? 'active' : '' }}">
+                                <a href="{{ route('sf9jhsrequest.show') }}">SF9-JHS</a>
+                            </li>
                         </ul>
                     </li>
                 

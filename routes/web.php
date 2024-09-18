@@ -194,6 +194,9 @@ Route::middleware(['auth', 'throttle:auth_limited'])->group(function () {
 
     Route::get('/request/goodmoral', [FormController::class, 'requestGoodMoral'])->name('goodmoralrequest.show');
     Route::get('/goodmoral', [FormController::class, 'printGoodMoral'])->name('goodmoral.get');
+
+    Route::get('/request/sf9-jhs', [FormController::class, 'requestSF9JHS'])->name('sf9jhsrequest.show');
+    Route::get('/SF9-JHS', [FormController::class, 'printSF9JHS'])->name('sf9jhs.get');
 });
 
 

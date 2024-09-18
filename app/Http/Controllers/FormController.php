@@ -82,4 +82,22 @@ class FormController extends Controller
         // Download PDF with A4 size
         return $pdf->setPaper('A4', 'portrait')->stream('Good_Moral.pdf');
     }
+
+    // fill up form for  SF9 JHS
+    public function requestSF9JHS()
+    {        
+        return view('forms.sf9-jhsrequest');
+    }
+
+    public function printSF9JHS(Request $request)
+    {       
+        $data = [
+        'imagelogo' => public_path('img/logo/baylogo.png')
+        ];
+
+        $pdf = PDF::loadView('forms.sf9-jhs', $data);
+        
+        // Download PDF with A4 size
+        return $pdf->setPaper('A4', 'portrait')->stream('SF9_JHS.pdf');
+    }
 }
