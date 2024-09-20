@@ -46,7 +46,7 @@
                     </div>
                 </div>
 
-                @if (session('success'))
+                {{-- @if (session('success'))
                     <div id="successAlert" class="alert alert-success">
                         {{ session('success') }}
                     </div>
@@ -55,7 +55,25 @@
                     <div id="failedAlert" class="alert alert-failed">
                         {{ session('failed') }}
                     </div>
-                @endif
+                @endif --}}
+
+                <div class="row">
+                    <div class="col-12 col-lg-12 col-xl-12 d-flex">
+                        <div class="card flex-fill">
+                            <div class="card-header">
+                                <div class="row align-items-center">
+                                    <div class="col-12">
+                                        <h5 class="card-title">Calendar</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div id="calendar" class="calendar-container"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="col-xl-3 col-sm-6 col-12 d-flex">
                         <div class="card bg-one w-100">
@@ -92,26 +110,101 @@
                             <div class="card-body">
                                 <div class="db-widgets d-flex justify-content-between align-items-center">
                                     <div class="db-icon">
-                                        <i class="fas fa-building"></i>
+                                        <i class="fas fa-hourglass-half"></i>
                                     </div>
                                     <div class="db-info">
-                                        <h3>30+</h3>
-                                        <h6>Department</h6>
+                                        <h3>{{ $pendingCount }}</h3>
+                                        <h6>Pending Enrollment</h6>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-xl-3 col-sm-6 col-12 d-flex">
-                        <div class="card bg-four w-100">
+                        <div class="card bg-one w-100">
                             <div class="card-body">
                                 <div class="db-widgets d-flex justify-content-between align-items-center">
                                     <div class="db-icon">
-                                        <i class="fas fa-file-invoice-dollar"></i>
+                                        <i class="fas fa-user-graduate"></i>
                                     </div>
                                     <div class="db-info">
-                                        <h3>$505</h3>
-                                        <h6>Revenue</h6>
+                                        <h3>{{ $grade7 }}</h3>
+                                        <h6><a href="{{ route('studentlist.show') }}">Grade 7 Students</a></h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-sm-6 col-12 d-flex">
+                        <div class="card bg-one w-100">
+                            <div class="card-body">
+                                <div class="db-widgets d-flex justify-content-between align-items-center">
+                                    <div class="db-icon">
+                                        <i class="fas fa-user-graduate"></i>
+                                    </div>
+                                    <div class="db-info">
+                                        <h3>{{ $grade8 }}</h3>
+                                        <h6><a href="{{ route('studentlist.show') }}">Grade 8 Students</a></h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-sm-6 col-12 d-flex">
+                        <div class="card bg-one w-100">
+                            <div class="card-body">
+                                <div class="db-widgets d-flex justify-content-between align-items-center">
+                                    <div class="db-icon">
+                                        <i class="fas fa-user-graduate"></i>
+                                    </div>
+                                    <div class="db-info">
+                                        <h3>{{ $grade9 }}</h3>
+                                        <h6><a href="{{ route('studentlist.show') }}">Grade 9 Students</a></h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-sm-6 col-12 d-flex">
+                        <div class="card bg-one w-100">
+                            <div class="card-body">
+                                <div class="db-widgets d-flex justify-content-between align-items-center">
+                                    <div class="db-icon">
+                                        <i class="fas fa-user-graduate"></i>
+                                    </div>
+                                    <div class="db-info">
+                                        <h3>{{ $grade10 }}</h3>
+                                        <h6><a href="{{ route('studentlist.show') }}">Grade 10 Students</a></h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-sm-6 col-12 d-flex">
+                        <div class="card bg-one w-100">
+                            <div class="card-body">
+                                <div class="db-widgets d-flex justify-content-between align-items-center">
+                                    <div class="db-icon">
+                                        <i class="fas fa-user-graduate"></i>
+                                    </div>
+                                    <div class="db-info">
+                                        <h3>{{ $grade11 }}</h3>
+                                        <h6><a href="{{ route('studentlist.show') }}">Grade 11 Students</a></h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-sm-6 col-12 d-flex">
+                        <div class="card bg-one w-100">
+                            <div class="card-body">
+                                <div class="db-widgets d-flex justify-content-between align-items-center">
+                                    <div class="db-icon">
+                                        <i class="fas fa-user-graduate"></i>
+                                    </div>
+                                    <div class="db-info">
+                                        <h3>{{ $grade12 }}</h3>
+                                        <h6><a href="{{ route('studentlist.show') }}">Grade 12 Students</a></h6>
                                     </div>
                                 </div>
                             </div>
@@ -119,33 +212,24 @@
                     </div>
                 </div>
 
-
                 <div class="row">
-                    {{-- <div class="col-auto text-right float-right ml-auto">
-                        <a href="add-events.html" class="btn btn-primary"> Add Event <i class="fas fa-plus"></i></a>
-                    </div> --}}
-                    {{-- <div class="col-lg-12 col-md-12 col-sm-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div id="calendar"></div>
-                            </div>
-                        </div>
-                    </div> --}}
                     <div class="col-12 col-lg-12 col-xl-12 d-flex">
                         <div class="card flex-fill">
                             <div class="card-header">
                                 <div class="row align-items-center">
                                     <div class="col-12">
-                                        <h5 class="card-title">Calendar</h5>
+                                        <h5 class="card-title">Student Graph</h5>
                                     </div>
                                 </div>
                             </div>
                             <div class="card-body">
-                                <div id="calendar" class="calendar-container"></div>
+                                <canvas id="studentGraph"></canvas> <!-- Changed to canvas for Chart.js -->
                             </div>
                         </div>
                     </div>
                 </div>
+
+
                 @include('layouts/footer')
 
          <!-- Modal for adding new event -->
@@ -205,126 +289,141 @@
     <script src="{{ asset('js/myjs/timerAlert.js') }}"></script>
 
     <script src="{{ asset('js/myjs/events.fullcalendar.js') }}"></script>
+    <script src="{{ asset('js/chart.js') }}"></script>
 
-    {{-- <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            display_events();
-        });
-
-        function display_events() {
-            fetch('/get-events')
-                .then(response => response.json())
-                .then(response => {
-                    console.log("AJAX response: ", response);
-                    if (response.data && response.data.length > 0) {
-                        var events = response.data.map(item => {
-                            if (item.id && item.title && item.start && item.end) {
-                                return {
-                                    id: item.id,
-                                    title: item.title,
-                                    start: item.start,
-                                    end: item.end,
-                                    allDay: item.allDay // Adjust as needed
-                                };
-                            } else {
-                                console.warn("Invalid event data:", item);
-                                return null;
-                            }
-                        }).filter(event => event !== null);
-                        console.log("Events Array:", events);
-                        initialize_calendar(events);
-                    } else {
-                        console.warn("No event data received or events array is empty.");
-                        initialize_calendar([]);
+    <script>
+        // Fetch the Laravel data passed from the controller
+        var grade7 = @json($grade7);
+        var grade8 = @json($grade8);
+        var grade9 = @json($grade9);
+        var grade10 = @json($grade10);
+        var grade11 = @json($grade11);
+        var grade12 = @json($grade12);
+    
+        var ctx = document.getElementById('studentGraph').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'bar', // Specify the chart type
+            data: {
+                labels: ['Grade Level'], // Use one common label for all grades
+                datasets: [
+                    {
+                        label: 'Grade 7',
+                        data: [grade7],
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Grade 8',
+                        data: [grade8],
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Grade 9',
+                        data: [grade9],
+                        backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                        borderColor: 'rgba(255, 206, 86, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Grade 10',
+                        data: [grade10],
+                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Grade 11',
+                        data: [grade11],
+                        backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                        borderColor: 'rgba(255, 159, 64, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Grade 12',
+                        data: [grade12],
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
                     }
-                })
-                .catch(error => {
-                    console.error("Error fetching events: ", error);
-                    initialize_calendar([]);
-                });
-        }
-
-        function initialize_calendar(events) {
-            var calendarEl = document.getElementById('calendar');
-
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                headerToolbar: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-                },
-                views: {
-                    timeGrid: {
-                        slotDuration: '00:30:00',
-                        scrollTime: '07:00:00',
-                        validRange: {
-                            start: '07:00:00',
-                            end: '19:00:00'
-                        }
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true // Ensures that the y-axis starts from 0
                     }
                 },
-                editable: false,
-                droppable: true,
-                dayMaxEvents: true, // Replaces eventLimit
-                selectable: true,
-                timeZone: 'local', // Ensure this matches your application's timezone
-                events: events,
-                select: function(info) {
-                    // var startFormatted = info.startStr;
-                    // var endFormatted = info.endStr;
-                    var startFormatted = moment(info.startStr).format('YYYY-MM-DD HH:mm');
-                    var endFormatted = moment(info.endStr).format('YYYY-MM-DD HH:mm');
-                    $('#addEventModalLabel').text("Add Event");
-                    $('#addEventModal').find("input[name='start_datetime']").val(startFormatted);
-                    $('#addEventModal').find("input[name='end_datetime']").val(endFormatted);
-                    $('#addEventModal').modal('show');
-                },
-                eventClick: function(info) {
-                    var event = info.event;
-                    var startFormatted = moment(event.startStr).format('YYYY-MM-DD HH:mm');
-                    var endFormatted = moment(event.endStr).format('YYYY-MM-DD HH:mm');
-                    $('#addEventModalLabel').text("Update Event");
-                    $('#addEventModal').find("input[name='eventName']").val(event.title);
-                    $('#addEventModal').find("input[name='start_datetime']").val(startFormatted);
-                    $('#addEventModal').find("input[name='end_datetime']").val(endFormatted);
-                    // Assume you store category in the extendedProps
-                    $('#addEventModal').find("select[name='category']").val(event.extendedProps.category);
-                    $('#addEventModal').modal('show');
-                    // Modify the form's action for updating the event
-                    $('form').attr('action', '/update-event/' + event.id);
-                },
-                eventContent: function(arg) {
-                    if (arg.event) {
-                        var startTime = arg.event.start ? moment(arg.event.start).format('HH:mm') : '';
-                        var endTime = arg.event.end ? moment(arg.event.end).format('HH:mm') : '';
-                        var title = arg.event.title || 'Untitled';
-                        if (startTime && endTime) {
-                            // return { html: `<div class="fc-time">${startTime} - ${endTime} - ${title} </div>` };
-                            return { html: `<div class="fc-time">${title} </div>` };
+                plugins: {
+                    legend: {
+                        display: true, // Display a legend with each grade
+                        onClick: function (e, legendItem) {
+                            const index = legendItem.datasetIndex;
+                            const ci = this.chart;
+                            const meta = ci.getDatasetMeta(index);
+    
+                            // Toggle visibility of the clicked dataset
+                            meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
+                            ci.update();
                         }
-                    } else {
-                        console.warn("Invalid event:", arg.event);
                     }
                 }
-            });
+            }
+        });
+    </script>
+    
+    
 
-            calendar.render();
-        }
-        </script> --}}
-
+{{-- Incase above code not working well, this code will display enrolled students also grade 7-12 --}}
 {{-- <script>
-    function validateDateTime() {
-        const startDateTime = document.getElementById('start_datetime').value;
-        const endDateTime = document.getElementById('end_datetime').value;
+    // Fetch the Laravel data passed from the controller
+    var grade7 = @json($grade7);
+    var grade8 = @json($grade8);
+    var grade9 = @json($grade9);
+    var grade10 = @json($grade10);
+    var grade11 = @json($grade11);
+    var grade12 = @json($grade12);
 
-        if (new Date(startDateTime) >= new Date(endDateTime)) {
-            alert('End Date and Time must be greater than Start Date and Time.');
-            return false;
+    var ctx = document.getElementById('studentGraph').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'bar', // Specify the chart type
+        data: {
+            labels: ['Grade 7', 'Grade 8', 'Grade 9', 'Grade 10', 'Grade 11', 'Grade 12'],
+            datasets: [{
+                label: 'Number of Enrolled Students',
+                data: [grade7, grade8, grade9, grade10, grade11, grade12],
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true // Ensures that the y-axis starts from 0
+                }
+            }
         }
-        return true;
-    }
+    });
 </script> --}}
+    
+    
 
 </body>
 

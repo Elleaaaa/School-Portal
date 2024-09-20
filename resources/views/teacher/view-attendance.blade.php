@@ -53,7 +53,7 @@
                                 @foreach ($student->attendance as $record)
                                     <tr>
                                         <td>{{ $student->name }}</td>
-                                        <td>{{ $section }}</td>
+                                        <td>{{ $student->section ?? 'N/A' }}</td>
                                         <td style="background-color: {{ $record->status == 1 ? '#90ee90' : '#ff4d4d' }};">
                                             {{ $record->status == 1 ? 'Present' : 'Absent' }}
                                         </td>

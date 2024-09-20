@@ -53,7 +53,6 @@
                     </div>
                 </div>
 
-
                 <div class="row">
                     <div class="col-xl-3 col-sm-6 col-12 d-flex">
                         <div class="card bg-five w-100">
@@ -85,38 +84,63 @@
                             </div>
                         </div>
                     </div>
+
+                    @foreach ($sections as $section)
                     <div class="col-xl-3 col-sm-6 col-12 d-flex">
-                        <div class="card bg-seven w-100">
+                        <div class="card bg-six w-100">
                             <div class="card-body">
                                 <div class="db-widgets d-flex justify-content-between align-items-center">
                                     <div class="db-icon">
-                                        <i class="fas fa-book-open"></i>
+                                        <i class="fas fa-user-graduate"></i>
                                     </div>
                                     <div class="db-info">
-                                        <h3>30/50</h3>
-                                        <h6>Total Lessons</h6>
+                                        <h3>{{ $section->studentCount }}</h3>
+                                        <h6>{{ $section->gradeLevel }} - {{ $section->section }}</h6>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-3 col-sm-6 col-12 d-flex">
-                        <div class="card bg-eight w-100">
+                    @endforeach
+                </div>
+
+                <div class="row">
+                      <!-- Present Card -->
+                    <div class="col-xl-6 col-md-6 col-sm-12 d-flex">
+                        <div class="card bg-success w-100"> <!-- Green color for Present -->
                             <div class="card-body">
                                 <div class="db-widgets d-flex justify-content-between align-items-center">
                                     <div class="db-icon">
-                                        <i class="fas fa-clock"></i>
+                                        <!-- Icon for Present (Check) -->
+                                        <i class="fas fa-user-check"></i>
                                     </div>
                                     <div class="db-info">
-                                        <h3>15/20</h3>
-                                        <h6>Total Hours</h6>
+                                        <h3>{{ $presentToday }}</h3>
+                                        <h6>Present Today</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <!-- Absent Card -->
+                    <div class="col-xl-6 col-md-6 col-sm-12 d-flex">
+                        <div class="card bg-danger w-100"> <!-- Red color for Absent -->
+                            <div class="card-body">
+                                <div class="db-widgets d-flex justify-content-between align-items-center">
+                                    <div class="db-icon">
+                                        <!-- Icon for Absent (User with X) -->
+                                        <i class="fas fa-user-times"></i>
+                                    </div>
+                                    <div class="db-info">
+                                        <h3>{{ $absentToday }}</h3>
+                                        <h6>Absent Today</h6>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
 
                 <div class="row">
                     <div class="col-12 col-lg-12 col-xl-12 d-flex">
@@ -145,7 +169,7 @@
 
     <script src="{{ asset('js/moment.min.js') }}"></script>
     <script src="{{ asset('plugins/fullcalendar/index.global.min.js') }}"></script>
-    <script src="{{ asset('js/myjs/events.fullcalendar.js') }}"></script>
+    <script src="{{ asset('js/myjs/eventsviewonly.fullcalender.js') }}"></script>
 
 
 </body>

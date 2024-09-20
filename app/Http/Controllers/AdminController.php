@@ -44,11 +44,40 @@ class AdminController extends Controller
      */
     public function showDashboard(string $studentId)
     {
+        $currentYear = now()->year; // Get the current year
+        $nextYear = now()->addYear()->year;
+
         $admin = User::find($studentId);
         $enrolledCount = Enrollee::where('status', "Enrolled")->count();
         $teachersCount = Teacher::where('status', "active")->count();
+        $pendingCount = Enrollee::where('status', "Pending")->count();
 
-        return view('admin.dashboard', compact('admin', 'enrolledCount', 'teachersCount'));
+        $grade7 = Enrollee::where('gradelevel', "Grade 7")
+                            ->where('status', "Enrolled")
+                            ->where('schoolYear', $currentYear . "-" . $nextYear)
+                            ->count();
+        $grade8 = Enrollee::where('gradelevel', "Grade 8")
+                            ->where('status', "Enrolled")
+                            ->where('schoolYear', $currentYear . "-" . $nextYear)
+                            ->count();
+        $grade9 = Enrollee::where('gradelevel', "Grade 8")
+                            ->where('status', "Enrolled")
+                            ->where('schoolYear', $currentYear . "-" . $nextYear)
+                            ->count();
+        $grade10 = Enrollee::where('gradelevel', "Grade 8")
+                            ->where('status', "Enrolled")
+                            ->where('schoolYear', $currentYear . "-" . $nextYear)
+                            ->count();
+        $grade11 = Enrollee::where('gradelevel', "Grade 8")
+                            ->where('status', "Enrolled")
+                            ->where('schoolYear', $currentYear . "-" . $nextYear)
+                            ->count();
+        $grade12 = Enrollee::where('gradelevel', "Grade 8")
+                            ->where('status', "Enrolled")
+                            ->where('schoolYear', $currentYear . "-" . $nextYear)
+                            ->count();
+
+        return view('admin.dashboard', compact('admin', 'enrolledCount', 'teachersCount', 'pendingCount', 'grade7', 'grade8', 'grade9', 'grade10', 'grade11', 'grade12'));
     }
 
     public function showStudentList()

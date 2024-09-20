@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
-    <script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+    <script src="{{ asset('js/darkmode-js.min.js') }}"></script>
 
     {{-- use for the toast --}}
     @notifyCss
@@ -335,6 +335,12 @@
                             </li>
                             <li class="{{ Route::currentRouteName() == 'sf9jhsrequest.show' ? 'active' : '' }}">
                                 <a href="{{ route('sf9jhsrequest.show') }}">SF9-JHS</a>
+                            </li>
+                            <li class="{{ Route::currentRouteName() == 'sf9shsrequest.show' ? 'active' : '' }}">
+                                <a href="{{ route('sf9shsrequest.show') }}">SF9-SHS</a>
+                            </li>
+                            <li class="{{ Route::currentRouteName() == 'sf10jhsrequest.show' ? 'active' : '' }}">
+                                <a href="{{ route('sf10jhsrequest.show') }}">SF10-JHS</a>
                             </li>
                         </ul>
                     </li>

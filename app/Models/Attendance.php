@@ -13,5 +13,6 @@ class Attendance extends Model
         'studentId',
         'date',
         'status',
+        'reason',
     ];
 }

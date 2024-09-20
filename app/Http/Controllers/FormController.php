@@ -100,4 +100,40 @@ class FormController extends Controller
         // Download PDF with A4 size
         return $pdf->setPaper('A4', 'portrait')->stream('SF9_JHS.pdf');
     }
+
+      // fill up form for  SF9 SHS
+      public function requestSF9SHS()
+      {        
+          return view('forms.sf9-shsrequest');
+      }
+
+      public function printSF9SHS(Request $request)
+      {       
+          $data = [
+          'imagelogo' => public_path('img/logo/baylogo.png')
+          ];
+  
+          $pdf = PDF::loadView('forms.sf9-shs', $data);
+          
+          // Download PDF with A4 size
+          return $pdf->setPaper('A4', 'portrait')->stream('SF9_SHS.pdf');
+      }
+
+       // fill up form for  SF10 JHS
+       public function requestSF10JHS()
+       {        
+           return view('forms.sf10-jhsrequest');
+       }
+       public function printSF10JHS(Request $request)
+       {   
+           $data = [
+           'imagelogo' => public_path('img/logo/depedsymbol.png'),
+           'imagelogo1' => public_path('img/logo/depedlogo.png')
+           ];
+   
+           $pdf = PDF::loadView('forms.sf10-jhs', $data);
+           
+           // Download PDF with Long size
+           return $pdf->setPaper([0, 0, 612, 936], 'portrait')->stream('SF10_JHS.pdf');
+       }
 }

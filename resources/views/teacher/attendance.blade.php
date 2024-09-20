@@ -45,6 +45,7 @@
                                     <th>Student Name</th>
                                     <th class="text-center">Present</th>
                                     <th class="text-center">Absent</th>
+                                    <th class="text-center">Reason</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -60,6 +61,16 @@
                                             <div class="custom-radio">
                                                 <input type="radio" name="attendance[{{ $student->studentId }}]" value="0" required>
                                             </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <select name="reason[{{ $student->studentId }}]" class="form-control">
+                                                <option value="">Select Reason</option>
+                                                <option value="Sick">Sick</option>
+                                                <option value="Family Emergency">Family Emergency</option>
+                                                <option value="Personal Reasons">Personal Reasons</option>
+                                                <option value="School Event">School Event</option>
+                                                <option value="No Reason">No Reason</option>
+                                            </select>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -84,6 +95,38 @@
      }
      });
      </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get all the student rows
+        const rows = document.querySelectorAll('#attendanceTable tbody tr');
+        
+        rows.forEach(row => {
+            // Get the radio buttons and reason dropdown for the current row
+            const presentRadio = row.querySelector('input[type="radio"][value="1"]');
+            const absentRadio = row.querySelector('input[type="radio"][value="0"]');
+            const reasonSelect = row.querySelector('select[name^="reason"]');
+            
+            // Function to update the required attribute of the reason dropdown
+            function updateReasonRequirement() {
+                if (absentRadio.checked) {
+                    reasonSelect.required = true;
+                } else {
+                    reasonSelect.required = false;
+                    reasonSelect.value = ""; // Clear value if not required
+                }
+            }
+    
+            // Attach event listeners to radio buttons
+            presentRadio.addEventListener('change', updateReasonRequirement);
+            absentRadio.addEventListener('change', updateReasonRequirement);
+            
+            // Initial check in case a radio button is pre-selected
+            updateReasonRequirement();
+        });
+    });
+    </script>
+    
 
 </body>
 

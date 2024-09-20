@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('studentId', 255)->nullable();
             $table->date('date');
             $table->boolean('status');
+            $table->string('reason', 255)->nullable();
             $table->timestamps();
         });
     }

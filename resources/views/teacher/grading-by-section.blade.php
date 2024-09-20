@@ -52,6 +52,7 @@
                         <div class="form-group">
                             <input type="file" name="gradeImport">
                             <button type="submit" class="btn btn-primary">Submit</button>
+                            <p style="color: red">*remove first the first row "All Students" when importing file<p>
                         </div>
                     </form>
                 </div>

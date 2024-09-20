@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Mail\WelcomeEmail;
+use App\Models\Attendance;
 use App\Models\File;
 use Illuminate\Support\Facades\Mail;
 
@@ -139,7 +140,44 @@ class TeacherController extends Controller
         ->distinct()
         ->count();
 
-        return view('teacher.dashboard', compact('teacher', 'studentTotalCount', 'handleSections'));
+        $sections = Subject::where('teacherId', $teacherId)
+        ->select('gradeLevel', 'section')
+        ->distinct()
+        ->get();
+
+        $myStudents = collect();
+    
+        foreach ($sections as $section) {
+            $gradeLevel = $section->gradeLevel;
+            $sectionName = $section->section;
+        
+            // Get the student count for each section
+            $studentCount = Enrollee::where('gradeLevel', $gradeLevel)
+                                    ->where('section', $sectionName)
+                                    ->count();
+            
+            $studentsInSection = Enrollee::where('gradeLevel', $gradeLevel)
+                                    ->where('section', $sectionName)
+                                    ->get();
+        
+            // Attach the student count to the section object
+            $section->studentCount = $studentCount;
+            $myStudents = $myStudents->merge($studentsInSection);
+        }
+
+        $myStudentsIds = $myStudents->pluck('studentId')->toArray();
+
+        $absentToday = Attendance::whereIn('studentId', $myStudentsIds)
+                                 ->where('date', date('Y-m-d'))
+                                 ->where('status', 0) // Assuming 0 means absent
+                                 ->count();
+        
+        $presentToday = Attendance::whereIn('studentId', $myStudentsIds)
+                                 ->where('date', date('Y-m-d'))
+                                 ->where('status', 1) // Assuming 1 means present
+                                 ->count();
+
+        return view('teacher.dashboard', compact('teacher', 'studentTotalCount', 'handleSections', 'sections', 'absentToday', 'presentToday'));
     }
 
     public function showEditTeacher(string $id)

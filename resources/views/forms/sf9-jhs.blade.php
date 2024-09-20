@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Progress Report Card</title>
+
     <style>
         body {
             font-family: 'Times New Roman', Times, serif, sans-serif;
@@ -134,6 +135,7 @@
         }
       
     </style>
+
 </head>
 
 <body>

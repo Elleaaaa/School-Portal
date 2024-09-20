@@ -12,6 +12,9 @@ use App\Models\Grade;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class AttendanceController extends Controller
 {
@@ -73,34 +76,40 @@ class AttendanceController extends Controller
     public function showAttendance()
     {
         $id = Auth::user()->studentId;
-        $advisorySection = Section::where('teacherId', $id)->first();
-        $handleSubjects = Subject::where('teacherId', $id)->first();
+        $handleSubjects = Subject::where('teacherId', $id)->get();
         $myStudents = collect();
-        $section = null;
-    
-        if ($advisorySection) {
-            $gradeLevel = $advisorySection->gradeLevel;
-            $section = $advisorySection->sectionName;
-            $myStudents = Enrollee::where('gradeLevel', $gradeLevel)
-                ->where('section', $section)
-                ->get();
-        } elseif ($handleSubjects) {
-            $subject = $handleSubjects->subjectTitle;
-            $myStudents = Enrollee::whereRaw("FIND_IN_SET(?, REPLACE(subjects, ' ', ''))", [$subject])
-                ->get();
+
+        $sections = Subject::where('teacherId', $id)
+            ->select('gradeLevel', 'section')
+            ->distinct()
+            ->get();
+     
+        if ($handleSubjects->isNotEmpty()) {
+            foreach ($sections as $section) {
+                foreach ($handleSubjects as $subject) {
+                    $students = Enrollee::whereRaw("FIND_IN_SET(?, REPLACE(subjects, ' ', ''))", [$subject->subject])
+                        ->where('gradeLevel', $section->gradeLevel)
+                        ->where('section', $section->section)
+                        ->get();
+                    $myStudents = $myStudents->merge($students);
+                }
+            }
         }
-    
+     
+        $myStudents = $myStudents->unique('studentId'); // Ensure unique students
         $myStudentsIds = $myStudents->pluck('studentId')->toArray();
         $attendanceRecords = Attendance::whereIn('studentId', $myStudentsIds)->get();
-        
+     
         $studentsWithAttendance = $myStudents->map(function ($student) use ($attendanceRecords) {
             $student->attendance = $attendanceRecords->where('studentId', $student->studentId);
             return $student;
         });
-    
+     
         $images = User::all();
-        return view('teacher.view-attendance', compact('myStudents', 'images', 'section', 'studentsWithAttendance'));
+        return view('teacher.view-attendance', compact('images', 'studentsWithAttendance', 'sections'));
     }
+    
+    
     
 
     public function showStudentAttendance(Request $request)
@@ -141,10 +150,13 @@ class AttendanceController extends Controller
             $attendance = Attendance::where('studentId', $studentId)
                                     ->where('date', $date)
                                     ->first();
+
+            $reason = $request->input("reason.$studentId");
     
             if ($attendance) {
                 // Update the existing record
                 $attendance->status = $status;
+                $attendance->reason = $reason;
                 $attendance->save();
                 notify()->success('Attendance updated successfully');
             } else {
@@ -153,6 +165,7 @@ class AttendanceController extends Controller
                     'studentId' => $studentId,
                     'date' => $date,
                     'status' => $status,
+                    'reason' => $reason,
                 ]);
                 notify()->success('Attendance recorded successfully');
             }
@@ -226,6 +239,51 @@ class AttendanceController extends Controller
     
         return response()->json($result);
     }
+    public function getAbsentReportAJAX(Request $request)
+    {
+        try {
+            $query = Attendance::where('status', 0);
+    
+            // Handle different date filters
+            if ($request->has('filter')) {
+                $filter = $request->filter;
+                $today = Carbon::today();
+    
+                switch ($filter) {
+                    case 'today':
+                        $query->whereDate('created_at', $today);
+                        break;
+                    case 'yesterday':
+                        $yesterday = Carbon::yesterday();
+                        $query->whereDate('created_at', $yesterday);
+                        break;
+                    case 'last7days':
+                        $last7days = Carbon::today()->subDays(7);
+                        $query->whereBetween('created_at', [$last7days, $today]);
+                        break;
+                    default:
+                        // No filter or unrecognized filter, return all data
+                        break;
+                }
+            }
+    
+            $absentReport = $query->select('reason', DB::raw('count(*) as total'))
+                                  ->groupBy('reason')
+                                  ->get();
+    
+            return response()->json($absentReport);
+        } catch (\Exception $e) {
+            // Log the exception
+            Log::error($e);
+    
+            // Return a JSON error response
+            return response()->json([
+                'error' => 'Something went wrong on the server.',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+    
     
 
 

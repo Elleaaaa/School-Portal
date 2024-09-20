@@ -167,7 +167,7 @@ class FeeController extends Controller
         })->map(function ($month) {
             return [
                 'amountPaid' => $month->sum('amountPaid'), // Sum amountsPaid for each month
-                'amountLeft' => $month->sum('amountLeft')  // Sum amountsLeft for each month
+                'amountLeft' => $month->last()->amountLeft  // Sum amountsLeft for each month
             ];
         });
     

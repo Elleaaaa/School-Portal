@@ -11,6 +11,7 @@ use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules\Exists;
 use PhpParser\Builder\Function_;
 
@@ -320,11 +321,13 @@ class EnrolleesController extends Controller
         return redirect()->route('enrolled-student-list.show');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function getGradeLevelsAJAX()
     {
-        //
-    }
+        $students = Enrollee::select('gradeLevel', DB::raw('count(*) as total'))
+                            ->groupBy('gradeLevel')
+                            ->get();
+    
+        return response()->json($students);
+    }    
+
 }

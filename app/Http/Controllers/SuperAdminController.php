@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Address;
+use App\Models\Attendance;
 use App\Models\Enrollee;
 use App\Models\Fee;
 use App\Models\SuperAdmin;
@@ -20,6 +21,8 @@ class SuperAdminController extends Controller
         $supAdmin = User::where('studentId', $supAdminId)->first();
         $enrolledCount = Enrollee::where('status', "Enrolled")->count();
         $teachersCount = Teacher::where('status', "active")->count();
+        $pendingCount = Enrollee::where('status', "Pending")->count();
+
         $tuitionTotalPaidCount = Fee::where('feeType', 'Tuition Fee')
                             ->where('status', 'Fully Paid')
                             ->count();
@@ -28,7 +31,44 @@ class SuperAdminController extends Controller
                             ->distinct('studentId')
                             ->count();
 
-        return view('superadmin.dashboard', compact('supAdmin', 'enrolledCount', 'teachersCount', 'tuitionTotalPaidCount', 'tuitionTotalNotPaidCount'));
+        
+        $currentYear = now()->year; // Get the current year
+        $nextYear = now()->addYear()->year;
+
+        $grade7 = Enrollee::where('gradelevel', "Grade 7")
+                            ->where('status', "Enrolled")
+                            ->where('schoolYear', $currentYear . "-" . $nextYear)
+                            ->count();
+        $grade8 = Enrollee::where('gradelevel', "Grade 8")
+                            ->where('status', "Enrolled")
+                            ->where('schoolYear', $currentYear . "-" . $nextYear)
+                            ->count();
+        $grade9 = Enrollee::where('gradelevel', "Grade 8")
+                            ->where('status', "Enrolled")
+                            ->where('schoolYear', $currentYear . "-" . $nextYear)
+                            ->count();
+        $grade10 = Enrollee::where('gradelevel', "Grade 8")
+                            ->where('status', "Enrolled")
+                            ->where('schoolYear', $currentYear . "-" . $nextYear)
+                            ->count();
+        $grade11 = Enrollee::where('gradelevel', "Grade 8")
+                            ->where('status', "Enrolled")
+                            ->where('schoolYear', $currentYear . "-" . $nextYear)
+                            ->count();
+        $grade12 = Enrollee::where('gradelevel', "Grade 8")
+                            ->where('status', "Enrolled")
+                            ->where('schoolYear', $currentYear . "-" . $nextYear)
+                            ->count();
+
+        $absentToday = Attendance::where('date', date('Y-m-d'))
+                            ->where('status', 0)
+                            ->count();
+   
+        $presentToday = Attendance::where('date', date('Y-m-d'))
+                                ->where('status', 1)
+                                ->count();
+
+        return view('superadmin.dashboard', compact('supAdmin', 'enrolledCount', 'teachersCount', 'tuitionTotalPaidCount', 'tuitionTotalNotPaidCount', 'pendingCount', 'grade7', 'grade8', 'grade9', 'grade10', 'grade11', 'grade12', 'absentToday', 'presentToday'));
     }
 
     

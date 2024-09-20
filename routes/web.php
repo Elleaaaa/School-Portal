@@ -24,6 +24,7 @@ use App\Http\Controllers\CashierController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\SuperAdminController;
+use App\Models\Enrollee;
 use Illuminate\Cache\RateLimiting\Limit;
 
 Route::get('/login', function () {
@@ -197,6 +198,12 @@ Route::middleware(['auth', 'throttle:auth_limited'])->group(function () {
 
     Route::get('/request/sf9-jhs', [FormController::class, 'requestSF9JHS'])->name('sf9jhsrequest.show');
     Route::get('/SF9-JHS', [FormController::class, 'printSF9JHS'])->name('sf9jhs.get');
+
+    Route::get('/request/sf9-shs', [FormController::class, 'requestSF9SHS'])->name('sf9shsrequest.show');
+    Route::get('/SF9-SHS', [FormController::class, 'printSF9SHS'])->name('sf9shs.get');
+
+    Route::get('/request/sf10-jhs', [FormController::class, 'requestSF10JHS'])->name('sf10jhsrequest.show');
+    Route::get('/SF10-JHS', [FormController::class, 'printSF10JHS'])->name('sf10jhs.get');
 });
 
 
@@ -208,6 +215,10 @@ Route::middleware(['auth', 'throttle:auth_limited'])->group(function () {
 
     Route::get('/api/allpayments', [FeeController::class, 'getAllPaymentsAJAX']);
     Route::get('/api/allattendance', [AttendanceController::class, 'getallAttendanceAJAX']);
+
+    Route::get('/api/absentreport', [AttendanceController::class, 'getAbsentReportAJAX']);
+
+    Route::get('/api/gradelevels', [EnrolleesController::class, 'getGradeLevelsAJAX']);
 });
 
 
