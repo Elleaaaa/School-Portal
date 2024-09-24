@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -125,15 +127,39 @@ class FormController extends Controller
            return view('forms.sf10-jhsrequest');
        }
        public function printSF10JHS(Request $request)
-       {   
-           $data = [
-           'imagelogo' => public_path('img/logo/depedsymbol.png'),
-           'imagelogo1' => public_path('img/logo/depedlogo.png')
-           ];
-   
-           $pdf = PDF::loadView('forms.sf10-jhs', $data);
-           
-           // Download PDF with Long size
-           return $pdf->setPaper([0, 0, 612, 936], 'portrait')->stream('SF10_JHS.pdf');
+       {  
+
+        $data = [
+        'imagelogo' => public_path('img/logo/depedsymbol.png'),
+        'imagelogo1' => public_path('img/logo/depedlogo.png')
+        ];
+
+        $pdf = PDF::loadView('forms.sf10-jhs', $data);
+        
+        $pdf->setOption('margin-bottom', 0);
+        // Download PDF with Long size
+        return $pdf->setPaper([0, 0, 612, 936], 'portrait')->stream('SF10_JHS.pdf');
        }
+
+
+        // fill up form for  SF10 SHS
+        public function requestSF10SHS()
+        {        
+            return view('forms.sf10-shsrequest');
+        }
+
+        public function printSF10SHS(Request $request)
+        {  
+ 
+         $data = [
+         'imagelogo' => public_path('img/logo/depedsymbol.png'),
+         'imagelogo1' => public_path('img/logo/depedlogo.png')
+         ];
+ 
+         $pdf = PDF::loadView('forms.sf10-shs', $data);
+         
+         $pdf->setOption('margin-bottom', 0);
+         // Download PDF with Long size
+         return $pdf->setPaper([0, 0, 612, 936], 'portrait')->stream('SF10_SHS.pdf');
+        }
 }

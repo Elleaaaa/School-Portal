@@ -204,6 +204,9 @@ Route::middleware(['auth', 'throttle:auth_limited'])->group(function () {
 
     Route::get('/request/sf10-jhs', [FormController::class, 'requestSF10JHS'])->name('sf10jhsrequest.show');
     Route::get('/SF10-JHS', [FormController::class, 'printSF10JHS'])->name('sf10jhs.get');
+
+    Route::get('/request/sf10-shs', [FormController::class, 'requestSF10SHS'])->name('sf10shsrequest.show');
+    Route::get('/SF10-SHS', [FormController::class, 'printSF10SHS'])->name('sf10shs.get');
 });
 
 

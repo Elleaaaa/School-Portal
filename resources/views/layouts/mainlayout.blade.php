@@ -342,6 +342,9 @@
                             <li class="{{ Route::currentRouteName() == 'sf10jhsrequest.show' ? 'active' : '' }}">
                                 <a href="{{ route('sf10jhsrequest.show') }}">SF10-JHS</a>
                             </li>
+                            <li class="{{ Route::currentRouteName() == 'sf10shsrequest.show' ? 'active' : '' }}">
+                                <a href="{{ route('sf10shsrequest.show') }}">SF10-SHS</a>
+                            </li>
                         </ul>
                     </li>
                 

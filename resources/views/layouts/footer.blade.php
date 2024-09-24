@@ -1,3 +1,3 @@
 <footer>
-    <p>Copyright © 2024 GayLord.</p>
+    <p>Copyright © 2024 qweadasd.</p>
  </footer>
