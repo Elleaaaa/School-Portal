@@ -126,13 +126,13 @@ class StudentController extends Controller
         }
 
         //send email to the student
-        if ($validatedData['email']) {
-            $toEmail = $validatedData['email'];
-            $message = 'Student ID: ' . $validatedData['studentId'] . ' Password: ' . $validatedData['password'];
-            $subject = 'School Portal Login Details';
+        // if ($validatedData['email']) {
+        //     $toEmail = $validatedData['email'];
+        //     $message = 'Student ID: ' . $validatedData['studentId'] . ' Password: ' . $validatedData['password'];
+        //     $subject = 'School Portal Login Details';
 
-            Mail::to($toEmail)->send(new WelcomeEmail($message, $subject));
-        }
+        //     Mail::to($toEmail)->send(new WelcomeEmail($message, $subject));
+        // }
 
 
         notify()->success('Student Added Successfully!');
@@ -441,7 +441,6 @@ class StudentController extends Controller
         // Update Student
         $student = Student::find($id);
         $studentId = $student->studentId;
-        //  dd($teacher);
 
         $student->firstName = $request->input('firstName');
         $student->middleName = $request->input('middleName');
@@ -455,6 +454,12 @@ class StudentController extends Controller
         $student->religion = $request->input('religion');
         $student->placeOfBirth = $request->input('birthplace');
         $student->save();
+
+        $fullName = trim($request->input('firstName') . ' ' . $request->input('middleName') . ' ' . $request->input('lastName') . ' ' . $request->input('suffixName'));
+        // Update the Enrollee's name
+        Enrollee::where('studentId', $studentId)->update([
+            'name' => $fullName,
+        ]);
 
         // Update Address
         $address = Address::where('studentId', $studentId)->first();

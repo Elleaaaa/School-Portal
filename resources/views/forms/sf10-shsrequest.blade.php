@@ -72,28 +72,6 @@
                                                     value="{{ old('suffixName') }}" placeholder="Jr, Sr, III, etc">
                                             </div>
                                         </div>
-                                        <div class="col-12 col-sm-6 col-md-6">
-                                            <div class="form-group">
-                                                <label>Grade</label>
-                                                <input name="grade" type="text" class="form-control"
-                                                    value="{{ old('grade') }}">
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-sm-6 col-md-6">
-                                            <div class="form-group">
-                                                <label>Strand</label>
-                                                <input name="strand" type="text" class="form-control"
-                                                    value="{{ old('strand') }}">
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-sm-6 col-md-6">
-                                            <div class="form-group">
-                                                <label>Purpose</label>
-                                                <input name="purpose" type="text" class="form-control"
-                                                    value="{{ old('purpose') }}">
-                                            </div>
-                                        </div>
-
                                         <div class="col-12">
                                             <button type="submit" class="btn btn-primary">Submit</button>
                                         </div>

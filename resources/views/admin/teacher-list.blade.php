@@ -38,7 +38,7 @@
                         </div>
                         <div class="col-auto text-right float-right ml-auto">
 
-                            <a href="add-teacher.html" class="btn btn-primary">Add Teacher <i
+                            <a href="{{ route('addteacher.show') }}" class="btn btn-primary">Add Teacher <i
                                     class="fas fa-plus"></i></a>
                         </div>
                     </div>
@@ -64,20 +64,22 @@
                                         <tbody>
                                             @foreach ($teachers as $teacher)
                                             <tr>
-                                                {{-- <td>{{$paddedTeacherId = str_pad($teacher->teacherId, 4, '0', STR_PAD_LEFT)}}</td> --}}
                                                 <td>{{$teacher->teacherId}}</td>
                                                 <td>
                                                     @foreach ($images as $image)
-                                                    @if ($image->studentId == $teacher->teacherId)
-                                                    <h2 class="table-avatar">
-                                                        <a href="teacher-details.html"
-                                                            class="avatar avatar-sm mr-2"><img
-                                                                class="avatar-img rounded-circle"
-                                                                src="{{ asset('storage/images/display-photo/' . $image->displayPhoto) }}"
-                                                                alt="User Image"></a>
-                                                        <a href="teacher-details.html">{{$teacher->firstName . $teacher->lastname}}</a>
-                                                    </h2>
-                                                    @endif
+                                                        @if ($image->studentId == $teacher->teacherId)
+                                                            <h2 class="table-avatar">
+                                                                <a href="teacher-details.html" class="avatar avatar-sm mr-2">
+                                                                    <img class="avatar-img rounded-circle" 
+                                                                         src="{{ asset('storage/images/display-photo/' . $image->displayPhoto) }}" 
+                                                                         alt="User Image">
+                                                                </a>
+                                                                <a href="teacher-details.html">
+                                                                    {{$teacher->firstName . ' ' . $teacher->lastName}}
+                                                                </a>
+                                                            </h2>
+                                                            @break {{-- Break out of the loop after the first matching image --}}
+                                                        @endif
                                                     @endforeach
                                                 </td>
                                                 <td>{{$teacher->age}}</td>

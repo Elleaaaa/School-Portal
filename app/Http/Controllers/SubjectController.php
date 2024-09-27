@@ -34,36 +34,37 @@ class SubjectController extends Controller
      */
     public function store(Request $request)
     {
-         // Check if the subject already exists
+        // Check if the subject already exists
         $existingSubject = Subject::where('teacherId', $request->input('teacherId'))
-        ->where('gradeLevel', $request->input('gradeLevel'))
-        ->where('section', $request->input('section'))
-        ->where('subject', $request->input('subjectTitle'))
-        ->first();
+            ->where('gradeLevel', $request->input('gradeLevel'))
+            ->where('section', $request->input('section'))
+            ->where('subject', $request->input('subjectTitle'))
+            ->first();
 
         if ($existingSubject) {
-        // Optionally: Update the existing record
-        // $existingSubject->subjectType = $request->input('subjectType');
-        // $existingSubject->subjectTeacher = $request->input('teacherName');
-        // $existingSubject->save();
+            // Optionally: Update the existing record
+            // $existingSubject->subjectType = $request->input('subjectType');
+            // $existingSubject->subjectTeacher = $request->input('teacherName');
+            // $existingSubject->save();
 
-        // Notify the user and redirect
-        notify()->warning('Subject already exists for this section!');
-        } else
-        {
-        // Add New Subject
-        $subject = new Subject();
+            // Notify the user and redirect
+            notify()->warning('Subject already exists for this section!');
+        } else {
+            // Add New Subject
+            $subject = new Subject();
 
-        $subject->studentId = null;
-        $subject->teacherId = $request->input('teacherId');
-        $subject->gradeLevel = $request->input('gradeLevel');
-        $subject->section = $request->input('section');
-        $subject->subject = $request->input('subjectTitle');
-        $subject->subjectType = $request->input('subjectType');
-        $subject->subjectTeacher = $request->input('teacherName');
-        $subject->save();
+            $subject->studentId = null;
+            $subject->teacherId = $request->input('teacherId');
+            $subject->gradeLevel = $request->input('gradeLevel');
+            $subject->strand = $request->input('strand');
+            $subject->semester = $request->input('semester');
+            $subject->section = $request->input('section');
+            $subject->subject = $request->input('subjectTitle');
+            $subject->subjectType = $request->input('subjectType');
+            $subject->subjectTeacher = $request->input('teacherName');
+            $subject->save();
 
-        notify()->success('Subject Added Successfully!');
+            notify()->success('Subject Added Successfully!');
         }
         return redirect()->back();
     }
@@ -79,18 +80,38 @@ class SubjectController extends Controller
         return view('admin.edit-subject', compact('subject', 'teachers', 'sections'));
     }
 
-    public function fetchSubjects(Request $request) {
+    public function fetchSubjects(Request $request)
+    {
         $gradeLevel = $request->input('gradeLevel');
         $section = $request->input('section');
         $subjects = Subject::where('gradeLevel', $gradeLevel)
-                            ->where('section', $section)
-                            ->get();
+            ->where('section', $section)
+            ->get();
         if ($subjects->isNotEmpty()) {
             return response()->json($subjects);
         } else {
             return response()->json(['error' => 'Subjects not found for the given grade level'], 404);
         }
     }
+
+    public function fetchSubjectsBySem(Request $request)
+    {
+        $gradeLevel = $request->input('gradeLevel');
+        $strand = $request->input('strand');
+        $semester = $request->input('semester');
+        
+        $subjects = Subject::where('strand', $strand)
+                            ->where('gradeLevel', $gradeLevel)
+                            ->where('semester', $semester)
+                            ->get();
+        
+        if ($subjects->isNotEmpty()) {
+            return response()->json($subjects);
+        } else {
+            // Return an empty array instead of a 404 error to simplify handling on the frontend
+            return response()->json([]);
+        }
+    }    
 
     /**
      * Show the form for editing the specified resource.
@@ -110,6 +131,8 @@ class SubjectController extends Controller
         $subject->studentId = null;
         $subject->teacherId = $request->input('teacherId');
         $subject->gradeLevel = $request->input('gradeLevel');
+        $subject->strand = $request->input('strand');
+        $subject->semester = $request->input('semester');
         $subject->section = $request->input('section');
         $subject->subject = $request->input('subjectTitle');
         $subject->subjectType = $request->input('subjectType');

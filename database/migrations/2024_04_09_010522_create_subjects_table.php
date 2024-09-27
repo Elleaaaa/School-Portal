@@ -13,11 +13,10 @@ return new class extends Migration
     {
         Schema::create('subjects', function (Blueprint $table) {
             $table->id();
-            $table->string('studentId', 255)->nullable();
             $table->string('teacherId', 255)->nullable();
             $table->string('gradeLevel', 255)->nullable();
+            $table->string('semester', 255)->nullable();
             $table->string('section', 255)->nullable();
-            $table->string('subjectCode', 255)->nullable();
             $table->string('subject', 255)->nullable();
             $table->string('subjectTeacher', 255)->nullable();
             $table->string('subjectType', 255)->nullable();

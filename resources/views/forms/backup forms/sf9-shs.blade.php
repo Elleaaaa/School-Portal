@@ -15,6 +15,12 @@
             padding: 0;
         }
 
+        .underline {
+            display: inline-block;
+            border-bottom: 1px solid #000;
+            width: 90px;
+        }
+
         .long-underline {
             width: 200px;
         }
@@ -124,6 +130,11 @@
             border-collapse: collapse;
         }
 
+        .gradeTable td {
+            padding-top: 9px;
+            padding-bottom: 9px;
+        }
+
         .core-values,
         .core-values th,
         .core-values td {
@@ -156,12 +167,6 @@
             float: right;
             width: 49%;
         }
-
-        .underline {
-            display: inline-block;
-            border-bottom: 1px solid #000;
-            width: 90px;
-        }
     </style>
 </head>
 
@@ -169,77 +174,77 @@
     <div class="firstPage">
         <p class="text-center"><strong>DepEd SF9</strong></p>
         <div class="left-firstPage">
-
-            <p class="text-center" style="margin-bottom: 3px; font-size: 12px"><strong>ATTENDANCE RECORD</strong></p>
-            <table class="attendance-table" style="font-size: 9px;">
-                <tr>
-                    <td width="60px"></td>
-                    <td class="text-center" width="15px">Aug</td>
-                    <td class="text-center" width="15px">Sep</td>
-                    <td class="text-center" width="15px">Oct</td>
-                    <td class="text-center" width="15px">Nov</td>
-                    <td class="text-center" width="15px">Dec</td>
-                    <td class="text-center" width="15px">Jan</td>
-                    <td class="text-center" width="15px">Feb</td>
-                    <td class="text-center" width="15px">Mar</td>
-                    <td class="text-center" width="15px">Apr</td>
-                    <td class="text-center" width="15px">May</td>
-                    <td class="text-center" width="15px">Jun</td>
-                    <td class="text-center" width="15px">Jul</td>
-                    <td class="text-center" width="30px"><strong>TOTAL</strong></td>
-                </tr>
-                <tr>
-                    <td>No. of School Days</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>No. of School Days Present</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>No. of Times Tardy</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </table>
-
-
             <div>
+                <p class="text-center" style="margin-bottom: 3px; font-size: 12px"><strong>ATTENDANCE RECORD</strong></p>
+                <table class="attendance-table" style="font-size: 9px;">
+                    <tr>
+                        <td width="60px"></td>
+                        <td class="text-center" width="15px">Aug</td>
+                        <td class="text-center" width="15px">Sep</td>
+                        <td class="text-center" width="15px">Oct</td>
+                        <td class="text-center" width="15px">Nov</td>
+                        <td class="text-center" width="15px">Dec</td>
+                        <td class="text-center" width="15px">Jan</td>
+                        <td class="text-center" width="15px">Feb</td>
+                        <td class="text-center" width="15px">Mar</td>
+                        <td class="text-center" width="15px">Apr</td>
+                        <td class="text-center" width="15px">May</td>
+                        <td class="text-center" width="15px">Jun</td>
+                        <td class="text-center" width="15px">Jul</td>
+                        <td class="text-center" width="30px"><strong>TOTAL</strong></td>
+                    </tr>
+                    <tr>
+                        <td>No. of School Days</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>No. of School Days Present</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>No. of Times Tardy</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="parents-signature">
                 <p class="text-center" style="font-size: 12px;"><strong>PARENT'S SIGNATURE</strong></p>
                 <p><strong>First Quarter:</strong> <span class="underline" style="width: 240px"></span></p>
                 <p><strong>Second Quarter:</strong> <span class="underline" style="width: 230px"></span></p>
@@ -247,7 +252,7 @@
                 <p><strong>Fourth Quarter:</strong> <span class="underline" style="width: 230px"></span></p>
             </div>
 
-            <div>
+            <div class="transfer">
                 <p class="text-center" style="padding: 5px 15px"><strong>CERTIFICATE OF TRANSFER</strong></p>
                 <p>Eligible for transfer and Admission to Grade &nbsp;&nbsp;&nbsp;<span class="underline"></span></p>
                 <p>Lacks subjects in &nbsp;&nbsp;&nbsp; <span class="underline long-underline"
@@ -257,7 +262,7 @@
                 <p class="sign-box">Principal</p>
             </div>
 
-            <div>
+            <div class="cancellation">
                 <p style="padding: 15px 15px"><strong>CANCELLATION OF ELIGIBILITY TO TRANSFER</strong></p>
                 <p>Has been admitted to &nbsp;&nbsp;&nbsp; <span class="underline long-underline"></span></p>
                 <p>School &nbsp;&nbsp;&nbsp; <span class="underline long-underline" style="width: 268px"></span></p>
@@ -292,19 +297,15 @@
                 <p class="progress">PROGRESS REPORT CARD</p>
                 <p>School Year 2024-2025</p>
             </div>
-            <div class="student-info">
-                <p>Name:<span
-                        style="border-bottom: 1px solid #000; padding-left: 50px; padding-right: 50px">{{ $name }}</span>
+            <div class="student-info text-left">
+                <p><strong>Name:</strong> <span class="underline" style="width: 300px"></span></p>
+                <p><strong>LRN:</strong> <span class="underline" style="width: 305px"></span></p>
+                <p><strong>Birthday:</strong> <span class="underline" style="width: 100px;"></span>
+                    <strong>Age:</strong> <span class="underline" style="width: 66px;"></span>
+                    <strong>Sex:</strong> <span class="underline" style="width: 66px;"></span>
                 </p>
-                <p>LRN: <span
-                        style="border-bottom: 1px solid #000; padding-left: 50px; padding-right: 50px">{{ $LRN }}</span>
-                </p>
-                <p>Birthday: <span style="border-bottom: 1px solid #000; width: 200px;">{{ $birthday }}</span>
-                    Age: <span style="border-bottom: 1px solid #000; width: 200px;">{{ $age }}</span>
-                    Sex: <span style="border-bottom: 1px solid #000; width: 200px;">{{ $gender }}</span>
-                </p>
-                <p>Grade: <span style="border-bottom: 1px solid #000; width: 200px;">{{ $gradeLevel }}</span>
-                    Section: <span style="border-bottom: 1px solid #000; width: 200px;">{{ $section }}</span>
+                <p><strong>Grade:</strong> <span class="underline" style="width: 80px;"></span>
+                    <strong>Section:</strong> <span class="underline" style="width: 175px"></span>
                 </p>
             </div>
 
@@ -334,13 +335,12 @@
 
     <div class="secondPage">
         <div>
-            <p>NAME: <span class="underline" style="width: 200px;"> {{ $name }}</span></p>
+            <p>NAME: <span class="underline long-underline"></span></p>
         </div>
 
         <div class="left-secondPage">
             <p><strong>REPORT ON LEARNING PROGRESS AND ACHIEVEMENT</strong></p>
             <p style="margin-bottom: 0px"><strong>First Semester</strong></p>
-            {{-- FOR FIRST SEMESTER --}}
             <table class="gradeTable">
                 <tr>
                     <th rowspan="2">SUBJECT TITLE</th>
@@ -355,30 +355,92 @@
                         <div><strong>2</strong></div>
                     </td>
                 </tr>
-                @foreach ($subjects as $subject)
-                    @php
-                        // Get the grade for the current subject in the first semester
-                        $grade = $grades->where('subject', $subject)->where('semester', 'First Semester')->first();
-                    @endphp
-
-                    {{-- Only display subjects that belong to the first semester --}}
-                    @if ($grade)
-                        <tr>
-                            <td>{{ $subject }}</td>
-                            <td>{{ $grade->midterm ?? '' }}</td>
-                            <td>{{ $grade->finals ?? '' }}</td>
-                            <td>{{ isset($averages[$subject]) ? number_format($averages[$subject], 2) : '' }}</td>
-                        </tr>
-                    @endif
-                @endforeach
                 <tr>
-                    <td style="padding: 6px 6px;"></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td style="padding: 6px 6px;"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -392,7 +454,7 @@
                 <tr>
                     <td class="text-right" colspan="3" style="padding: 0px 0px !important;"><strong>General
                             Average for the Semester <span class="tab"></span></strong></td>
-                    <td style="padding: 0px 0px !important;">{{ $finalRating }}</td>
+                    <td style="padding: 0px 0px !important;"></td>
                 </tr>
                 <tr>
                     <td class="text-right" colspan="4" style="padding: 0px !important;">
@@ -417,30 +479,92 @@
                         <div><strong>4</strong></div>
                     </td>
                 </tr>
-                @foreach ($subjects as $subject)
-                    @php
-                        // Get the grade for the current subject in the first semester
-                        $grade = $grades->where('subject', $subject)->where('semester', 'Second Semester')->first();
-                    @endphp
-
-                    {{-- Only display subjects that belong to the first semester --}}
-                    @if ($grade)
-                        <tr>
-                            <td>{{ $subject }}</td>
-                            <td>{{ $grade->midterm ?? '' }}</td>
-                            <td>{{ $grade->finals ?? '' }}</td>
-                            <td>{{ isset($averages[$subject]) ? number_format($averages[$subject], 2) : '' }}</td>
-                        </tr>
-                    @endif
-                @endforeach
                 <tr>
-                    <td style="padding: 6px 6px;"></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td style="padding: 6px 6px;"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>

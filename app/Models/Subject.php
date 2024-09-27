@@ -12,8 +12,9 @@ class Subject extends Model
     // protected $primaryKey = 'studentId';
     
     protected $fillable = [
-        'studentId',
+        'teacherId',
         'gradeLevel',
+        'semester',
         'section',
         'subject',
         'subjectTeacher',

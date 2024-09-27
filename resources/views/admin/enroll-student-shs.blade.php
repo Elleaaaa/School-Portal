@@ -87,44 +87,40 @@
                                                 <label for="gradeLevel">Grade Level</label>
                                                 <select class="form-control" id="gradeLevel" name="gradeLevel" required>
                                                     <option value=""></option>
-                                                    <option value="Grade 7">Grade 7</option>
-                                                    <option value="Grade 8">Grade 8</option>
-                                                    <option value="Grade 9">Grade 9</option>
-                                                    <option value="Grade 10">Grade 10</option>
                                                     <option value="Grade 11">Grade 11</option>
                                                     <option value="Grade 12">Grade 12</option>
                                                 </select>
                                             </div>
                                         </div>
-                                        {{-- <div class="col-12 col-sm-6">
+                                        <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label for="strand">Strand</label>
-                                                <select class="form-control" name="strand">
+                                                <select class="form-control" id="strand" name="strand">
                                                     <option></option>
                                                     <option value="STEM">STEM</option>
-                                                    <option value="HUMSS">HUMSS</option>
+                                                    <option value="GAS">GAS</option>
                                                     <option value="ABM">ABM</option>
                                                 </select>
                                             </div>
-                                        </div> --}}
+                                        </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label for="section">Section</label>
                                                 <select class="form-control" id="section" name="section" required>
-                                               {{-- section will be display here --}}
+                                                    {{-- Section options will be populated here --}}
                                                 </select>
                                             </div>
                                         </div>
-                                        {{-- <div class="col-12 col-sm-6">
+                                        <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label for="semester">Semester</label>
-                                                <select class="form-control" name="semester">
+                                                <select class="form-control" name="semester" id="semester">
                                                     <option></option>
                                                     <option value="First Semester">First Semester</option>
                                                     <option value="Second Semester">Second Semester</option>
                                                 </select>
                                             </div>
-                                        </div> --}}
+                                        </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group" id="subjectContainer">
                                                 <!-- Subjects will be dynamically added here -->
@@ -132,10 +128,10 @@
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
-                                                <input class="form-control" id="selectedSubjects" name="subjects" hidden>
+                                                <textarea class="form-control" id="selectedSubjects" name="subjects" hidden></textarea>
                                             </div>
                                         </div>
-                                        <div class="col-12 col-sm-4">
+                                        {{-- <div class="col-12 col-sm-4">
                                             <div class="form-group">
                                                 <label for="classType">Class Type</label>
                                                 <select class="form-control" name="classType">
@@ -144,7 +140,7 @@
                                                     <option value="Special Science Class">Special Science Class</option>
                                                 </select>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         <div class="col-12 col-sm-4">
                                             <div class="form-group">
                                                 <label for="status">Status</label>
@@ -172,10 +168,10 @@
 
 
     {{-- FETCH SECTION BASED ON GRADE LEVEL --}}
-    <script src="{{ asset('js/myjs/fetchSection.js') }}"></script>
+    <script src="{{ asset('js/myjs/fetchSectionByStrand.js') }}"></script>
 
     {{-- DISPLAY SUBJECTS DEPENDS ON GRADE LEVEL --}}
-    <script src="{{ asset('js/myjs/displaySubjects.js') }}"></script>
+    <script src="{{ asset('js/myjs/displaySubjectsBySem.js') }}"></script>
 
     {{-- Auto populate student details when student ID is entered --}}
     <script src="{{ asset('js/myjs/populateStudentDetails.js') }}"></script>

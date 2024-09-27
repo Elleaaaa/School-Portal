@@ -32,8 +32,8 @@ class GradesImport implements ToModel, WithHeadingRow
 
         // Handle non-numeric values for grades
         foreach ($mappedRow as $key => $value) {
-            if (strpos($key, 'Grade') !== false && $value === 'not yet graded') {
-                $mappedRow[$key] = 'not yet graded'; // Handle as needed
+            if (strpos($key, 'Grade') !== false && $value === 'ongoing') {
+                $mappedRow[$key] = 'ongoing'; // Handle as needed
             }
         }
 

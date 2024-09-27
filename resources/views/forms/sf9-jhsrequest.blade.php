@@ -19,7 +19,7 @@
                             <h3 class="page-title">Forms</h3>
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="students.html">Form Request</a></li>
-                                <li class="breadcrumb-item active">COR</li>
+                                <li class="breadcrumb-item active">Junior High School SF9</li>
                             </ul>
                         </div>
                     </div>
@@ -38,7 +38,7 @@
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label for="studentId">Student ID</label>
-                                                <input type="text" class="form-control" name="studentId" id="studentId">
+                                                <input type="text" class="form-control" name="studentId" id="studentId" required>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6">
@@ -72,30 +72,8 @@
                                                     value="{{ old('suffixName') }}" placeholder="Jr, Sr, III, etc">
                                             </div>
                                         </div>
-                                        <div class="col-12 col-sm-6 col-md-6">
-                                            <div class="form-group">
-                                                <label>Grade</label>
-                                                <input name="grade" type="text" class="form-control"
-                                                    value="{{ old('grade') }}">
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-sm-6 col-md-6">
-                                            <div class="form-group">
-                                                <label>Strand</label>
-                                                <input name="strand" type="text" class="form-control"
-                                                    value="{{ old('strand') }}">
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-sm-6 col-md-6">
-                                            <div class="form-group">
-                                                <label>Purpose</label>
-                                                <input name="purpose" type="text" class="form-control"
-                                                    value="{{ old('purpose') }}">
-                                            </div>
-                                        </div>
-
                                         <div class="col-12">
-                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                            <button type="submit" class="btn btn-primary" id="submitBtn" disabled>Submit</button>
                                         </div>
                                     </div>
                                 </form>
@@ -108,6 +86,8 @@
     </div>
 {{-- Auto populate student details when student ID is entered --}}
 <script src="{{ asset('js/myjs/populateStudentDetails.js') }}"></script>
+{{-- Enabled button when student ID is entered --}}
+<script src="{{ asset('js/myjs/enabledButton.js') }}"></script>
 
 </body>
 

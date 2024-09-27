@@ -352,7 +352,10 @@
                         <a href="#"><i class="fas fa-id-card-alt"></i><span>Enrollment</span><span class="menu-arrow"></span></a>
                         <ul>
                             <li class="{{ Route::currentRouteName() == 'enroll-student.show' ? 'active' : '' }}">
-                                <a href="{{ route('enroll-student.show') }}">Enroll Student</a>
+                                <a href="{{ route('enroll-student.show') }}">Enroll Student - JHS</a>
+                            </li>
+                            <li class="{{ Route::currentRouteName() == 'enroll-student-shs.show' ? 'active' : '' }}">
+                                <a href="{{ route('enroll-student-shs.show') }}">Enroll Student - SHS</a>
                             </li>
                             <li class="{{ Route::currentRouteName() == 'enrolled-student-list.show' ? 'active' : '' }}">
                                 <a href="{{ route('enrolled-student-list.show') }}">Enrolled Student</a>

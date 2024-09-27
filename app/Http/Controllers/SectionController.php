@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Section;
+use App\Models\Subject;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 
@@ -69,6 +70,25 @@ class SectionController extends Controller
             return response()->json(['error' => 'Section not found for the given grade level'], 404);
         }
     }
+    public function fetchSectionByStrand(Request $request) {
+        $strand = $request->input('strand');
+        $gradeLevel = $request->input('gradeLevel');
+        
+        // Fetch sections based on strand and grade level
+        $sections = Section::where('section', $strand) //section instead of strand, no strand in Section table
+                            ->where('gradeLevel', $gradeLevel)
+                            ->get(['sectionName']); // Fetch only the sectionName attribute
+        
+        // Check if sections were found
+        if ($sections->isNotEmpty()) {
+            return response()->json($sections);
+        } else {
+            return response()->json([], 200); // Return an empty array instead of 404
+        }
+    }
+    
+    
+    
 
     /**
      * Display the specified resource.
@@ -93,12 +113,19 @@ class SectionController extends Controller
     {
         $section = Section::find($id);
 
+        $oldSectionName = $section->sectionName;
+
         $section->gradeLevel = $request->input('gradeLevel');
         $section->section = $request->input('section');
         $section->sectionName = $request->input('sectionName');
         $section->teacherId = $request->input('sectionTeacher');
         $section->status = $request->input('status');
         $section->save();
+
+        // when section name is updated, it will also update the section in Subject Table
+        Subject::where('gradeLevel', $section->gradeLevel)
+                ->where('section', $oldSectionName)
+                ->update(['section' => $section->sectionName]);
 
         notify()->success('Section Updated Successfully!');
         return redirect()->route('sectionlist.show');

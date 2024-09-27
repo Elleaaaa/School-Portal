@@ -25,12 +25,9 @@ class EnrolleesController extends Controller
         return view('admin.enroll-student');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function showEnrollSHS()
     {
-        //
+        return view('admin.enroll-student-shs');
     }
 
     /**
@@ -42,7 +39,7 @@ class EnrolleesController extends Controller
         $mName = $request->input('middleName');
         $lName = $request->input('lastName');
         $sName = $request->input('suffixName');
-        $fullName = $fName.' '.$mName.' '.$lName.' '.$sName;
+        $fullName = $fName . ' ' . $mName . ' ' . $lName . ' ' . $sName;
 
         // Check if the student is already enrolled this SY
         $year = date('Y');
@@ -55,17 +52,17 @@ class EnrolleesController extends Controller
         }
 
         $studentId = $request->input('studentId');
-        $existingEnrollment = Enrollee::where('studentId', $studentId)
-        ->where('schoolYear', $schoolYear)
-        ->first();
+        $semester = $request->input('semester');
 
-        // Enroll Student
-        if ($existingEnrollment) {
-            // Student is already enrolled, do not enroll again
-            notify()->error('Student Already Enrolled!');
-            return redirect()->back();
-        } else {
-            // Proceed with enrollment
+        // Check if the student is already enrolled in the same grade level and semester
+        $existingEnrollment = Enrollee::where('studentId', $studentId)
+            ->where('schoolYear', $schoolYear)
+            ->where('semester', $semester)
+            ->first();
+
+        // Define a function to handle enrollment
+        function enrollStudent($studentId, $fullName, $request, $schoolYear)
+        {
             $enrollee = new Enrollee();
             $enrollee->studentId = $studentId;
             $enrollee->name = $fullName;
@@ -82,11 +79,32 @@ class EnrolleesController extends Controller
             $notif = new Notification();
             $notif->userId = $studentId;
             $notif->title = "Enrollment Approved!";
-            $notif->message = "Congratulation! your enrollment for school year ". $schoolYear . " has been approved";
+            $notif->message = "Congratulations! Your enrollment for school year " . $schoolYear . " has been approved.";
             $notif->type = "enrollment";
             $notif->userRole = "student";
             $notif->save();
         }
+
+        if ($existingEnrollment) {
+            // Check if the student is in Grade 11 or Grade 12
+            if ($existingEnrollment->gradeLevel == "Grade 11" || $existingEnrollment->gradeLevel == "Grade 12") {
+                // Allow enrollment only in a different semester
+                if ($existingEnrollment->semester != $semester) {
+                    enrollStudent($studentId, $fullName, $request, $schoolYear);
+                } else {
+                    notify()->error('Student Already Enrolled for this Semester!');
+                    return redirect()->back();
+                }
+            } else {
+                notify()->error('Student Already Enrolled!');
+                return redirect()->back();
+            }
+        } else {
+            // Proceed with enrollment if no existing enrollment found
+            enrollStudent($studentId, $fullName, $request, $schoolYear);
+        }
+
+
 
         $gradeLevel = $request->input('gradeLevel');
         // create row for each subjects
@@ -101,8 +119,8 @@ class EnrolleesController extends Controller
                 $grade->section = $request->input('section');
                 $grade->semester = $request->input('semester');
                 $grade->subject = $subject;
-                $grade->midterm = 'not yet graded';
-                $grade->finals = 'not yet graded';
+                $grade->midterm = 'ongoing';
+                $grade->finals = 'ongoing';
                 $grade->schoolYear = $schoolYear;
                 $grade->save();
             }
@@ -114,10 +132,10 @@ class EnrolleesController extends Controller
                 $grade->section = $request->input('section');
                 $grade->semester = $request->input('semester');
                 $grade->subject = $subject;
-                $grade->firstQGrade = 'not yet graded';
-                $grade->secondQGrade = 'not yet graded';
-                $grade->thirdQGrade = 'not yet graded';
-                $grade->fourthQGrade = 'not yet graded';
+                $grade->firstQGrade = 'ongoing';
+                $grade->secondQGrade = 'ongoing';
+                $grade->thirdQGrade = 'ongoing';
+                $grade->fourthQGrade = 'ongoing';
                 $grade->schoolYear = $schoolYear;
                 $grade->save();
             }
@@ -131,11 +149,11 @@ class EnrolleesController extends Controller
     {
         $studentId = $request->input('studentId');
         $hasPaid = Fee::where('studentId', $studentId)->exists();
-    
+
         if (!$hasPaid) {
             return response()->json(['message' => 'Student Not Yet Paid!']);
         }
-    
+
         return response()->noContent();
     }
 
@@ -145,21 +163,21 @@ class EnrolleesController extends Controller
         $mName = $request->input('middleName');
         $lName = $request->input('lastName');
         $sName = $request->input('suffixName');
-        $fullName = $fName.' '.$mName.' '.$lName.' '.$sName;
+        $fullName = $fName . ' ' . $mName . ' ' . $lName . ' ' . $sName;
 
-          // Check if the student is already enrolled this SY
-          $year = date('Y');
-          $month = date('m');
-  
-          if ($month <= 6) {
-              $schoolYear = ($year - 1) . '-' . $year;
-          } else {
-              $schoolYear = $year . '-' . ($year + 1);
-          }
+        // Check if the student is already enrolled this SY
+        $year = date('Y');
+        $month = date('m');
+
+        if ($month <= 6) {
+            $schoolYear = ($year - 1) . '-' . $year;
+        } else {
+            $schoolYear = $year . '-' . ($year + 1);
+        }
 
         // Enroll Student
         $enrollee = new Enrollee();
-       
+
         $enrollee->studentId = $request->input('studentId');
         $enrollee->name = $fullName;
         $enrollee->subjects = $request->input('subjects');
@@ -216,7 +234,7 @@ class EnrolleesController extends Controller
 
         // Split the full name into components
         $nameComponents = explode(' ', $name);
-        
+
         // Extract each component
         $firstName = isset($nameComponents[0]) ? $nameComponents[0] : null;
         $middleName = isset($nameComponents[1]) ? $nameComponents[1] : null;
@@ -249,8 +267,7 @@ class EnrolleesController extends Controller
         $gradeLevelUp = isset($gradeMapping[$gradeLevel]) ? $gradeMapping[$gradeLevel] : "Invalid grade level";
 
         return view('student.enrollment', compact('student', 'gradeLevelUp', 'enrollee'));
-
-        }
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -269,21 +286,21 @@ class EnrolleesController extends Controller
         $mName = $request->input('middleName');
         $lName = $request->input('lastName');
         $sName = $request->input('suffixName');
-        $fullName = $fName.' '.$mName.' '.$lName.' '.$sName;
+        $fullName = $fName . ' ' . $mName . ' ' . $lName . ' ' . $sName;
 
-          // Check if the student is already enrolled this SY
-          $year = date('Y');
-          $month = date('m');
-  
-          if ($month <= 6) {
-              $schoolYear = ($year - 1) . '-' . $year;
-          } else {
-              $schoolYear = $year . '-' . ($year + 1);
-          }
+        // Check if the student is already enrolled this SY
+        $year = date('Y');
+        $month = date('m');
+
+        if ($month <= 6) {
+            $schoolYear = ($year - 1) . '-' . $year;
+        } else {
+            $schoolYear = $year . '-' . ($year + 1);
+        }
 
         // Enroll Student
         $enrollee = Enrollee::find($id);
-       
+
         $enrollee->studentId = $request->input('studentId');
         $enrollee->name = $fullName;
         $enrollee->subjects = $request->input('subjects');
@@ -315,7 +332,7 @@ class EnrolleesController extends Controller
             $grade->fourthQGrade = 'not yet graded';
             $grade->schoolYear = $schoolYear;
             $grade->save();
-         }
+        }
 
         notify()->success('Student Enrolled Successfully!');
         return redirect()->route('enrolled-student-list.show');
@@ -324,10 +341,9 @@ class EnrolleesController extends Controller
     public function getGradeLevelsAJAX()
     {
         $students = Enrollee::select('gradeLevel', DB::raw('count(*) as total'))
-                            ->groupBy('gradeLevel')
-                            ->get();
-    
-        return response()->json($students);
-    }    
+            ->groupBy('gradeLevel')
+            ->get();
 
+        return response()->json($students);
+    }
 }

@@ -140,6 +140,7 @@ Route::middleware(['auth', 'throttle:auth_limited'])->group(function () {
     Route::post('/admin/addsubject', [SubjectController::class, 'store'])->name('subject.add');
 
     Route::get('/fetch-subjects', [SubjectController::class, 'fetchSubjects'])->name('subject.show');
+    Route::get('/fetch-subjectsbysem', [SubjectController::class, 'fetchSubjectsBySem'])->name('subject-shs.show');
 
     Route::get('/admin/edit-student/{id}', [StudentController::class, 'showEditStudent'])->name('edit-student.show');
     Route::post('/admin/edit-student/{id}', [StudentController::class, 'updateAdmin'])->name('edit-student.update');
@@ -162,11 +163,16 @@ Route::middleware(['auth', 'throttle:auth_limited'])->group(function () {
     Route::get('/admin/sectionlist', [SectionController::class, 'showSectionList'])->name('sectionlist.show');
 
     Route::get('/fetch-sections', [SectionController::class, 'fetchSection'])->name('section.show');
+    Route::get('/fetch-sectionsbystrand', [SectionController::class, 'fetchSectionByStrand'])->name('section-shs.show');
 
     Route::get('/admin/enroll-student/{id}', [EnrolleesController::class, 'showEditEnrollStudent'])->name('edit-enroll-student.show');
     Route::post('/admin/enroll-student/{id}', [EnrolleesController::class, 'update'])->name('edit-enroll-student.update');
+    //FOR JHS
     Route::get('/admin/enroll-student', [EnrolleesController::class, 'index'])->name('enroll-student.show');
     Route::post('/admin/enroll-student', [EnrolleesController::class, 'store'])->name('enroll-student.store');
+    //FOR SHS
+    Route::get('/admin/enroll-student-shs', [EnrolleesController::class, 'showEnrollSHS'])->name('enroll-student-shs.show');
+
     Route::get('/admin/enrolled-student-list', [AdminController::class, 'showEnrolledStudents'])->name('enrolled-student-list.show');
     Route::get('/admin/pending-student-list', [AdminController::class, 'showPendingStudents'])->name('pending-student-list.show');
 

@@ -84,6 +84,27 @@
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
+                                                <label for="semester">Semester</label>
+                                                <select class="form-control" id="semester" name="semester" required>
+                                                    <option value=""></option>
+                                                    <option value="First Semester" {{ $subject->semester === 'First Semester' ? 'selected' : '' }}>First Semester</option>
+                                                    <option value="Second Semester" {{ $subject->semester === 'Second Semester' ? 'selected' : '' }}>Second Semester</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-sm-6">
+                                            <div class="form-group">
+                                                <label for="strand">Strand</label>
+                                                <select class="form-control" id="strand" name="strand" required>
+                                                    <option value=""></option>
+                                                    <option value="STEM" {{ $subject->strand === 'STEM' ? 'selected' : '' }}>STEM</option>
+                                                    <option value="ABM" {{ $subject->strand === 'ABM' ? 'selected' : '' }}>ABM</option>
+                                                    <option value="GAS" {{ $subject->strand === 'GAS' ? 'selected' : '' }}>GAS</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-sm-6">
+                                            <div class="form-group">
                                                 <label for="subjectTeacher">Subject Teacher</label>
                                                 <select class="form-control" id="subjectTeacher" name="subjectTeacher">
                                                     @foreach($teachers as $teacher)

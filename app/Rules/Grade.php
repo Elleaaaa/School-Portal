@@ -15,8 +15,8 @@ class Grade implements Rule
      */
     public function passes($attribute, $value)
     {
-        // Allow "not yet graded" or a numeric value between 60 and 100
-        return $value === 'not yet graded' || (is_numeric($value) && $value >= 60 && $value <= 100);
+        // Allow "ongoing" or a numeric value between 60 and 100
+        return $value === 'ongoing' || (is_numeric($value) && $value >= 60 && $value <= 100);
     }
 
     /**

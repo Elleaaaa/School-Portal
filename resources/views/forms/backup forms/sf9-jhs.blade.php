@@ -209,7 +209,7 @@
                         </p>
                         <p><strong>Grade:</strong> <span class="underline"
                                 style="width: 80px;">{{ $gradeLevel }}</span>
-                            <strong>Section:</strong><span class="underline"
+                            <strong>Section:</strong> <span class="underline"
                                 style="width: 175px">{{ $section }}</span>
                         </p>
                     </div>
@@ -248,16 +248,36 @@
                     <th style="width: 45px;">FINAL <br />RATING</th>
                     <th style="width: 30px;">REMARKS</th>
                 </tr>
-                @foreach($gradesData as $grade) 
-                <tr>
-                    <td>{{ $grade['subject'] ?? '' }}</td>
-                    <td>{{ $grade['firstQGrade'] ?? 'N/A' }}</td>
-                    <td>{{ $grade['secondQGrade'] ?? 'N/A' }}</td>
-                    <td>{{ $grade['thirdQGrade'] ?? 'N/A' }}</td>
-                    <td>{{ $grade['fourthQGrade'] ?? 'N/A' }}</td>
-                    <td>{{ $grade['average'] ?? 'N/A' }}</td>
-                    <td>{{ ( $grade['average'] >= 75) ? 'Passed' : 'Failed' }}</td>
-                </tr>
+                @foreach ($subjects as $subject)
+                    @php
+                        // Get the grade for the current subject
+                        $grade = $grades->where('subject', $subject)->first();
+                    @endphp
+                    <tr>
+                        <td>{{ $subject }}</td>
+                        @if ($subject === 'MAPEH')
+                        {{-- Display the MAPEH Grades --}}
+                        <td>{{ isset($averages['MAPEHGrades']['firstQGrade']) ? number_format($averages['MAPEHGrades']['firstQGrade'], 2) : '' }}</td>
+                        <td>{{ isset($averages['MAPEHGrades']['secondQGrade']) ? number_format($averages['MAPEHGrades']['secondQGrade'], 2) : '' }}</td>
+                        <td>{{ isset($averages['MAPEHGrades']['thirdQGrade']) ? number_format($averages['MAPEHGrades']['thirdQGrade'], 2) : '' }}</td>
+                        <td>{{ isset($averages['MAPEHGrades']['fourthQGrade']) ? number_format($averages['MAPEHGrades']['fourthQGrade'], 2) : '' }}</td>
+                        {{-- MAPEH Average --}}
+                        <td style="background: lightblue">{{ isset($averages[$subject]) ? number_format($averages[$subject], 2) : '' }}</td>
+                    @else
+                        {{-- Display regular subjects --}}
+                        <td>{{ $grade ? $grade->firstQGrade : '' }}</td>
+                        <td>{{ $grade ? $grade->secondQGrade : '' }}</td>
+                        <td>{{ $grade ? $grade->thirdQGrade : '' }}</td>
+                        <td>{{ $grade ? $grade->fourthQGrade : '' }}</td>
+            
+                        @if (in_array($subject, ['Music', 'Arts', 'Health', 'Physical Education']))
+                            <td style="background: lightblue"></td>
+                        @else
+                            <td>{{ isset($averages[$subject]) ? number_format($averages[$subject], 2) : '' }}</td>
+                        @endif
+                    @endif
+                        <td></td>
+                    </tr>
                 @endforeach
                 
                 <tr>
@@ -293,8 +313,7 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    {{-- <td>{{ $finalRating }}</td> --}}
-                    <td></td>
+                    <td>{{ $finalRating }}</td>
                     <td></td>
                 </tr>
             </table>

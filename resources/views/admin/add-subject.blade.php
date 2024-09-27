@@ -56,9 +56,30 @@
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
+                                                <label for="strand">Strand</label>
+                                                <select class="form-control" id="strand" name="strand">
+                                                    <option value=""></option>
+                                                    <option value="STEM">STEM</option>
+                                                    <option value="ABM">ABM</option>
+                                                    <option value="GAS">GAS</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-sm-6">
+                                            <div class="form-group">
                                                 <label for="section">Section</label>
                                                 <select class="form-control" id="section" name="section" required>
-                                               {{-- section will be display here --}}
+                                                    {{-- section will be display here --}}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-sm-6">
+                                            <div class="form-group">
+                                                <label for="semester">Semester</label>
+                                                <select class="form-control" id="semester" name="semester">
+                                                    <option value=""></option>
+                                                    <option value="First Semester">First Semester</option>
+                                                    <option value="Second Semester">Second Semester</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -71,21 +92,29 @@
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label for="subjectType">Subject Type</label>
-                                                <select class="form-control" id="subjectType" name="subjectType" required>
+                                                <select class="form-control" id="subjectType" name="subjectType"
+                                                    required>
                                                     <option value=""></option>
-                                                    <option value="Major Subject">Major Subject</option>
-                                                    <option value="Minor Subject">Minor Subject</option>
                                                     <option value="General Subject">General Subject</option>
+                                                    <option value="Core">Core</option>
+                                                    <option value="Applied">Applied</option>
+                                                    <option value="Specialized">Specialized</option>
+                                                    <option value="Other_Subjects">Other_Subjects</option>
                                                 </select>
                                             </div>
                                         </div>
+
+
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label for="subjectTeacher">Subject Teacher</label>
-                                                <select name="subjectTeacher" id="subjectTeacher" class="form-control" required>
-                                                    <option value="" selected disabled>Select Subject Teacher</option>
-                                                    @foreach($teachers as $teacher)
-                                                        <option value="{{ $teacher->teacherId }}" data-name="{{ $teacher->firstName . ' ' . $teacher->lastName }}">
+                                                <select name="subjectTeacher" id="subjectTeacher" class="form-control"
+                                                    required>
+                                                    <option value="" selected disabled>Select Subject Teacher
+                                                    </option>
+                                                    @foreach ($teachers as $teacher)
+                                                        <option value="{{ $teacher->teacherId }}"
+                                                            data-name="{{ $teacher->firstName . ' ' . $teacher->lastName }}">
                                                             {{ $teacher->firstName . ' ' . $teacher->lastName }}
                                                         </option>
                                                     @endforeach
@@ -118,7 +147,7 @@
 
     {{-- FETCH SECTION BASED ON GRADE LEVEL --}}
     <script src="{{ asset('js/myjs/fetchSection.js') }}"></script>
- 
+
     {{-- FETCH TEACHER ID TO SAVE IN DB --}}
     <script src="{{ asset('js/myjs/fetchTeacherId.js') }}"></script>
 

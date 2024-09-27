@@ -92,7 +92,7 @@ class AdminController extends Controller
     {
         // $students = Student::where('userType', 'student')->get(); // filter by usertype
         $teachers = Teacher::all();
-        $subjects = Subject::all();
+        $subjects = Subject::select('subject', 'teacherId')->distinct()->get();
         $addresses = Address::all();
         $images = User::all();
         return view('admin.teacher-list', compact('teachers', 'subjects', 'addresses', 'images'));

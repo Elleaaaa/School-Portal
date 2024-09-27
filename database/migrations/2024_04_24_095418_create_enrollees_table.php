@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('studentId', 255)->nullable();
             $table->string('name', 255)->nullable();
-            $table->string('subjects', 255)->nullable();
+            $table->text('subjects')->nullable();
             $table->string('gradeLevel', 255)->nullable();
             $table->string('section', 255)->nullable();
             $table->string('semester', 255)->nullable();
