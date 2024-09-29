@@ -38,9 +38,11 @@ document.addEventListener("DOMContentLoaded", function() {
                             formatter: (value, context) => {
                                 return value; // Display the value
                             },
-                            color: '#333', // Set the text color
-                            anchor: 'end', // Position the label
-                            align: 'start' // Align the label to the start
+                            color: '#000', // Label color
+                            font: {
+                                weight: 'bold',
+                                size: 16
+                            },
                         }
                     }
                 },

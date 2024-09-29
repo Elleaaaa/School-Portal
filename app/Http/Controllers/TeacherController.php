@@ -24,6 +24,8 @@ class TeacherController extends Controller
 {
 
     public $studentTotalCount;
+    public $myStudentsIds;
+    public $myStudents;
     /**
      * Display a listing of the resource.
      */
@@ -169,15 +171,42 @@ class TeacherController extends Controller
 
         $absentToday = Attendance::whereIn('studentId', $myStudentsIds)
                                  ->where('date', date('Y-m-d'))
-                                 ->where('status', 0) // Assuming 0 means absent
+                                 ->where('status', 0) // 0 means absent
                                  ->count();
         
         $presentToday = Attendance::whereIn('studentId', $myStudentsIds)
                                  ->where('date', date('Y-m-d'))
-                                 ->where('status', 1) // Assuming 1 means present
+                                 ->where('status', 1) // 1 means present
                                  ->count();
 
+
+        // for passing to the allGenderAJAX() method
+        $this->myStudentsIds = $myStudentsIds; //I'm passing the $mystudentIds to the allGenderAJAX()
+        $this->myStudents = $myStudents;
+
         return view('teacher.dashboard', compact('teacher', 'studentTotalCount', 'handleSections', 'sections', 'absentToday', 'presentToday'));
+    }
+
+    public function getAllGenderAJAX()
+    {
+        $this->showDashboard(Auth::user()->studentId);
+        $myStudentsIds = $this->myStudentsIds;
+
+        $genders = Student::whereIn('studentId', $myStudentsIds)->pluck('gender');
+
+        return response()->json($genders);
+
+    }
+
+    public function getAllGradeLevelAJAX()
+    {
+        $this->showDashboard(Auth::user()->studentId);
+        $myStudentsIds = $this->myStudentsIds;
+
+        $myStudents = Enrollee::whereIn('studentId', $myStudentsIds)->pluck('gradeLevel');
+
+        return response()->json($myStudents);
+
     }
 
     public function showEditTeacher(string $id)

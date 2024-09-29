@@ -118,6 +118,9 @@ Route::middleware(['auth', 'throttle:auth_limited'])->group(function (){
     Route::get('/subject-details/{subjectId}', [TeacherController::class, 'showSubDetails'])->name('teacher-subjectdetails.show');
 
     Route::post('/uploadFile/{id}', [FileController::class, 'store'])->name('uploadFile.store');
+
+    Route::get('/api/allgenders', [TeacherController::class, 'getAllGenderAJAX']);
+    Route::get('/api/allgradelevels', [TeacherController::class, 'getAllGradeLevelAJAX']);
 });
 
 

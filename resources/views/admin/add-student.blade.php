@@ -43,7 +43,7 @@
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
-                                                <label>First Name</label>
+                                                <label>First Name</label><span style="color: red;">*</span>
                                                 <input name="firstName" type="text" class="form-control"
                                                     value="{{ old('firstName') }}">
                                             </div>
@@ -57,7 +57,7 @@
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
-                                                <label>Last Name</label>
+                                                <label>Last Name</label><span style="color: red;">*</span>
                                                 <input name="lastName" type="text" class="form-control"
                                                     value="{{ old('lastName') }}">
                                             </div>
@@ -71,7 +71,7 @@
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-4">
                                             <div class="form-group">
-                                                <label>Gender</label>
+                                                <label>Gender</label><span style="color: red;">*</span>
                                                 <select name="gender" class="form-control">
                                                     <option readonly>Select Gender</option>
                                                     <option value="Female"
@@ -135,7 +135,7 @@
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-6">
                                             <div class="form-group">
-                                                <label>Student Id</label>
+                                                <label>Student Id</label><span style="color: red;">*</span>
                                                 <input name="studentId" type="text" class="form-control"
                                                     value="{{ old('studentId') }}" required>
                                                 <x-input-error :messages="$errors->get('studentId')" class="mt-2 error-text" />
@@ -143,7 +143,7 @@
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-6">
                                             <div class="form-group">
-                                                <label>Email Address</label>
+                                                <label>Email Address</label><span style="color: red;">*</span>
                                                 <input name="email" type="email" class="form-control"
                                                     value="{{ old('email') }}" required>
                                                 <x-input-error :messages="$errors->get('email')" class="mt-2 error-text" />
@@ -151,7 +151,7 @@
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-6">
                                             <div class="form-group">
-                                                <label>Password</label>
+                                                <label>Password</label><span style="color: red;">*</span>
                                                 <input type="password" id="password" name="password"
                                                     class="form-control" required>
                                                 <x-input-error :messages="$errors->get('password')" class="mt-2 error-text" />
@@ -159,7 +159,7 @@
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-6">
                                             <div class="form-group">
-                                                <label>Repeat Password</label>
+                                                <label>Repeat Password</label><span style="color: red;">*</span>
                                                 <input type="password" id="password_confirmation"
                                                     name="password_confirmation" class="form-control" required>
                                                 <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2 error-text" />

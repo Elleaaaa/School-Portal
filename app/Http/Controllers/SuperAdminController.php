@@ -43,19 +43,19 @@ class SuperAdminController extends Controller
                             ->where('status', "Enrolled")
                             ->where('schoolYear', $currentYear . "-" . $nextYear)
                             ->count();
-        $grade9 = Enrollee::where('gradelevel', "Grade 8")
+        $grade9 = Enrollee::where('gradelevel', "Grade 9")
                             ->where('status', "Enrolled")
                             ->where('schoolYear', $currentYear . "-" . $nextYear)
                             ->count();
-        $grade10 = Enrollee::where('gradelevel', "Grade 8")
+        $grade10 = Enrollee::where('gradelevel', "Grade 10")
                             ->where('status', "Enrolled")
                             ->where('schoolYear', $currentYear . "-" . $nextYear)
                             ->count();
-        $grade11 = Enrollee::where('gradelevel', "Grade 8")
+        $grade11 = Enrollee::where('gradelevel', "Grade 11")
                             ->where('status', "Enrolled")
                             ->where('schoolYear', $currentYear . "-" . $nextYear)
                             ->count();
-        $grade12 = Enrollee::where('gradelevel', "Grade 8")
+        $grade12 = Enrollee::where('gradelevel', "Grade 12")
                             ->where('status', "Enrolled")
                             ->where('schoolYear', $currentYear . "-" . $nextYear)
                             ->count();
