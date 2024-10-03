@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FeeController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AssessorController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\GradeController;
@@ -24,6 +25,7 @@ use App\Http\Controllers\CashierController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\SuperAdminController;
+use App\Models\Discount;
 use App\Models\Enrollee;
 use Illuminate\Cache\RateLimiting\Limit;
 
@@ -124,6 +126,28 @@ Route::middleware(['auth', 'throttle:auth_limited'])->group(function (){
 });
 
 
+// ASSESSOR ROUTES
+Route::middleware(['auth', 'throttle:auth_limited'])->group(function (){
+    Route::get('/assessor-dashboard/{assessorId}', [AssessorController::class, 'showDashboard'])->name('assessor-dashboard.show');
+
+    Route::get('/profile-assessor/{assessorId}', [AssessorController::class, 'showProfile'])->name('profile-assessor.show');
+    Route::post('/profile-assessor/{assessorId}', [AssessorController::class, 'update'])->name('profile-assessor.update');
+
+    Route::post('/updateDiscount/{id}', [AssessorController::class, 'updateDiscount'])->name('edit-discount.update');
+    Route::get('/updateDiscount/{id}', [AssessorController::class, 'showUpdateDiscount'])->name('edit-discount.show');
+    Route::get('/addDiscounts', [AssessorController::class, 'showAddDiscount'])->name('add-discount.show');
+    Route::post('/addDiscounts', [AssessorController::class, 'addDiscount'])->name('add-discount.store');
+    Route::get('/discount-list', [AssessorController::class, 'showDiscountList'])->name('discountlist.show');
+
+    Route::post('/assessor/toggle-status/{id}', [AssessorController::class, 'toggleStatus']);
+
+    Route::get('/get-discount/{scholarType}', [AssessorController::class, 'getDiscountByType'])->name('discount.get');
+    Route::get('/fetch-discountType', [AssessorController::class, 'fetchDiscountType'])->name('discountType.show');
+
+    Route::get('/scholars', [AssessorController::class, 'showScholars'])->name('scholars.show');
+    Route::get('/addScholar', [AssessorController::class, 'showAddScholar'])->name('add-scholar.show');
+    Route::post('/addScholar', [AssessorController::class, 'addScholar'])->name('add-scholar.store');
+});
 
 // ADMIN ROUTES
 Route::middleware(['auth', 'throttle:auth_limited'])->group(function () {
@@ -248,6 +272,11 @@ Route::middleware(['auth', 'throttle:auth_limited'])->group(function (){
     Route::get('/admin/viewfees', [FeeListController::class, 'index'])->name('paymentList.show');
     Route::post('/admin/addfeelist', [FeeListController::class, 'store'])->name('addfeelist.store');
     Route::post('/toggle-status/{id}', [FeeListController::class, 'toggleStatus']);
+
+    Route::get('/get-discount', [FeeController::class, 'getDiscount'])->name('getDiscount');
+
+    Route::get('/fees/amount', [FeeController::class, 'getAmountFeeAJAX']);
+
 });
 
 Route::middleware(['auth', 'throttle:auth_limited'])->group(function (){

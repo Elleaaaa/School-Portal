@@ -8,7 +8,8 @@
     <title>Add Fees</title>
 
     <link rel="shortcut icon" href="assets/img/favicon.png">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;1,400&amp;display=swap">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;1,400&amp;display=swap">
 
     <link rel="stylesheet" href="{{ asset('plugins/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome/css/fontawesome.min.css') }}">
@@ -42,7 +43,7 @@
                     <div class="col-sm-12">
                         <div class="card">
                             <div class="card-body">
-                                <form method="POST" action="{{route('addfees.store')}}">
+                                <form method="POST" action="{{ route('addfees.store') }}">
                                     @csrf
                                     <div class="row">
                                         <div class="col-12">
@@ -51,22 +52,25 @@
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label for="studentId">Student ID</label>
-                                                <input type="text" class="form-control" name="studentId" id="studentId">
+                                                <input type="text" class="form-control" name="studentId"
+                                                    id="studentId">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-3">
                                             <div class="form-group">
                                                 <label for="gradeLevel">Grade Level</label>
-                                                <input type="text" class="form-control" name="gradeLevel" id="gradeLevel" readonly>
+                                                <input type="text" class="form-control" name="gradeLevel"
+                                                    id="gradeLevel" readonly>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-3">
                                             <div class="form-group">
                                                 <label for="classType">Class Type</label>
-                                                <input type="text" class="form-control" name="classType" id="classType" readonly>
+                                                <input type="text" class="form-control" name="classType"
+                                                    id="classType" readonly>
                                             </div>
                                         </div>
-                                       
+
                                         <div class="col-12 col-sm-4">
                                             <div class="form-group">
                                                 <label>First Name</label>
@@ -91,52 +95,74 @@
                                                 <input type="text" class="form-control" name="suffixName" readonly>
                                             </div>
                                         </div>
+                                        <!-- Fees Type -->
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label>Fees Type</label>
-                                                <select class="form-control" name="feeType">
+                                                <select class="form-control" name="feeType" id="feeType">
                                                     <option value="" selected disabled>Select Type</option>
-                                                    @foreach($feeLists as $feeList)
-                                                        <option value="{{ $feeList->feeName }}">{{ $feeList->feeName }} - {{ $feeList->gradeLevel }} - {{ $feeList->classType }}</option>
+                                                    @foreach ($feeLists as $feeList)
+                                                        <option value="{{ $feeList->feeName }}"
+                                                            data-grade="{{ $feeList->gradeLevel }}"
+                                                            data-class="{{ $feeList->classType }}">
+                                                            {{ $feeList->feeName }} - {{ $feeList->gradeLevel }} -
+                                                            {{ $feeList->classType }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                         </div>
 
+                                        <!-- Fees Amount -->
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label>Fees Amount</label>
-                                                <input type="number" class="form-control" name="amount" id="amount" required>
+                                                <input type="number" class="form-control" name="amount" id="amount"
+                                                    required >
                                             </div>
                                         </div>
+
+                                        <!-- Amount Paid -->
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label>Amount Paid</label>
-                                                <input type="number" class="form-control" name="amountPaid" id="amountPaid" required>
+                                                <input type="number" class="form-control" name="amountPaid"
+                                                    id="amountPaid" required>
                                             </div>
                                         </div>
+
+                                        <!-- Discount (Percentage) -->
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
-                                                <label>Discount</label>
-                                                <input type="number" class="form-control" name="discount" id="discount" placeholder="input 20 if 20%" required>
+                                                <label>Discount (%)</label>
+                                                <input type="number" class="form-control" name="discount"
+                                                    id="discount" value="0" required>
                                             </div>
                                         </div>
+
+                                        <!-- Discount Amount -->
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label>Discount Amount</label>
-                                                <input type="number" class="form-control" name="discountAmount" id="discountAmount" required>
+                                                <input type="number" class="form-control" name="discountAmount"
+                                                    id="discountAmount" required >
                                             </div>
                                         </div>
+
+                                        <!-- Discounted Price -->
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
-                                                <label>Discounted Price</label>
-                                                <input type="number" class="form-control" name="discountedPrice" id="discountedPrice" required>
+                                                <label>Amount to be paid</label>
+                                                <input type="number" class="form-control" name="discountedPrice"
+                                                    id="discountedPrice" required >
                                             </div>
                                         </div>
+
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
-                                                <label >Reciever</label>
-                                                <input readonly type="text" class="form-control" name="reciever" value="{{ $cashiers->firstName }} {{ $cashiers->lastName }}">
+                                                <label>Reciever</label>
+                                                <input readonly type="text" class="form-control" name="reciever"
+                                                    value="{{ $cashiers->firstName }} {{ $cashiers->lastName }}">
                                             </div>
                                         </div>
                                         {{-- <div class="col-12 col-sm-6">
@@ -160,28 +186,10 @@
     </div>
 
 
-    <script>
-        // auto populate the fee amount based on selected fee type
-        $(document).ready(function() {
-            $('select[name="feeType"]').change(function() {
-                var selectedFeeName = $(this).val(); // Get the selected fee name
-                var selectedFee = {!! $feeLists->toJson() !!}.find(function(fee) {
-                    return fee.feeName === selectedFeeName;
-                });
-                if (selectedFee) {
-                    $('#amount').val(selectedFee.amount); // Update the "Fees Amount" input with the selected fee's amount
-                } else {
-                    $('#amount').val(''); // Clear the "Fees Amount" input if no fee is selected
-                }
-            });
-        });
-        // auto populate the fee amount based on selected fee type
-    </script>
-
     <script src="{{ asset('js/myjs/populateStudentDetails.js') }}"></script>
     <script src="{{ asset('js/myjs/fetchGradeLevel.js') }}"></script>
+    <script src="{{ asset('js/myjs/preventInput.js') }}"></script>  
     <script src="{{ asset('js/myjs/discountCalculator.js') }}"></script>
-    <script src="{{ asset('js/myjs/preventInput.js') }}"></script>
 
 </body>
 

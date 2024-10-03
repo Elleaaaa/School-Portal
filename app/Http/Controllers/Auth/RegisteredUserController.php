@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Address;
 use App\Models\Admin;
+use App\Models\Assessor;
 use App\Models\Cashier;
 use App\Models\Guardian;
 use App\Models\Student;
@@ -90,6 +91,12 @@ class RegisteredUserController extends Controller
                 'cashierId'=> $request->id
             ]);
             event(new Registered($cashier));
+        }
+        elseif ($request->usertype === 'assessor') {
+            $assessor = Assessor::create([
+                'assessorId'=> $request->id
+            ]);
+            event(new Registered($assessor));
         }
         
         event(new Registered($user));

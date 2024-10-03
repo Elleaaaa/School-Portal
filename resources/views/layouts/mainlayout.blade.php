@@ -21,24 +21,29 @@
         .notify {
             z-index: 9999;
         }
-        
+
         body.darkmode {
-            background-color: #333333 !important;  /* Customize your dark background */
-            color: #e0e0e0 !important;  /* Customize text color */
+            background-color: #333333 !important;
+            /* Customize your dark background */
+            color: #e0e0e0 !important;
+            /* Customize text color */
         }
 
         header.darkmode {
-            background-color: #333333 !important; /* Change header background in dark mode */
+            background-color: #333333 !important;
+            /* Change header background in dark mode */
         }
 
         footer.darkmode {
-            background-color: #444444 !important; /* Change footer background in dark mode */
+            background-color: #444444 !important;
+            /* Change footer background in dark mode */
         }
 
-        .darkmode-layer, .darkmode-toggle {
-            z-index: 9999 !important; /* Apply a higher z-index */
+        .darkmode-layer,
+        .darkmode-toggle {
+            z-index: 9999 !important;
+            /* Apply a higher z-index */
         }
-
     </style>
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -50,7 +55,8 @@
     <div class="header">
         <div class="header-left">
             @if (Auth::user()->usertype == 'superadmin')
-                <a href="{{ route('supadmin-dashboard.show', ['supAdminId' => Auth::user()->studentId]) }}" class="logo">
+                <a href="{{ route('supadmin-dashboard.show', ['supAdminId' => Auth::user()->studentId]) }}"
+                    class="logo">
                     <img src="{{ asset('img/LICEO.png') }}" alt="Logo">
                 </a>
                 <a href="{{ route('supadmin-dashboard.show', ['supAdminId' => Auth::user()->studentId]) }}"
@@ -59,7 +65,8 @@
                 </a>
             @endif
             @if (Auth::user()->usertype == 'cashier')
-                <a href="{{ route('cashier-dashboard.show', ['cashierId' => Auth::user()->studentId]) }}" class="logo">
+                <a href="{{ route('cashier-dashboard.show', ['cashierId' => Auth::user()->studentId]) }}"
+                    class="logo">
                     <img src="{{ asset('img/LICEO.png') }}" alt="Logo">
                 </a>
                 <a href="{{ route('cashier-dashboard.show', ['cashierId' => Auth::user()->studentId]) }}"
@@ -72,6 +79,16 @@
                     <img src="{{ asset('img/LICEO.png') }}" alt="Logo">
                 </a>
                 <a href="{{ route('admin-dashboard.show', ['studentId' => Auth::user()->studentId]) }}"
+                    class="logo logo-small">
+                    <img src="{{ asset('img/Liceo-sm.png') }}" alt="Logo" width="30" height="30">
+                </a>
+            @endif
+            @if (Auth::user()->usertype == 'assessor')
+                <a href="{{ route('assessor-dashboard.show', ['assessorId' => Auth::user()->studentId]) }}"
+                    class="logo">
+                    <img src="{{ asset('img/LICEO.png') }}" alt="Logo">
+                </a>
+                <a href="{{ route('assessor-dashboard.show', ['assessorId' => Auth::user()->studentId]) }}"
                     class="logo logo-small">
                     <img src="{{ asset('img/Liceo-sm.png') }}" alt="Logo" width="30" height="30">
                 </a>
@@ -89,12 +106,10 @@
             @endif
 
             @if (Auth::user()->usertype == 'student')
-                <a href="{{ route('student-dashboard.show') }}"
-                    class="logo">
+                <a href="{{ route('student-dashboard.show') }}" class="logo">
                     <img src="{{ asset('img/LICEO.png') }}" alt="Logo">
                 </a>
-                <a href="{{ route('student-dashboard.show') }}"
-                    class="logo logo-small">
+                <a href="{{ route('student-dashboard.show') }}" class="logo logo-small">
                     <img src="{{ asset('img/Liceo-sm.png') }}" alt="Logo" width="30" height="30">
                 </a>
             @endif
@@ -131,7 +146,7 @@
                     </div>
                 </div>
             </li>
-            
+
             <li class="nav-item dropdown has-arrow">
                 <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
                     <span class="user-img">
@@ -171,7 +186,12 @@
                             Profile</a>
                     @elseif (Auth::user()->usertype == 'cashier')
                         <a class="dropdown-item"
-                            href="{{ route('profile-cashier.show', ['cashierId' => Auth::user()->studentId]) }}">My Profile</a>
+                            href="{{ route('profile-cashier.show', ['cashierId' => Auth::user()->studentId]) }}">My
+                            Profile</a>
+                    @elseif (Auth::user()->usertype == 'assessor')
+                        <a class="dropdown-item"
+                            href="{{ route('profile-assessor.show', ['assessorId' => Auth::user()->studentId]) }}">My
+                            Profile</a>
                     @endif
                     <form method="POST" action="{{ url('/logout') }}">
                         @csrf
@@ -191,309 +211,379 @@
 
                     {{-- SUPERADMIN/PRINCIPAL SIDEBAR --}}
                     @if (Auth::user()->usertype == 'superadmin')
-                    <li class="{{ Request::routeIs('supadmin-dashboard.show') ? 'active' : '' }}">
-                        <a href="{{ route('supadmin-dashboard.show', ['supAdminId' => Auth::user()->studentId]) }}">
-                            <i class="fas fa-school"></i><span>Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="submenu {{ Request::routeIs('enrolled-student-list.show', 'pending-student-list.show') ? 'active' : '' }}">
-                        <a href="#"><i class="fas fa-user-graduate"></i> <span> Enrollment</span> <span class="menu-arrow"></span></a>
+                        <li class="{{ Request::routeIs('supadmin-dashboard.show') ? 'active' : '' }}">
+                            <a
+                                href="{{ route('supadmin-dashboard.show', ['supAdminId' => Auth::user()->studentId]) }}">
+                                <i class="fas fa-school"></i><span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li
+                            class="submenu {{ Request::routeIs('enrolled-student-list.show', 'pending-student-list.show') ? 'active' : '' }}">
+                            <a href="#"><i class="fas fa-user-graduate"></i> <span> Enrollment</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li class="{{ Request::routeIs('enrolled-student-list.show') ? 'active' : '' }}">
+                                    <a href="{{ route('enrolled-student-list.show') }}">Enrolled Student</a>
+                                </li>
+                                <li class="{{ Request::routeIs('pending-student-list.show') ? 'active' : '' }}">
+                                    <a href="{{ route('pending-student-list.show') }}">Pending Enrollment</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li
+                            class="submenu {{ Request::routeIs('teacherlist.show', 'addteacher.show') ? 'active' : '' }}">
+                            <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Teachers</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li class="{{ Request::routeIs('teacherlist.show') ? 'active' : '' }}">
+                                    <a href="{{ route('teacherlist.show') }}">Teacher List</a>
+                                </li>
+                                <li class="{{ Request::routeIs('addteacher.show') ? 'active' : '' }}">
+                                    <a href="{{ route('addteacher.show') }}">Teacher Add</a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endif
+
+                    {{-- ASSESSOR/EVALUATION SIDEBAR --}}
+                    @if (Auth::user()->usertype == 'assessor')
+                        <li class="{{ Request::routeIs('assessor-dashboard.show') ? 'active' : '' }}">
+                            <a
+                                href="{{ route('assessor-dashboard.show', ['assessorId' => Auth::user()->studentId]) }}">
+                                <i class="fas fa-school"></i><span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li
+                            class="submenu {{ Request::routeIs('enrolled-student-list.show', 'pending-student-list.show') ? 'active' : '' }}">
+                            <a href="#"><i class="fas fa-percentage"></i> <span> Discount</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li class="{{ Request::routeIs('discountlist.show') ? 'active' : '' }}">
+                                    <a href="{{ route('discountlist.show') }}">View Discounts</a>
+                                </li>
+                                <li class="{{ Request::routeIs('add-discount.show') ? 'active' : '' }}">
+                                    <a href="{{ route('add-discount.show') }}">Add Discount</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li
+                        class="submenu {{ Request::routeIs('scholars.show', 'add-scholar.show') ? 'active' : '' }}">
+                        <a href="#"><i class="fas fa-graduation-cap"></i> <span> Scholars</span> <span
+                                class="menu-arrow"></span></a>
                         <ul>
-                            <li class="{{ Request::routeIs('enrolled-student-list.show') ? 'active' : '' }}">
-                                <a href="{{ route('enrolled-student-list.show') }}">Enrolled Student</a>
+                            <li class="{{ Request::routeIs('scholars.show') ? 'active' : '' }}">
+                                <a href="{{ route('scholars.show') }}">View Scholars</a>
                             </li>
-                            <li class="{{ Request::routeIs('pending-student-list.show') ? 'active' : '' }}">
-                                <a href="{{ route('pending-student-list.show') }}">Pending Enrollment</a>
+                            <li class="{{ Request::routeIs('add-scholar.show') ? 'active' : '' }}">
+                                <a href="{{ route('add-scholar.show') }}">Add Scholars</a>
                             </li>
                         </ul>
                     </li>
-                    <li class="submenu {{ Request::routeIs('teacherlist.show', 'addteacher.show') ? 'active' : '' }}">
-                        <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Teachers</span> <span class="menu-arrow"></span></a>
-                        <ul>
-                            <li class="{{ Request::routeIs('teacherlist.show') ? 'active' : '' }}">
-                                <a href="{{ route('teacherlist.show') }}">Teacher List</a>
-                            </li>
-                            <li class="{{ Request::routeIs('addteacher.show') ? 'active' : '' }}">
-                                <a href="{{ route('addteacher.show') }}">Teacher Add</a>
-                            </li>
-                        </ul>
-                    </li>
-                @endif
-                
+                    @endif
+
 
                     {{-- CASHIER SIDEBAR --}}
                     @if (Auth::user()->usertype == 'cashier')
-                    <li class="{{ Request::routeIs('cashier-dashboard.show') ? 'active' : '' }}">
-                        <a href="{{ route('cashier-dashboard.show', ['cashierId' => Auth::user()->studentId]) }}">
-                            <i class="fas fa-school"></i><span>Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="submenu {{ Request::routeIs('enrolled-student-list.show', 'pending-student-list.show') ? 'active' : '' }}">
-                        <a href="#"><i class="fas fa-user-graduate"></i> <span> Enrollment</span> <span class="menu-arrow"></span></a>
-                        <ul>
-                            <li class="{{ Request::routeIs('enrolled-student-list.show') ? 'active' : '' }}">
-                                <a href="{{ route('enrolled-student-list.show') }}">Enrolled Student</a>
-                            </li>
-                            <li class="{{ Request::routeIs('pending-student-list.show') ? 'active' : '' }}">
-                                <a href="{{ route('pending-student-list.show') }}">Pending Enrollment</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="submenu {{ Request::routeIs('teacherlist.show', 'addteacher.show') ? 'active' : '' }}">
-                        <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Teachers</span> <span class="menu-arrow"></span></a>
-                        <ul>
-                            <li class="{{ Request::routeIs('teacherlist.show') ? 'active' : '' }}">
-                                <a href="{{ route('teacherlist.show') }}">Teacher List</a>
-                            </li>
-                            <li class="{{ Request::routeIs('addteacher.show') ? 'active' : '' }}">
-                                <a href="{{ route('addteacher.show') }}">Teacher Add</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="menu-title"><span>Management</span></li>
-                    <li class="submenu {{ Request::routeIs('paymenthistoryadmin.show', 'addfees.show', 'paymentList.show') ? 'active' : '' }}">
-                        <a href="#"><i class="fas fa-file-invoice-dollar"></i> <span> Accounts</span> <span class="menu-arrow"></span></a>
-                        <ul>
-                            <li class="{{ Request::routeIs('paymenthistoryadmin.show') ? 'active' : '' }}">
-                                <a href="{{ route('paymenthistoryadmin.show') }}">Payments Collection</a>
-                            </li>
-                            <li class="{{ Request::routeIs('addfees.show') ? 'active' : '' }}">
-                                <a href="{{ route('addfees.show') }}">Add Fees</a>
-                            </li>
-                            <li class="{{ Request::routeIs('paymentList.show') ? 'active' : '' }}">
-                                <a href="{{ route('paymentList.show') }}">Payment List</a>
-                            </li>
-                        </ul>
-                    </li>
-                @endif
-                
+                        <li class="{{ Request::routeIs('cashier-dashboard.show') ? 'active' : '' }}">
+                            <a href="{{ route('cashier-dashboard.show', ['cashierId' => Auth::user()->studentId]) }}">
+                                <i class="fas fa-school"></i><span>Dashboard</span>
+                            </a>
+                        </li>
+                        {{-- <li
+                            class="submenu {{ Request::routeIs('enrolled-student-list.show', 'pending-student-list.show') ? 'active' : '' }}">
+                            <a href="#"><i class="fas fa-user-graduate"></i> <span> Enrollment</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li class="{{ Request::routeIs('enrolled-student-list.show') ? 'active' : '' }}">
+                                    <a href="{{ route('enrolled-student-list.show') }}">Enrolled Student</a>
+                                </li>
+                                <li class="{{ Request::routeIs('pending-student-list.show') ? 'active' : '' }}">
+                                    <a href="{{ route('pending-student-list.show') }}">Pending Enrollment</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li
+                            class="submenu {{ Request::routeIs('teacherlist.show', 'addteacher.show') ? 'active' : '' }}">
+                            <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Teachers</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li class="{{ Request::routeIs('teacherlist.show') ? 'active' : '' }}">
+                                    <a href="{{ route('teacherlist.show') }}">Teacher List</a>
+                                </li>
+                                <li class="{{ Request::routeIs('addteacher.show') ? 'active' : '' }}">
+                                    <a href="{{ route('addteacher.show') }}">Teacher Add</a>
+                                </li>
+                            </ul>
+                        </li> --}}
+                        <li class="menu-title"><span>Management</span></li>
+                        <li
+                            class="submenu {{ Request::routeIs('paymenthistoryadmin.show', 'addfees.show', 'paymentList.show') ? 'active' : '' }}">
+                            <a href="#"><i class="fas fa-file-invoice-dollar"></i> <span> Accounts</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li class="{{ Request::routeIs('paymenthistoryadmin.show') ? 'active' : '' }}">
+                                    <a href="{{ route('paymenthistoryadmin.show') }}">Payments Collection</a>
+                                </li>
+                                <li class="{{ Request::routeIs('addfees.show') ? 'active' : '' }}">
+                                    <a href="{{ route('addfees.show') }}">Add Fees</a>
+                                </li>
+                                <li class="{{ Request::routeIs('paymentList.show') ? 'active' : '' }}">
+                                    <a href="{{ route('paymentList.show') }}">Payment List</a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endif
+
 
                     {{-- ADMIN/REGISTRAR SIDEBAR --}}
                     @if (Auth::user()->usertype == 'admin')
-                    <li class="{{ Route::currentRouteName() == 'admin-dashboard.show' ? 'active' : '' }}">
-                        <a href="{{ route('admin-dashboard.show', ['studentId' => Auth::user()->studentId]) }}">
-                            <i class="fas fa-school"></i><span>Dashboard</span>
-                        </a>
-                    </li>
-                
-                    <li class="submenu {{ in_array(Route::currentRouteName(), ['studentlist.show', 'addstudent.show']) ? 'active' : '' }}">
-                        <a href="#"><i class="fas fa-user-graduate"></i><span>Students</span><span class="menu-arrow"></span></a>
-                        <ul>
-                            <li class="{{ Route::currentRouteName() == 'studentlist.show' ? 'active' : '' }}">
-                                <a href="{{ route('studentlist.show') }}">Student List</a>
-                            </li>
-                            <li class="{{ Route::currentRouteName() == 'addstudent.show' ? 'active' : '' }}">
-                                <a href="{{ route('addstudent.show') }}">Student Add</a>
-                            </li>
-                        </ul>
-                    </li>
-                
-                    <li class="submenu {{ in_array(Route::currentRouteName(), ['teacherlist.show', 'addteacher.show']) ? 'active' : '' }}">
-                        <a href="#"><i class="fas fa-chalkboard-teacher"></i><span>Teachers</span><span class="menu-arrow"></span></a>
-                        <ul>
-                            <li class="{{ Route::currentRouteName() == 'teacherlist.show' ? 'active' : '' }}">
-                                <a href="{{ route('teacherlist.show') }}">Teacher List</a>
-                            </li>
-                            <li class="{{ Route::currentRouteName() == 'addteacher.show' ? 'active' : '' }}">
-                                <a href="{{ route('addteacher.show') }}">Teacher Add</a>
-                            </li>
-                        </ul>
-                    </li>
-                
-                    <li class="submenu {{ in_array(Route::currentRouteName(), ['subjectlist.show', 'addsubject.show']) ? 'active' : '' }}">
-                        <a href="#"><i class="fas fa-book"></i><span>Subjects</span><span class="menu-arrow"></span></a>
-                        <ul>
-                            <li class="{{ Route::currentRouteName() == 'subjectlist.show' ? 'active' : '' }}">
-                                <a href="{{ route('subjectlist.show') }}">Subject List</a>
-                            </li>
-                            <li class="{{ Route::currentRouteName() == 'addsubject.show' ? 'active' : '' }}">
-                                <a href="{{ route('addsubject.show') }}">Subject Add</a>
-                            </li>
-                        </ul>
-                    </li>
-                
-                    <li class="submenu {{ in_array(Route::currentRouteName(), ['sectionlist.show', 'add-section.show']) ? 'active' : '' }}">
-                        <a href="#"><i class="fas fa-layer-group"></i><span>Sections</span><span class="menu-arrow"></span></a>
-                        <ul>
-                            <li class="{{ Route::currentRouteName() == 'sectionlist.show' ? 'active' : '' }}">
-                                <a href="{{ route('sectionlist.show') }}">Section List</a>
-                            </li>
-                            <li class="{{ Route::currentRouteName() == 'add-section.show' ? 'active' : '' }}">
-                                <a href="{{ route('add-section.show') }}">Section Add</a>
-                            </li>
-                        </ul>
-                    </li>
-                
-                    <li class="submenu {{ in_array(Route::currentRouteName(), ['correquest.show', 'goodmoralrequest.show']) ? 'active' : '' }}">
-                        <a href="#"><i class="fas fa-file-alt"></i><span>Forms</span><span class="menu-arrow"></span></a>
-                        <ul>
-                            <li class="{{ Route::currentRouteName() == 'correquest.show' ? 'active' : '' }}">
-                                <a href="{{ route('correquest.show') }}">COR</a>
-                            </li>
-                            <li class="{{ Route::currentRouteName() == 'goodmoralrequest.show' ? 'active' : '' }}">
-                                <a href="{{ route('goodmoralrequest.show') }}">Good Moral</a>
-                            </li>
-                            <li class="{{ Route::currentRouteName() == 'sf9jhsrequest.show' ? 'active' : '' }}">
-                                <a href="{{ route('sf9jhsrequest.show') }}">SF9-JHS</a>
-                            </li>
-                            <li class="{{ Route::currentRouteName() == 'sf9shsrequest.show' ? 'active' : '' }}">
-                                <a href="{{ route('sf9shsrequest.show') }}">SF9-SHS</a>
-                            </li>
-                            <li class="{{ Route::currentRouteName() == 'sf10jhsrequest.show' ? 'active' : '' }}">
-                                <a href="{{ route('sf10jhsrequest.show') }}">SF10-JHS</a>
-                            </li>
-                            <li class="{{ Route::currentRouteName() == 'sf10shsrequest.show' ? 'active' : '' }}">
-                                <a href="{{ route('sf10shsrequest.show') }}">SF10-SHS</a>
-                            </li>
-                        </ul>
-                    </li>
-                
-                    <li class="submenu {{ in_array(Route::currentRouteName(), ['enroll-student.show', 'enrolled-student-list.show', 'pending-student-list.show']) ? 'active' : '' }}">
-                        <a href="#"><i class="fas fa-id-card-alt"></i><span>Enrollment</span><span class="menu-arrow"></span></a>
-                        <ul>
-                            <li class="{{ Route::currentRouteName() == 'enroll-student.show' ? 'active' : '' }}">
-                                <a href="{{ route('enroll-student.show') }}">Enroll Student - JHS</a>
-                            </li>
-                            <li class="{{ Route::currentRouteName() == 'enroll-student-shs.show' ? 'active' : '' }}">
-                                <a href="{{ route('enroll-student-shs.show') }}">Enroll Student - SHS</a>
-                            </li>
-                            <li class="{{ Route::currentRouteName() == 'enrolled-student-list.show' ? 'active' : '' }}">
-                                <a href="{{ route('enrolled-student-list.show') }}">Enrolled Student</a>
-                            </li>
-                            <li class="{{ Route::currentRouteName() == 'pending-student-list.show' ? 'active' : '' }}">
-                                <a href="{{ route('pending-student-list.show') }}">Pending Enrollment</a>
-                            </li>
-                        </ul>
-                    </li>
-                
-                    <li class="{{ Route::currentRouteName() == 'calendar.show' ? 'active' : '' }}">
-                        <a href="{{ route('calendar.show') }}">
-                            <i class="fas fa-calendar-alt"></i><span>Schedule</span>
-                        </a>
-                    </li>
-                
-                    <li class="submenu {{ in_array(Route::currentRouteName(), ['timeTable.show', 'add-timetable.show']) ? 'active' : '' }}">
-                        <a href="#"><i class="fas fa-calendar-alt"></i><span>Time Table</span><span class="menu-arrow"></span></a>
-                        <ul>
-                            <li class="{{ Route::currentRouteName() == 'timeTable.show' ? 'active' : '' }}">
-                                <a href="{{ route('timeTable.show') }}">Schedule List</a>
-                            </li>
-                            <li class="{{ Route::currentRouteName() == 'add-timetable.show' ? 'active' : '' }}">
-                                <a href="{{ route('add-timetable.show') }}">Schedule Add</a>
-                            </li>
-                        </ul>
-                    </li>
-                @endif
-                
+                        <li class="{{ Route::currentRouteName() == 'admin-dashboard.show' ? 'active' : '' }}">
+                            <a href="{{ route('admin-dashboard.show', ['studentId' => Auth::user()->studentId]) }}">
+                                <i class="fas fa-school"></i><span>Dashboard</span>
+                            </a>
+                        </li>
 
-                {{-- STUDENT SIDEBAR --}}
-                @if (Auth::user()->usertype == 'student')
-                <li class="{{ Route::currentRouteName() == 'student-dashboard.show' ? 'active' : '' }}">
-                    <a href="{{ route('student-dashboard.show') }}">
-                        <i class="fas fa-school"></i><span>Dashboard</span>
-                    </a>
-                </li>
-                <li class="{{ Route::currentRouteName() == 'student-subjectlist.show' ? 'active' : '' }}">
-                    <a href="{{ route('student-subjectlist.show') }}">
-                        <i class="fas fa-book"></i><span>Subject</span>
-                    </a>
-                </li>
-                <li class="{{ Route::currentRouteName() == 'student-grades.show' ? 'active' : '' }}">
-                    <a href="{{ route('student-grades.show') }}">
-                        <i class="fas fa-chart-bar"></i><span>Grades</span>
-                    </a>
-                </li>
-                <li class="{{ Route::currentRouteName() == 'schedule.show' ? 'active' : '' }}">
-                    <a href="{{ route('schedule.show') }}">
-                        <i class="fas fa-calendar-alt"></i><span>Schedule</span>
-                    </a>
-                </li>
-                <li class="{{ Route::currentRouteName() == 'paymenthistory.show' ? 'active' : '' }}">
-                    <a href="{{ route('paymenthistory.show') }}">
-                        <i class="fas fa-comment-dollar"></i><span>Fees</span>
-                    </a>
-                </li>
-                <li class="{{ Route::currentRouteName() == 'student-attendance.show' ? 'active' : '' }}">
-                    <a href="{{ route('student-attendance.show') }}">
-                        <i class="fas fa-user-check"></i><span>Attendance</span>
-                    </a>
-                </li>
-                @enrolled(Auth::user()->studentId)
-                    <li class="{{ Route::currentRouteName() == 'selfEnrollment.show' ? 'active' : '' }}">
-                        <a href="{{ route('selfEnrollment.show') }}">
-                            <i class="fas fa-id-card-alt"></i><span>Enrollment</span>
-                        </a>
-                    </li>
-                @endenrolled
-            @endif
-            
+                        <li
+                            class="submenu {{ in_array(Route::currentRouteName(), ['studentlist.show', 'addstudent.show']) ? 'active' : '' }}">
+                            <a href="#"><i class="fas fa-user-graduate"></i><span>Students</span><span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li class="{{ Route::currentRouteName() == 'studentlist.show' ? 'active' : '' }}">
+                                    <a href="{{ route('studentlist.show') }}">Student List</a>
+                                </li>
+                                <li class="{{ Route::currentRouteName() == 'addstudent.show' ? 'active' : '' }}">
+                                    <a href="{{ route('addstudent.show') }}">Student Add</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li
+                            class="submenu {{ in_array(Route::currentRouteName(), ['teacherlist.show', 'addteacher.show']) ? 'active' : '' }}">
+                            <a href="#"><i class="fas fa-chalkboard-teacher"></i><span>Teachers</span><span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li class="{{ Route::currentRouteName() == 'teacherlist.show' ? 'active' : '' }}">
+                                    <a href="{{ route('teacherlist.show') }}">Teacher List</a>
+                                </li>
+                                <li class="{{ Route::currentRouteName() == 'addteacher.show' ? 'active' : '' }}">
+                                    <a href="{{ route('addteacher.show') }}">Teacher Add</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li
+                            class="submenu {{ in_array(Route::currentRouteName(), ['subjectlist.show', 'addsubject.show']) ? 'active' : '' }}">
+                            <a href="#"><i class="fas fa-book"></i><span>Subjects</span><span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li class="{{ Route::currentRouteName() == 'subjectlist.show' ? 'active' : '' }}">
+                                    <a href="{{ route('subjectlist.show') }}">Subject List</a>
+                                </li>
+                                <li class="{{ Route::currentRouteName() == 'addsubject.show' ? 'active' : '' }}">
+                                    <a href="{{ route('addsubject.show') }}">Subject Add</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li
+                            class="submenu {{ in_array(Route::currentRouteName(), ['sectionlist.show', 'add-section.show']) ? 'active' : '' }}">
+                            <a href="#"><i class="fas fa-layer-group"></i><span>Sections</span><span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li class="{{ Route::currentRouteName() == 'sectionlist.show' ? 'active' : '' }}">
+                                    <a href="{{ route('sectionlist.show') }}">Section List</a>
+                                </li>
+                                <li class="{{ Route::currentRouteName() == 'add-section.show' ? 'active' : '' }}">
+                                    <a href="{{ route('add-section.show') }}">Section Add</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li
+                            class="submenu {{ in_array(Route::currentRouteName(), ['correquest.show', 'goodmoralrequest.show']) ? 'active' : '' }}">
+                            <a href="#"><i class="fas fa-file-alt"></i><span>Forms</span><span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li class="{{ Route::currentRouteName() == 'correquest.show' ? 'active' : '' }}">
+                                    <a href="{{ route('correquest.show') }}">COR</a>
+                                </li>
+                                <li
+                                    class="{{ Route::currentRouteName() == 'goodmoralrequest.show' ? 'active' : '' }}">
+                                    <a href="{{ route('goodmoralrequest.show') }}">Good Moral</a>
+                                </li>
+                                <li class="{{ Route::currentRouteName() == 'sf9jhsrequest.show' ? 'active' : '' }}">
+                                    <a href="{{ route('sf9jhsrequest.show') }}">SF9-JHS</a>
+                                </li>
+                                <li class="{{ Route::currentRouteName() == 'sf9shsrequest.show' ? 'active' : '' }}">
+                                    <a href="{{ route('sf9shsrequest.show') }}">SF9-SHS</a>
+                                </li>
+                                <li class="{{ Route::currentRouteName() == 'sf10jhsrequest.show' ? 'active' : '' }}">
+                                    <a href="{{ route('sf10jhsrequest.show') }}">SF10-JHS</a>
+                                </li>
+                                <li class="{{ Route::currentRouteName() == 'sf10shsrequest.show' ? 'active' : '' }}">
+                                    <a href="{{ route('sf10shsrequest.show') }}">SF10-SHS</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li
+                            class="submenu {{ in_array(Route::currentRouteName(), ['enroll-student.show', 'enrolled-student-list.show', 'pending-student-list.show']) ? 'active' : '' }}">
+                            <a href="#"><i class="fas fa-id-card-alt"></i><span>Enrollment</span><span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li class="{{ Route::currentRouteName() == 'enroll-student.show' ? 'active' : '' }}">
+                                    <a href="{{ route('enroll-student.show') }}">Enroll Student - JHS</a>
+                                </li>
+                                <li
+                                    class="{{ Route::currentRouteName() == 'enroll-student-shs.show' ? 'active' : '' }}">
+                                    <a href="{{ route('enroll-student-shs.show') }}">Enroll Student - SHS</a>
+                                </li>
+                                <li
+                                    class="{{ Route::currentRouteName() == 'enrolled-student-list.show' ? 'active' : '' }}">
+                                    <a href="{{ route('enrolled-student-list.show') }}">Enrolled Student</a>
+                                </li>
+                                <li
+                                    class="{{ Route::currentRouteName() == 'pending-student-list.show' ? 'active' : '' }}">
+                                    <a href="{{ route('pending-student-list.show') }}">Pending Enrollment</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="{{ Route::currentRouteName() == 'calendar.show' ? 'active' : '' }}">
+                            <a href="{{ route('calendar.show') }}">
+                                <i class="fas fa-calendar-alt"></i><span>Schedule</span>
+                            </a>
+                        </li>
+
+                        <li
+                            class="submenu {{ in_array(Route::currentRouteName(), ['timeTable.show', 'add-timetable.show']) ? 'active' : '' }}">
+                            <a href="#"><i class="fas fa-calendar-alt"></i><span>Time Table</span><span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li class="{{ Route::currentRouteName() == 'timeTable.show' ? 'active' : '' }}">
+                                    <a href="{{ route('timeTable.show') }}">Schedule List</a>
+                                </li>
+                                <li class="{{ Route::currentRouteName() == 'add-timetable.show' ? 'active' : '' }}">
+                                    <a href="{{ route('add-timetable.show') }}">Schedule Add</a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endif
+
+
+                    {{-- STUDENT SIDEBAR --}}
+                    @if (Auth::user()->usertype == 'student')
+                        <li class="{{ Route::currentRouteName() == 'student-dashboard.show' ? 'active' : '' }}">
+                            <a href="{{ route('student-dashboard.show') }}">
+                                <i class="fas fa-school"></i><span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="{{ Route::currentRouteName() == 'student-subjectlist.show' ? 'active' : '' }}">
+                            <a href="{{ route('student-subjectlist.show') }}">
+                                <i class="fas fa-book"></i><span>Subject</span>
+                            </a>
+                        </li>
+                        <li class="{{ Route::currentRouteName() == 'student-grades.show' ? 'active' : '' }}">
+                            <a href="{{ route('student-grades.show') }}">
+                                <i class="fas fa-chart-bar"></i><span>Grades</span>
+                            </a>
+                        </li>
+                        <li class="{{ Route::currentRouteName() == 'schedule.show' ? 'active' : '' }}">
+                            <a href="{{ route('schedule.show') }}">
+                                <i class="fas fa-calendar-alt"></i><span>Schedule</span>
+                            </a>
+                        </li>
+                        <li class="{{ Route::currentRouteName() == 'paymenthistory.show' ? 'active' : '' }}">
+                            <a href="{{ route('paymenthistory.show') }}">
+                                <i class="fas fa-comment-dollar"></i><span>Fees</span>
+                            </a>
+                        </li>
+                        <li class="{{ Route::currentRouteName() == 'student-attendance.show' ? 'active' : '' }}">
+                            <a href="{{ route('student-attendance.show') }}">
+                                <i class="fas fa-user-check"></i><span>Attendance</span>
+                            </a>
+                        </li>
+                        @enrolled(Auth::user()->studentId)
+                            <li class="{{ Route::currentRouteName() == 'selfEnrollment.show' ? 'active' : '' }}">
+                                <a href="{{ route('selfEnrollment.show') }}">
+                                    <i class="fas fa-id-card-alt"></i><span>Enrollment</span>
+                                </a>
+                            </li>
+                        @endenrolled
+                    @endif
+
 
 
 
 
                     {{-- TEACHER SIDEBAR --}}
                     @if (Auth::user()->usertype == 'teacher')
-                    <li class="{{ Route::currentRouteName() == 'teacher-dashboard.show' ? 'active' : '' }}">
-                        <a href="{{ route('teacher-dashboard.show', ['teacherId' => Auth::user()->studentId]) }}">
-                            <i class="fas fa-school"></i>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
-                    
-                    <li class="{{ Route::currentRouteName() == 'students.show' ? 'active' : '' }}">
-                        <a href="{{ route('students.show') }}">
-                            <i class="fas fa-user-graduate"></i>
-                            <span>My Students</span>
-                        </a>
-                    </li>
-                    
-                    <li class="submenu {{ in_array(Route::currentRouteName(), ['studentsgrade.show', 'handleSections.show']) ? 'active' : '' }}">
-                        <a href="#">
-                            <i class="fas fa-chart-bar"></i>
-                            <span>Students Grade</span>
-                            <span class="menu-arrow"></span>
-                        </a>
-                        <ul>
-                            <li class="{{ Route::currentRouteName() == 'studentsgrade.show' ? 'active' : '' }}">
-                                <a href="{{ route('studentsgrade.show') }}">All</a>
-                            </li>
-                            <li class="{{ Route::currentRouteName() == 'handleSections.show' ? 'active' : '' }}">
-                                <a href="{{ route('handleSections.show') }}">Section</a>
-                            </li>
-                        </ul>
-                    </li>
-                    
-                    <li class="{{ Route::currentRouteName() == 'teacherSchedule.show' ? 'active' : '' }}">
-                        <a href="{{ route('teacherSchedule.show') }}">
-                            <i class="fas fa-calendar-alt"></i>
-                            <span>My Schedule</span>
-                        </a>
-                    </li>
-                    
-                    <li class="{{ Route::currentRouteName() == 'teacher-subjectlist.show' ? 'active' : '' }}">
-                        <a href="{{ route('teacher-subjectlist.show', ['teacherId' => Auth::user()->studentId]) }}">
-                            <i class="fas fa-book"></i>
-                            <span>My Subjects</span>
-                        </a>
-                    </li>
-                    
-                    <li class="submenu {{ in_array(Route::currentRouteName(), ['attendance.index', 'view-attendance.show']) ? 'active' : '' }}">
-                        <a href="#">
-                            <i class="fas fa-user-check"></i>
-                            <span>Attendance</span>
-                            <span class="menu-arrow"></span>
-                        </a>
-                        <ul>
-                            <li class="{{ Route::currentRouteName() == 'attendance.index' ? 'active' : '' }}">
-                                <a href="{{ route('attendance.index') }}">New Attendance</a>
-                            </li>
-                            <li class="{{ Route::currentRouteName() == 'view-attendance.show' ? 'active' : '' }}">
-                                <a href="{{ route('view-attendance.show') }}">View Attendance</a>
-                            </li>
-                        </ul>
-                    </li>
-                @endif
-                
+                        <li class="{{ Route::currentRouteName() == 'teacher-dashboard.show' ? 'active' : '' }}">
+                            <a
+                                href="{{ route('teacher-dashboard.show', ['teacherId' => Auth::user()->studentId]) }}">
+                                <i class="fas fa-school"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+
+                        <li class="{{ Route::currentRouteName() == 'students.show' ? 'active' : '' }}">
+                            <a href="{{ route('students.show') }}">
+                                <i class="fas fa-user-graduate"></i>
+                                <span>My Students</span>
+                            </a>
+                        </li>
+
+                        <li
+                            class="submenu {{ in_array(Route::currentRouteName(), ['studentsgrade.show', 'handleSections.show']) ? 'active' : '' }}">
+                            <a href="#">
+                                <i class="fas fa-chart-bar"></i>
+                                <span>Students Grade</span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <ul>
+                                <li class="{{ Route::currentRouteName() == 'studentsgrade.show' ? 'active' : '' }}">
+                                    <a href="{{ route('studentsgrade.show') }}">All</a>
+                                </li>
+                                <li class="{{ Route::currentRouteName() == 'handleSections.show' ? 'active' : '' }}">
+                                    <a href="{{ route('handleSections.show') }}">Section</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="{{ Route::currentRouteName() == 'teacherSchedule.show' ? 'active' : '' }}">
+                            <a href="{{ route('teacherSchedule.show') }}">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>My Schedule</span>
+                            </a>
+                        </li>
+
+                        <li class="{{ Route::currentRouteName() == 'teacher-subjectlist.show' ? 'active' : '' }}">
+                            <a
+                                href="{{ route('teacher-subjectlist.show', ['teacherId' => Auth::user()->studentId]) }}">
+                                <i class="fas fa-book"></i>
+                                <span>My Subjects</span>
+                            </a>
+                        </li>
+
+                        <li
+                            class="submenu {{ in_array(Route::currentRouteName(), ['attendance.index', 'view-attendance.show']) ? 'active' : '' }}">
+                            <a href="#">
+                                <i class="fas fa-user-check"></i>
+                                <span>Attendance</span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <ul>
+                                <li class="{{ Route::currentRouteName() == 'attendance.index' ? 'active' : '' }}">
+                                    <a href="{{ route('attendance.index') }}">New Attendance</a>
+                                </li>
+                                <li
+                                    class="{{ Route::currentRouteName() == 'view-attendance.show' ? 'active' : '' }}">
+                                    <a href="{{ route('view-attendance.show') }}">View Attendance</a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endif
+
                 </ul>
             </div>
         </div>
@@ -510,35 +600,36 @@
     <script src="{{ asset('js/myjs/notification.js') }}"></script>
 
     <script>
-    $(document).ready(function() {
-    // Set up CSRF token for all AJAX requests
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    })});
+        $(document).ready(function() {
+            // Set up CSRF token for all AJAX requests
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            })
+        });
     </script>
 
-<script>
-    // Initialize dark mode options (customize if needed)
-    const options = {
-      bottom: '32px', // Position of the darkmode switch
-      right: '32px', // Distance from right edge
-      left: 'unset', // Distance from left edge
-      time: '0.5s',  // Transition time
-      mixColor: '#fff', // Default color for transitions
-      backgroundColor: '#fff',  // Default light mode background color
-      buttonColorDark: '#100f2c',  // Dark mode button color
-      buttonColorLight: '#fff',   // Light mode button color
-      saveInCookies: true,  // Save user's dark mode preference
-      label: '🌓',  // The label on the switch button
-      autoMatchOsTheme: true // Automatically match OS theme setting
-    };
-  
-    const darkmode = new Darkmode(options);
-    darkmode.showWidget(); // This will show the dark mode toggle button
-  </script>
-  
+    <script>
+        // Initialize dark mode options (customize if needed)
+        const options = {
+            bottom: '32px', // Position of the darkmode switch
+            right: '32px', // Distance from right edge
+            left: 'unset', // Distance from left edge
+            time: '0.5s', // Transition time
+            mixColor: '#fff', // Default color for transitions
+            backgroundColor: '#fff', // Default light mode background color
+            buttonColorDark: '#100f2c', // Dark mode button color
+            buttonColorLight: '#fff', // Light mode button color
+            saveInCookies: true, // Save user's dark mode preference
+            label: '🌓', // The label on the switch button
+            autoMatchOsTheme: true // Automatically match OS theme setting
+        };
+
+        const darkmode = new Darkmode(options);
+        darkmode.showWidget(); // This will show the dark mode toggle button
+    </script>
+
 </body>
 
 </html>

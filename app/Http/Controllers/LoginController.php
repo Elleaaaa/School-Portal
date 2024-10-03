@@ -44,15 +44,17 @@ class LoginController extends Controller
                 case 'cashier':
                     return redirect()->intended(route('cashier-dashboard.show', ['cashierId' => $user->studentId]));
                     break;
+                case 'assessor':
+                    return redirect()->intended(route('assessor-dashboard.show', ['assessorId' => $user->studentId]));
+                    break;
                 case 'teacher':
                     return redirect()->intended(route('teacher-dashboard.show', ['teacherId' => $user->studentId]));
                     break;
                 default:
-                if ($user->completeProfile == True) {
-                    return redirect()->route('student-dashboard.show');
-                }
-                else
-                    notify()->warning('Please Complete your Details First!');
+                    if ($user->completeProfile == True) {
+                        return redirect()->route('student-dashboard.show');
+                    } else
+                        notify()->warning('Please Complete your Details First!');
                     return redirect()->route('profile-details.show', ['studentId' => $user->studentId]);
             }
         }

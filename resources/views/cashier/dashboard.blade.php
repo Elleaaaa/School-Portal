@@ -81,7 +81,7 @@
                             <div class="card-body">
                                 <div class="db-widgets d-flex justify-content-between align-items-center">
                                     <div class="db-icon">
-                                        <i class="fas fa-crown"></i>
+                                        <i class="fas fa-chalkboard-teacher"></i>
                                     </div>
                                     <div class="db-info">
                                         <h3>{{ $teachersCount }}</h3>
@@ -96,7 +96,7 @@
                             <div class="card-body">
                                 <div class="db-widgets d-flex justify-content-between align-items-center">
                                     <div class="db-icon">
-                                        <i class="fas fa-building"></i>
+                                        <i class="fas fa-dollar-sign"></i>
                                     </div>
                                     <div class="db-info">
                                         <h3>{{ $tuitionTotalPaidCount }}</h3>
@@ -111,7 +111,7 @@
                             <div class="card-body">
                                 <div class="db-widgets d-flex justify-content-between align-items-center">
                                     <div class="db-icon">
-                                        <i class="fas fa-file-invoice-dollar"></i>
+                                        <i class="fas fa-exclamation-circle"></i>
                                     </div>
                                     <div class="db-info">
                                         <h3>{{ $tuitionTotalNotPaidCount }}</h3>
