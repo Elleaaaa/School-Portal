@@ -21,7 +21,9 @@ use Illuminate\Validation\Rules;
 use App\Mail\WelcomeEmail;
 use App\Models\Fee;
 use App\Models\FeeList;
+use App\Models\Log;
 use App\Models\Subject;
+use App\Services\MessageLogService;
 use Illuminate\Support\Facades\Mail;
 use PhpParser\Node\Stmt\Break_;
 
@@ -134,6 +136,13 @@ class StudentController extends Controller
         //     Mail::to($toEmail)->send(new WelcomeEmail($message, $subject));
         // }
 
+        if ($validatedData['email']) {
+            $logs = new Log();
+            $logs->studentId = Auth::user()->studentId;
+            $logs->type = "add_student";
+            $logs->activity = "Added new student with LRN " . $validatedData['studentId'];
+            $logs->save();
+        }
 
         notify()->success('Student Added Successfully!');
         return redirect()->route('addstudent.show');
@@ -170,7 +179,7 @@ class StudentController extends Controller
 
         $subjectCount = $subjectCount ? $subjectCount->subject_count : 0;
 
-        $studentName = $student->firstName ." ". $student->lastName." ". $student->suffixName;
+        $studentName = $student->firstName . " " . $student->lastName . " " . $student->suffixName;
 
         return view('student.dashboard', compact('student', 'subjectCount', 'studentName'));
     }
@@ -196,28 +205,29 @@ class StudentController extends Controller
         $studentId = Auth::user()->studentId;
         $enrollee = Enrollee::where('studentId', $studentId)
             ->where('status', 'Enrolled')
+            ->orderBy('schoolYear', 'desc') //to get the latest subject of students
             ->first();
         $allSubjects = [];
         $subjectTeachers = [];
-        
+
         if ($enrollee) {
             $subjects = $enrollee->subjects;
             $subjectList = explode(',', $subjects);
-        
+
             foreach ($subjectList as $subject) {
                 // Format the subject name
                 $formattedSubject = ucwords(strtolower(trim($subject)));
                 $allSubjects[] = $formattedSubject;
-        
+
                 $gradeLevel = $enrollee->gradeLevel;
                 $section = $enrollee->section;
-        
+
                 // Find the subject in the Subject table
                 $subjectTeacher = Subject::where('gradeLevel', $gradeLevel)
                     ->where('section', $section)
                     ->where('subject', $formattedSubject)
                     ->first();
-        
+
                 if ($subjectTeacher) {
                     $teacherId = $subjectTeacher->teacherId;
                     $teacher = Teacher::where('teacherId', $teacherId)->first();
@@ -230,14 +240,14 @@ class StudentController extends Controller
                     $subjectTeachers[$formattedSubject] = 'Teacher not assigned';
                 }
             }
-        
+
             return view('student.subject-list', compact('allSubjects', 'subjectTeachers'));
         }
-        
+
         return view('student.subject-list', compact('allSubjects'));
     }
 
-    
+
 
     public function showEditStudent(string $id)
     {
@@ -256,17 +266,16 @@ class StudentController extends Controller
     {
         $studentId = Auth::user()->studentId;
         $enrollee = Enrollee::where('studentId', $studentId)
-                            ->first();
+            ->first();
         $classType = $enrollee ? $enrollee->classType : null;
         $gradeLevel = $enrollee ? $enrollee->gradeLevel : null;
-        
+
         $student = Enrollee::where('studentId', $studentId)
             ->where('classType', $classType)
             ->first();
 
-            //this is for Special Science Class Invoice
-        if($classType == "Special Science Class")
-        {
+        //this is for Special Science Class Invoice
+        if ($classType == "Special Science Class") {
             $monthlyTF = 0;
             $monthlyCF = 200;
             $genyoELearning = 200;
@@ -277,7 +286,7 @@ class StudentController extends Controller
             $otherSF = 4530;
             $membershipFee = 200;
 
-            switch($gradeLevel){
+            switch ($gradeLevel) {
                 case "Grade 7":
                     $monthlyTF = 924;
                     $wholeYearTF = 15240;
@@ -304,9 +313,7 @@ class StudentController extends Controller
 
             $feeHistory = Fee::where('studentId', $studentId)->get();
             $totalAmountPaid = Fee::where('studentId', $studentId)->sum('amountPaid');
-        }
-        elseif($classType == "Regular Class")
-        {   
+        } elseif ($classType == "Regular Class") {
             //this is for Regular Class Invoice
             $monthlyTF = 0;
             $monthlyCF = 175;
@@ -318,7 +325,7 @@ class StudentController extends Controller
             $otherSF = 4230;
             $membershipFee = 200;
 
-            switch($gradeLevel) {
+            switch ($gradeLevel) {
                 case "Grade 7":
                     $monthlyTF = 882;
                     $wholeYearTF = 14570;
@@ -346,7 +353,7 @@ class StudentController extends Controller
             $feeHistory = Fee::where('studentId', $studentId)->get();
             $totalAmountPaid = Fee::where('studentId', $studentId)->sum('amountPaid');
         }
-        return view('student.invoice', compact('tuitionFee', 'feeHistory', 'totalAmountPaid','monthlyTF','monthlyCF', 'genyoELearning', 'energyFee', 'wholeYearTF', 'newStudent', 'miscFee', 'otherSF', 'membershipFee'));
+        return view('student.invoice', compact('tuitionFee', 'feeHistory', 'totalAmountPaid', 'monthlyTF', 'monthlyCF', 'genyoELearning', 'energyFee', 'wholeYearTF', 'newStudent', 'miscFee', 'otherSF', 'membershipFee'));
     }
 
     /**
@@ -440,6 +447,7 @@ class StudentController extends Controller
 
         // Update Student
         $student = Student::find($id);
+        $originalStudent = $student->replicate();
         $studentId = $student->studentId;
 
         $student->firstName = $request->input('firstName');
@@ -455,6 +463,33 @@ class StudentController extends Controller
         $student->placeOfBirth = $request->input('birthplace');
         $student->save();
 
+        $studentFields = [
+            'firstName',
+            'middleName',
+            'lastName',
+            'suffix',
+            'gender',
+            'birthday',
+            'age',
+            'mobileNumber',
+            'landlineNumber',
+            'religion',
+            'placeOfBirth'
+        ];
+
+        $studentChanges = MessageLogService::detectChanges($originalStudent, $student, $studentFields);
+
+        // Log the changes (if any)
+        if (!empty($studentChanges)) {
+            $activityMessage = "Updated the student details of " . $student->studentId . ": " . implode(", ", $studentChanges);
+
+            $logs = new Log();
+            $logs->studentId = Auth::user()->studentId;
+            $logs->type = "edit_student";
+            $logs->activity = $activityMessage;
+            $logs->save();
+        }
+
         $fullName = trim($request->input('firstName') . ' ' . $request->input('middleName') . ' ' . $request->input('lastName') . ' ' . $request->input('suffixName'));
         // Update the Enrollee's name
         Enrollee::where('studentId', $studentId)->update([
@@ -463,6 +498,7 @@ class StudentController extends Controller
 
         // Update Address
         $address = Address::where('studentId', $studentId)->first();
+        $originalAddress = $address->replicate(); // use to replicate the address for activity logs
         $address->region = $request->input('region');
         $address->province = $request->input('province');
         $address->city = $request->input('city');
@@ -470,8 +506,30 @@ class StudentController extends Controller
         $address->address = $request->input('address');
         $address->save();
 
+        // use for activity logs
+        $addressFields = [
+            'region',
+            'province',
+            'city',
+            'baranggay',
+            'address',
+        ];
+        $addressChanges = MessageLogService::detectChanges($originalAddress, $address, $addressFields);
+
+        // Log the changes (if any)
+        if (!empty($addressChanges)) {
+            $activityMessage = "Updated the student details of " . $student->studentId . ": " . implode(", ", $addressChanges);
+
+            $logs = new Log();
+            $logs->studentId = Auth::user()->studentId;
+            $logs->type = "edit_student_address";
+            $logs->activity = $activityMessage;
+            $logs->save();
+        }
+
         // Update Guardian
         $guardian = Guardian::where('studentId', $studentId)->first();
+        $originalGuardian = $guardian->replicate();
         $guardian->mothersFirstName = $request->input('mothersFirstName');
         $guardian->mothersLastName = $request->input('mothersLastName');
         $guardian->motherAge = $request->input('motherAge');
@@ -488,11 +546,60 @@ class StudentController extends Controller
         $guardian->fatherAddress = $request->input('fatherAddress');
         $guardian->save();
 
+        // use for activity logs
+        $guardianFields = [
+            'mothersFirstName',
+            'mothersLastName',
+            'motherAge',
+            'motherOccupation',
+            'motherContact',
+            'motherAddress',
+            'fathersFirstName',
+            'fathersLastName',
+            'fathersSuffix',
+            'fatherAge',
+            'fatherOccupation',
+            'fatherContact',
+            'fatherAddress',
+        ];
+
+        $guardianChanges = MessageLogService::detectChanges($originalGuardian, $guardian, $guardianFields);
+
+        // Log the changes (if any)
+        if (!empty($guardianChanges)) {
+            $activityMessage = "Updated the student details of " . $student->studentId . ": " . implode(", ", $guardianChanges);
+
+            $logs = new Log();
+            $logs->studentId = Auth::user()->studentId;
+            $logs->type = "edit_student_guardian";
+            $logs->activity = $activityMessage;
+            $logs->save();
+        }
+
         // Update School Attended
         $lastSchool = LastSchool::where('studentId', $studentId)->first();
+        $originalLastSchool = $lastSchool->replicate();
         $lastSchool->school = $request->input('lastSchool');
         $lastSchool->genAverage = $request->input('lastSchoolAverage');
         $lastSchool->save();
+
+        // use for activity logs
+        $lastSchoolFields = [
+            'school',
+            'genAverage',
+        ];
+        $lastSchoolChanges = MessageLogService::detectChanges($originalLastSchool, $lastSchool, $lastSchoolFields);
+
+        // Log the changes (if any)
+        if (!empty($lastSchoolChanges)) {
+            $activityMessage = "Updated the student details of " . $student->studentId . ": " . implode(", ", $lastSchoolChanges);
+
+            $logs = new Log();
+            $logs->studentId = Auth::user()->studentId;
+            $logs->type = "edit_student_lastSchool";
+            $logs->activity = $activityMessage;
+            $logs->save();
+        }
 
         notify()->success('Student Record Updated Successfully!');
         return redirect()->route('edit-student.show', ['id' => $id]);

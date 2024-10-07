@@ -54,7 +54,7 @@
                                         <td>{{ $student->name }}</td>
                                         <td class="text-center">
                                             <div class="custom-radio">
-                                                <input type="radio" name="attendance[{{ $student->studentId }}]" value="1" required>
+                                                <input type="radio" name="attendance[{{ $student->studentId }}]" value="1" checked required>
                                             </div>
                                         </td>
                                         <td class="text-center">

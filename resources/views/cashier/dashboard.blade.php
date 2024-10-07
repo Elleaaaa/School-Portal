@@ -42,7 +42,8 @@
                 <div class="page-header">
                     <div class="row">
                         <div class="col-sm-12">
-                            <h3 class="page-title">Welcome {{ $cashierName->firstName }} {{ $cashierName->lastName }}</h3>
+                            <h3 class="page-title">Welcome {{ $cashierName->firstName }} {{ $cashierName->lastName }}
+                            </h3>
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item active">Dashboard</li>
                             </ul>
@@ -70,7 +71,7 @@
                                     </div>
                                     <div class="db-info">
                                         <h3>{{ $enrolledCount }}</h3>
-                                        <h6><a href="{{ route('studentlist.show') }}">Students</a></h6>
+                                        <h6><a href="{{ route('studentlist.show') }}">Enrolled Students</a></h6>
                                     </div>
                                 </div>
                             </div>
@@ -124,6 +125,17 @@
                 </div>
 
                 <div class="row">
+                    <div class="col-12 col-md-12 col-sm-6 mb-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Payments</h5>
+                                <canvas id="paymentsChart" class="w-100" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
                     <div class="col-12 col-lg-12 col-xl-12 d-flex">
                         <div class="card flex-fill">
                             <div class="card-header">
@@ -141,21 +153,9 @@
                 </div>
                 @include('layouts/footer')
 
-                <div class="row">
-                    <div class="col-12 col-md-12 col-sm-6 mb-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Payments</h5>
-                                <canvas id="paymentsChart" class="w-100" height="200"></canvas>
-                            </div>
-                        </div>
-                    </div>
-
             </div>
 
         </div>
-
-    </div>
     </div>
     </div>
 
@@ -163,7 +163,7 @@
     <script src="{{ asset('plugins/fullcalendar/index.global.min.js') }}"></script>
     <script src="{{ asset('js/myjs/events.fullcalendar.js') }}"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ asset('js/chart.js') }}"></script>
     {{-- PAYMENTS GRAPH --}}
     <script src="{{ asset('js/myjs/graph/allPaymentGraph.js') }}"></script>
 

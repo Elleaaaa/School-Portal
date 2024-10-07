@@ -350,8 +350,8 @@
                                 <div class="form-group">
                                     <label for="category">Category</label>
                                     <select class="form-control" id="category" name="category" required>
-                                        <option value="Mandatory">Mandatory</option>
-                                        <option value="Voluntary">Voluntary</option>
+                                        <option value="Faculty">Faculty</option>
+                                        <option value="General">General</option>
                                     </select>
                                 </div>
                                 <div class="form-group">

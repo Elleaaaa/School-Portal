@@ -31,27 +31,30 @@ class AttendanceController extends Controller
         return view('teacher.attendance-by-section', compact('handleSections'));
     }
 
-    public function showAttendaceBySection(string $gradeLevel, string $section)
+    public function showAttendanceBySection(string $gradeLevel, string $section)
     {
+        // in this metod/code I use my code in getting grades of students to get the students of selected section
         $id = Auth::user()->studentId;
-    
+        $syNow = Carbon::now()->year . '-' . (Carbon::now()->year + 1);
+
         // Fetch subjects for the given teacher, grade level, and section
         $subjects = Subject::where('teacherId', $id)
             ->where('gradeLevel', $gradeLevel)
             ->where('section', $section)
             ->get();
-    
+
         // Fetch students enrolled in the specified grade level and section
         $myStudents = Enrollee::where('gradeLevel', $gradeLevel)
+            ->where('schoolYear', $syNow) // for current school year
             ->where('section', $section)
             ->get();
-    
+
         // Get student IDs
         $myStudentsIds = $myStudents->pluck('studentId')->toArray();
-    
+
         // Initialize an empty collection for grades
         $grades = collect();
-    
+
         // Fetch grades for each subject only once, filtered by student ID
         foreach ($subjects as $subject) {
             $subjectGrades = Grade::where('subject', $subject->subject)
@@ -59,17 +62,17 @@ class AttendanceController extends Controller
                 ->where('section', $section)
                 ->whereIn('studentId', $myStudentsIds) // Ensure grades are only for enrolled students
                 ->get();
-    
+
             // Merge grades into the $grades collection
             $grades = $grades->merge($subjectGrades);
         }
-    
+
         // Fetch student details based on IDs
         $studentDetails = Student::whereIn('studentId', $myStudentsIds)->get();
-    
+
         // Fetch user images only for relevant students
         $images = User::whereIn('studentId', $myStudentsIds)->get();
-    
+
         return view('teacher.attendance', compact('myStudents', 'images', 'studentDetails', 'section'));
     }
 
@@ -83,7 +86,7 @@ class AttendanceController extends Controller
             ->select('gradeLevel', 'section')
             ->distinct()
             ->get();
-     
+
         if ($handleSubjects->isNotEmpty()) {
             foreach ($sections as $section) {
                 foreach ($handleSubjects as $subject) {
@@ -95,22 +98,22 @@ class AttendanceController extends Controller
                 }
             }
         }
-     
+
         $myStudents = $myStudents->unique('studentId'); // Ensure unique students
         $myStudentsIds = $myStudents->pluck('studentId')->toArray();
         $attendanceRecords = Attendance::whereIn('studentId', $myStudentsIds)->get();
-     
+
         $studentsWithAttendance = $myStudents->map(function ($student) use ($attendanceRecords) {
             $student->attendance = $attendanceRecords->where('studentId', $student->studentId);
             return $student;
         });
-     
+
         $images = User::all();
         return view('teacher.view-attendance', compact('images', 'studentsWithAttendance', 'sections'));
     }
-    
-    
-    
+
+
+
 
     public function showStudentAttendance(Request $request)
     {
@@ -123,8 +126,12 @@ class AttendanceController extends Controller
         $studentId = $user->studentId;
         $month = $request->input('month', now()->format('Y-m'));
 
+        $latestSection = Enrollee::where('studentId', $studentId)
+            ->orderBy('id', 'desc')
+            ->first()->section;
+
         $attendanceData = Attendance::where('studentId', $studentId)
-            ->where('date', 'like', $month . '%')
+            // ->where('date', 'like', $month . '%') //uncomment this for month based attendance
             ->get(['date', 'status']);
 
         return response()->json($attendanceData);
@@ -144,19 +151,22 @@ class AttendanceController extends Controller
     public function store(Request $request)
     {
         $date = now()->toDateString();
-    
+        $syNow = Carbon::now()->year . '-' . (Carbon::now()->year + 1);
+
         foreach ($request->attendance as $studentId => $status) {
             // Check if an attendance record already exists for this student on the current date
             $attendance = Attendance::where('studentId', $studentId)
-                                    ->where('date', $date)
-                                    ->first();
+                ->where('date', $date)
+                ->where('schoolYear', $syNow)
+                ->first();
 
             $reason = $request->input("reason.$studentId");
-    
+
             if ($attendance) {
                 // Update the existing record
                 $attendance->status = $status;
                 $attendance->reason = $reason;
+                $attendance->schoolYear = $syNow;
                 $attendance->save();
                 notify()->success('Attendance updated successfully');
             } else {
@@ -164,6 +174,7 @@ class AttendanceController extends Controller
                 Attendance::create([
                     'studentId' => $studentId,
                     'date' => $date,
+                    'schoolYear' => $syNow,
                     'status' => $status,
                     'reason' => $reason,
                 ]);
@@ -177,11 +188,11 @@ class AttendanceController extends Controller
     public function getAttendanceAJAX()
     {
         $studentId = Auth::user()->studentId;
-    
+
         // Get the start and end of the current month
         $startOfMonth = now()->startOfMonth()->toDateString();
         $endOfMonth = now()->endOfMonth()->toDateString();
-    
+
         // Generate all dates in the month
         $dates = [];
         $date = $startOfMonth;
@@ -189,21 +200,21 @@ class AttendanceController extends Controller
             $dates[] = $date;
             $date = \Carbon\Carbon::parse($date)->addDay()->toDateString();
         }
-    
+
         // Fetch attendance data
         $attendanceData = Attendance::where('studentId', $studentId)
             ->whereBetween('date', [$startOfMonth, $endOfMonth])
             ->get(['date', 'status']);
-    
+
         // Map attendance data to ensure every date is included
-        $attendanceData = collect($dates)->map(function($date) use ($attendanceData) {
+        $attendanceData = collect($dates)->map(function ($date) use ($attendanceData) {
             $entry = $attendanceData->firstWhere('date', $date);
             return [
                 'date' => $date,
-                'status' => $entry ? $entry->status : false // Default to false (absent) if no data
+                'status' => $entry ? $entry->status : null // Default to null if no data for the front end to appear the line in the middle
             ];
         });
-    
+
         return response()->json($attendanceData);
     }
 
@@ -212,7 +223,7 @@ class AttendanceController extends Controller
         // Get the start and end of the current month
         $startOfMonth = now()->startOfMonth()->toDateString();
         $endOfMonth = now()->endOfMonth()->toDateString();
-    
+
         // Fetch attendance data grouped by date and status
         $attendanceData = Attendance::whereBetween('date', [$startOfMonth, $endOfMonth])
             ->selectRaw('date, status, COUNT(*) as count')
@@ -227,7 +238,7 @@ class AttendanceController extends Controller
                     'absent' => $group->where('status', 0)->sum('count')
                 ];
             });
-    
+
         // Prepare data for response
         $result = $attendanceData->map(function ($counts, $date) {
             return [
@@ -236,19 +247,19 @@ class AttendanceController extends Controller
                 'absent' => $counts['absent'] ?? 0,
             ];
         })->values();
-    
+
         return response()->json($result);
     }
     public function getAbsentReportAJAX(Request $request)
     {
         try {
             $query = Attendance::where('status', 0);
-    
+
             // Handle different date filters
             if ($request->has('filter')) {
                 $filter = $request->filter;
                 $today = Carbon::today();
-    
+
                 switch ($filter) {
                     case 'today':
                         $query->whereDate('created_at', $today);
@@ -266,16 +277,16 @@ class AttendanceController extends Controller
                         break;
                 }
             }
-    
+
             $absentReport = $query->select('reason', DB::raw('count(*) as total'))
-                                  ->groupBy('reason')
-                                  ->get();
-    
+                ->groupBy('reason')
+                ->get();
+
             return response()->json($absentReport);
         } catch (\Exception $e) {
             // Log the exception
             Log::error($e);
-    
+
             // Return a JSON error response
             return response()->json([
                 'error' => 'Something went wrong on the server.',
@@ -283,12 +294,64 @@ class AttendanceController extends Controller
             ], 500);
         }
     }
-    
-    
 
 
-    
-    
+    // public function overallStudentAttendance()
+    // {
+    //     $gradeLevels = ['Grade 7', 'Grade 8', 'Grade 9', 'Grade 10', 'Grade 11', 'Grade 12'];
+    //     $allSections = Section::all()->groupBy('gradeLevel');
+
+    //     $allStudents = Enrollee::pluck('studentId');
+    //     $myStudentsIds = $allStudents->toArray();
+
+
+    //     $absentToday = Attendance::whereIn('studentId', $myStudentsIds)
+    //         ->where('date', date('Y-m-d'))
+    //         ->where('status', 0) // 0 means absent
+    //         ->count();
+
+    //     $presentToday = Attendance::whereIn('studentId', $myStudentsIds)
+    //         ->where('date', date('Y-m-d'))
+    //         ->where('status', 1) // 1 means present
+    //         ->count();
+
+    //     return view('superadmin.overallAttendance', compact('allSections', 'gradeLevels'));
+    // }
+
+    public function overallStudentAttendance()
+    {
+        $gradeLevels = ['Grade 7', 'Grade 8', 'Grade 9', 'Grade 10', 'Grade 11', 'Grade 12'];
+        $allSections = Section::all()->groupBy('gradeLevel');
+        $syNow = Carbon::now()->year . '-' . (Carbon::now()->year + 1);
+
+        $absenteesBySection = Attendance::where('date', date('Y-m-d'))
+            ->where('attendances.status', 0) // 0 means absent
+            ->where('attendances.schoolYear', $syNow)
+            ->join('enrollees', 'attendances.studentId', '=', 'enrollees.studentId')
+            ->groupBy('enrollees.section')
+            ->where('enrollees.schoolyear', $syNow)
+            ->selectRaw('enrollees.section, count(*) as total_absent')
+            ->pluck('total_absent', 'enrollees.section');
+
+        $presentsBySection = Attendance::where('date', date('Y-m-d'))
+            ->where('attendances.status', 1) // 1 means present
+            ->where('attendances.schoolYear', $syNow)
+            ->join('enrollees', 'attendances.studentId', '=', 'enrollees.studentId')
+            ->groupBy('enrollees.section')
+            ->where('enrollees.schoolyear', $syNow)
+            ->selectRaw('enrollees.section, count(*) as total_present')
+            ->pluck('total_present', 'enrollees.section');
+
+        return view('superadmin.overallAttendance', compact('allSections', 'gradeLevels', 'absenteesBySection', 'presentsBySection'));
+    }
+
+
+
+
+
+
+
+
 
     /**
      * Display the specified resource.

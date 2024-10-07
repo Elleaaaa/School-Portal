@@ -105,9 +105,9 @@
                                                         <a href="{{ route('edit-teacher.show', ['id' => $teacher->id]) }}" class="btn btn-sm bg-success-light mr-2">
                                                             <i class="fas fa-pen"></i>
                                                         </a>
-                                                        <a href="#" class="btn btn-sm bg-danger-light">
+                                                        {{-- <a href="#" class="btn btn-sm bg-danger-light">
                                                             <i class="fas fa-trash"></i>
-                                                        </a>
+                                                        </a> --}}
                                                     </div>
                                                 </td>
                                             </tr>

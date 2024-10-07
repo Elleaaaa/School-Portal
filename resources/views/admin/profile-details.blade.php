@@ -171,7 +171,7 @@
                                         </div>
 
                                         {{-- Parent Information --}}
-                                        <div class="col-12">
+                                        {{-- <div class="col-12">
                                             <h5 class="form-title"><span>Parent Information</span></h5>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-6">
@@ -253,7 +253,7 @@
                                                 <label>Annual Gross Income</label>
                                                 <input name="fatherAnnualGrossIncome" type="text" class="form-control" value="{{ $guardians->fatherAnnualGrossIncome ?? '' }}">
                                              </div>
-                                        </div>
+                                        </div> --}}
                                         {{-- <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label>Present Address</label>

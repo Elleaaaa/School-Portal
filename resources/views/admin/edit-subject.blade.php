@@ -68,7 +68,7 @@
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label>Subject Title</label>
-                                                <input name="subjectTitle" type="text" class="form-control" value="{{$subject->subjectTitle}}">
+                                                <input name="subjectTitle" type="text" class="form-control" value="{{$subject->subject}}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6">
@@ -85,8 +85,8 @@
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label for="semester">Semester</label>
-                                                <select class="form-control" id="semester" name="semester" required>
-                                                    <option value=""></option>
+                                                <select class="form-control" id="semester" name="semester" >
+                                                    <option value="" {{ is_null($subject->semester) ? 'selected' : '' }}>N/A</option>
                                                     <option value="First Semester" {{ $subject->semester === 'First Semester' ? 'selected' : '' }}>First Semester</option>
                                                     <option value="Second Semester" {{ $subject->semester === 'Second Semester' ? 'selected' : '' }}>Second Semester</option>
                                                 </select>
@@ -95,8 +95,8 @@
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label for="strand">Strand</label>
-                                                <select class="form-control" id="strand" name="strand" required>
-                                                    <option value=""></option>
+                                                <select class="form-control" id="strand" name="strand" >
+                                                    <option value="" {{ is_null($subject->strand) ? 'selected' : '' }}>N/A</option>
                                                     <option value="STEM" {{ $subject->strand === 'STEM' ? 'selected' : '' }}>STEM</option>
                                                     <option value="ABM" {{ $subject->strand === 'ABM' ? 'selected' : '' }}>ABM</option>
                                                     <option value="GAS" {{ $subject->strand === 'GAS' ? 'selected' : '' }}>GAS</option>
@@ -118,7 +118,7 @@
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label hidden>Teacher ID</label>
-                                                <input name="teacherId" id="teacherId" type="text" class="form-control" readonly >
+                                                <input name="teacherId" id="teacherId" type="text" class="form-control" readonly hidden>
                                             </div>
                                         </div>
                            

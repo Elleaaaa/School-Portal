@@ -24,7 +24,14 @@ document.addEventListener("DOMContentLoaded", function() {
                             '#9966FF',
                             '#FF9F40'
                         ],
-                        hoverOffset: 4
+                        borderColor: [
+                            '#FF6384',
+                            '#36A2EB',
+                            '#FFCE56',
+                            '#4BC0C0',
+                            '#9966FF',
+                            '#FF9F40'
+                        ],
                     }]
                 },
                 options: {
@@ -43,6 +50,11 @@ document.addEventListener("DOMContentLoaded", function() {
                                 weight: 'bold',
                                 size: 16
                             },
+                        }
+                    },
+                    elements: {
+                        arc: {
+                            hoverBorderWidth: 15 // Increase this value to make the hovered part appear bigger
                         }
                     }
                 },

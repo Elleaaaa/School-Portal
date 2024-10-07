@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Log;
 use App\Models\Section;
 use App\Models\Subject;
 use App\Models\Teacher;
+use App\Services\MessageLogService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SectionController extends Controller
 {
@@ -41,6 +44,12 @@ class SectionController extends Controller
         $section->status = 'active';
         $section->save();
 
+        $logs = new Log();
+        $logs->studentId = Auth::user()->studentId;
+        $logs->type = "add_section";
+        $logs->activity = "Added new section " . $request->input('gradeLevel') . " - " .  $request->input('subjectTitle');
+        $logs->save();
+
         notify()->success('Section Added Successfully!');
         return redirect()->route('add-section.show');
     }
@@ -60,25 +69,27 @@ class SectionController extends Controller
         return view('admin.edit-section', compact('sections', 'teachers'));
     }
 
-    public function fetchSection(Request $request) {
+    public function fetchSection(Request $request)
+    {
         $gradeLevel = $request->input('gradeLevel');
         $section = Section::where('gradeLevel', $gradeLevel)->get();
-        
+
         if ($section->isNotEmpty()) {
             return response()->json($section);
         } else {
             return response()->json(['error' => 'Section not found for the given grade level'], 404);
         }
     }
-    public function fetchSectionByStrand(Request $request) {
+    public function fetchSectionByStrand(Request $request)
+    {
         $strand = $request->input('strand');
         $gradeLevel = $request->input('gradeLevel');
-        
+
         // Fetch sections based on strand and grade level
         $sections = Section::where('section', $strand) //section instead of strand, no strand in Section table
-                            ->where('gradeLevel', $gradeLevel)
-                            ->get(['sectionName']); // Fetch only the sectionName attribute
-        
+            ->where('gradeLevel', $gradeLevel)
+            ->get(['sectionName']); // Fetch only the sectionName attribute
+
         // Check if sections were found
         if ($sections->isNotEmpty()) {
             return response()->json($sections);
@@ -86,9 +97,9 @@ class SectionController extends Controller
             return response()->json([], 200); // Return an empty array instead of 404
         }
     }
-    
-    
-    
+
+
+
 
     /**
      * Display the specified resource.
@@ -112,6 +123,7 @@ class SectionController extends Controller
     public function update(Request $request, string $id)
     {
         $section = Section::find($id);
+        $originalSection = $section->replicate();
 
         $oldSectionName = $section->sectionName;
 
@@ -122,10 +134,32 @@ class SectionController extends Controller
         $section->status = $request->input('status');
         $section->save();
 
+        // use for activity logs
+        $sectionFields = [
+            'gradeLevel',
+            'section',
+            'sectionName',
+            'teacherId',
+            'status'
+        ];
+
+        $sectionChanges = MessageLogService::detectChanges($originalSection, $section, $sectionFields);
+
+        // Log the changes (if any)
+        if (!empty($sectionChanges)) {
+            $activityMessage = "Updated the section details of " . $section->gradeLevel . " - " . $section->sectionName . ": " . implode(", ", $sectionChanges);
+
+            $logs = new Log();
+            $logs->studentId = Auth::user()->studentId;
+            $logs->type = "edit_section";
+            $logs->activity = $activityMessage;
+            $logs->save();
+        }
+
         // when section name is updated, it will also update the section in Subject Table
         Subject::where('gradeLevel', $section->gradeLevel)
-                ->where('section', $oldSectionName)
-                ->update(['section' => $section->sectionName]);
+            ->where('section', $oldSectionName)
+            ->update(['section' => $section->sectionName]);
 
         notify()->success('Section Updated Successfully!');
         return redirect()->route('sectionlist.show');

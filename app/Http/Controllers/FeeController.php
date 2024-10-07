@@ -7,6 +7,7 @@ use App\Models\Discount;
 use App\Models\Enrollee;
 use App\Models\Fee;
 use App\Models\FeeList;
+use App\Models\Log;
 use App\Models\Student;
 use App\Models\Notification;
 use App\Models\Scholar;
@@ -76,7 +77,7 @@ class FeeController extends Controller
     public function paymentHistoryAdmin()
     {
         $feeHistory = Fee::all();
-        return view('student.payments-history', compact('feeHistory'));
+        return view('cashier.payments-history', compact('feeHistory'));
     }
 
     // use to fetch student details to populate input fields in payment
@@ -336,6 +337,14 @@ class FeeController extends Controller
             $notif->type = "tuition payment";
             $notif->userRole = "student";
             $notif->save();
+
+            // to save logs
+            $fullname = $fee->firstName . ' ' . $fee->middleName . ' ' . $fee->lastName . ' ' . $fee->suffixName;
+            $logs = new Log();
+            $logs->studentId = Auth::user()->studentId;
+            $logs->type = "payment";
+            $logs->activity = $fullname . " paid an Amount of " . number_format(($amountPaid), 2) . " recieved by: " . $request->input('reciever');
+            $logs->save();
 
             notify()->success('Paid Successfully!');
         }

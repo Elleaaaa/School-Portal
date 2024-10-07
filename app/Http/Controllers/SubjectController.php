@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Log;
 use App\Models\Section;
 use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 use function PHPUnit\Framework\returnSelf;
 
@@ -64,6 +66,13 @@ class SubjectController extends Controller
             $subject->subjectTeacher = $request->input('teacherName');
             $subject->save();
 
+            $logs = new Log();
+            $logs->studentId = Auth::user()->studentId;
+            $logs->type = "add_subject";
+            $logs->activity = "Added new subject " . $request->input('subjectTitle');
+            $logs->save();
+
+
             notify()->success('Subject Added Successfully!');
         }
         return redirect()->back();
@@ -99,19 +108,19 @@ class SubjectController extends Controller
         $gradeLevel = $request->input('gradeLevel');
         $strand = $request->input('strand');
         $semester = $request->input('semester');
-        
+
         $subjects = Subject::where('strand', $strand)
-                            ->where('gradeLevel', $gradeLevel)
-                            ->where('semester', $semester)
-                            ->get();
-        
+            ->where('gradeLevel', $gradeLevel)
+            ->where('semester', $semester)
+            ->get();
+
         if ($subjects->isNotEmpty()) {
             return response()->json($subjects);
         } else {
             // Return an empty array instead of a 404 error to simplify handling on the frontend
             return response()->json([]);
         }
-    }    
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -127,6 +136,7 @@ class SubjectController extends Controller
     public function update(Request $request, string $id)
     {
         $subject = Subject::find($id);
+        $originalSubject = $subject->replicate(); // used in activility logs
 
         $subject->studentId = null;
         $subject->teacherId = $request->input('teacherId');
@@ -138,6 +148,46 @@ class SubjectController extends Controller
         $subject->subjectType = $request->input('subjectType');
         $subject->subjectTeacher = $request->input('subjectTeacher');
         $subject->save();
+
+        // used in activility logs
+        $changes = [];
+        if ($originalSubject->subject != $subject->subject) {
+            $changes[] = "subject title from '{$originalSubject->subject}' to '{$subject->subject}'";
+        }
+        if ($originalSubject->teacherId != $subject->teacherId) {
+            $changes[] = "teacher from '{$originalSubject->teacherId}' to '{$subject->teacherId}'";
+        }
+        if ($originalSubject->gradeLevel != $subject->gradeLevel) {
+            $changes[] = "grade level from '{$originalSubject->gradeLevel}' to '{$subject->gradeLevel}'";
+        }
+        if ($originalSubject->strand != $subject->strand) {
+            $changes[] = "strand from '{$originalSubject->strand}' to '{$subject->strand}'";
+        }
+        if ($originalSubject->semester != $subject->semester) {
+            $changes[] = "semester from '{$originalSubject->semester}' to '{$subject->semester}'";
+        }
+        if ($originalSubject->section != $subject->section) {
+            $changes[] = "section from '{$originalSubject->section}' to '{$subject->section}'";
+        }
+        if ($originalSubject->subjectType != $subject->subjectType) {
+            $changes[] = "subject type from '{$originalSubject->subjectType}' to '{$subject->subjectType}'";
+        }
+        if ($originalSubject->subjectTeacher != $subject->subjectTeacher) {
+            $changes[] = "subject teacher from '{$originalSubject->subjectTeacher}' to '{$subject->subjectTeacher}'";
+        }
+
+        // Create the activity log message
+        $activityMessage = "Edited subject " . $request->input('subjectTitle');
+        if (!empty($changes)) {
+            $activityMessage .= ". Changes: " . implode(", ", $changes);
+        }
+
+        // Log the activity
+        $logs = new Log();
+        $logs->studentId = Auth::user()->studentId;
+        $logs->type = "edit_subject";
+        $logs->activity = $activityMessage;
+        $logs->save();
 
         notify()->success('Subject Updated Successfully!');
         return redirect()->route('subjectlist.show');

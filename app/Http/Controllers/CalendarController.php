@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Enrollee;
 use App\Models\Lesson;
+use App\Models\Log;
 use App\Models\Section;
 use App\Models\Student;
 use App\Models\Subject;
@@ -28,8 +29,8 @@ class CalendarController extends Controller
         $section = $request->input('section');
 
         $lessons = Lesson::where('gradeLevel', $gradeLevel)
-                        ->where('sectionId', $section)
-                        ->get();
+            ->where('sectionId', $section)
+            ->get();
 
         $weekDays = Lesson::DAYS;
         $calendarData = $calendarService->generateCalendarData($weekDays, $lessons);
@@ -42,24 +43,26 @@ class CalendarController extends Controller
         $student = auth()->user();
         $studentId = $student->studentId;
         $enrolled = Enrollee::where('studentId', $studentId)
-                            ->where('status', 'Enrolled')
-                            ->get();
+            ->where('status', 'Enrolled')
+            ->get();
         $calendarData = null;
         $weekDays = Lesson::DAYS; // load all weekdays
-        
+
         if ($enrolled->isNotEmpty()) { // Check if $enrolled is not empty
             // get the section of the student
-            $section = Enrollee::where('studentId', $studentId)->first()->section;
-        
+            $section = Enrollee::where('studentId', $studentId)
+                ->orderBy('id', 'desc') // to get the latest section of students
+                ->first()->section;
+
             // get the schedule of the section of the student
             $lessons = Lesson::where('sectionId', $section)->get();
-        
+
             // Organize lessons into calendar data format using CalendarService
             $calendarData = $calendarService->generateCalendarDataFiltered($weekDays, $lessons);
-        
+
             return view('student.schedule', compact('weekDays', 'calendarData'));
         }
-        
+
         return view('student.schedule', compact('weekDays', 'calendarData'));
     }
 
@@ -67,14 +70,14 @@ class CalendarController extends Controller
     {
         $teacher = auth()->user();
         $teacherId = $teacher->studentId; //studentId the name of column in db
-    
+
         // get the schedule of the section of the student
         $lessons = Lesson::where('teacherId', $teacherId)->get();
-    
+
         $weekDays = Lesson::DAYS;
         // Organize lessons into calendar data format using CalendarService
         $calendarData = $calendarService->generateCalendarDataFiltered($weekDays, $lessons);
-    
+
         return view('teacher.schedule', compact('weekDays', 'calendarData'));
     }
 
@@ -124,10 +127,10 @@ class CalendarController extends Controller
         // Check for overlapping lessons in the same room
         $overlappingLesson = Lesson::where('room', $room)
             ->where('day', $day)
-            ->where(function($query) use ($start_time, $end_time) {
-                $query->where(function($q) use ($start_time, $end_time) {
+            ->where(function ($query) use ($start_time, $end_time) {
+                $query->where(function ($q) use ($start_time, $end_time) {
                     $q->where('start_time', '<', $end_time)
-                    ->where('end_time', '>', $start_time);
+                        ->where('end_time', '>', $start_time);
                 });
             })
             ->first();
@@ -135,9 +138,11 @@ class CalendarController extends Controller
         if ($overlappingLesson) {
             // Return the specific time that is not available
             $conflictTime = "from {$overlappingLesson->start_time} to {$overlappingLesson->end_time}";
-            return redirect()->back()
-                ->with('failed', "There is an overlapping lesson in the same room: $conflictTime")
-                ->withInput();
+            // return redirect()->back()
+            //     ->with('failed', "There is an overlapping lesson in the same room: $conflictTime")
+            //     ->withInput();
+            notify()->warning("There is an overlapping lesson in the same room: $conflictTime");
+            return redirect()->back();
         }
 
         // Save the lesson if no overlapping lessons are found
@@ -151,6 +156,13 @@ class CalendarController extends Controller
         $lesson->start_time = $start_time;
         $lesson->end_time = $end_time;
         $lesson->save();
+
+        // to save logs
+        $logs = new Log();
+        $logs->studentId = Auth::user()->studentId;
+        $logs->type = "add_schedule";
+        $logs->activity = "Added new schedule for " . $request->input('gradeLevel') . " - " .  $request->input('section') . " - " . $request->input('subject');
+        $logs->save();
 
         notify()->success('Lesson Created Successfully!');
         return redirect()->back();

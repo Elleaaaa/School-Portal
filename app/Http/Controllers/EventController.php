@@ -6,7 +6,7 @@ use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
 {
@@ -48,15 +48,50 @@ class EventController extends Controller
 
     }
 
+    // public function getEvents()
+    // {
+    //     try {
+    //         $events = Event::all()->map(function ($event) {
+    
+    //             Ensure start and end datetime are formatted correctly
+    //             $start_datetime = Carbon::parse($event->start_datetime)->format('Y-m-d\TH:i:s');
+    //             $end_datetime = Carbon::parse($event->end_datetime)->format('Y-m-d\TH:i:s');
+
+    //             return [
+    //                 'id' => $event->id,
+    //                 'title' => $event->eventName,
+    //                 'start' => $start_datetime,
+    //                 'end' => $end_datetime,
+    //                 'category' => $event->category,
+    //                 'allDay' => false,
+    //             ];
+    //         });
+    
+    //         return response()->json(['data' => $events]);
+    //     } catch (\Exception $e) {
+    //         Log::error('Error fetching events: ' . $e->getMessage());
+    //         return response()->json(['error' => 'Error fetching events'], 500);
+    //     }
+    // }
+
     public function getEvents()
     {
         try {
-            $events = Event::all()->map(function ($event) {
+            // Check user type (assuming you have access to the authenticated user)
+            $userType = auth()->user()->usertype;
     
+            // If the user is a student, filter events by category 'general'
+            $eventsQuery = Event::query();
+            if ($userType == 'student') {
+                $eventsQuery->where('category', 'general');
+            }
+    
+            // Get and format the events
+            $events = $eventsQuery->get()->map(function ($event) {
                 // Ensure start and end datetime are formatted correctly
                 $start_datetime = Carbon::parse($event->start_datetime)->format('Y-m-d\TH:i:s');
                 $end_datetime = Carbon::parse($event->end_datetime)->format('Y-m-d\TH:i:s');
-
+    
                 return [
                     'id' => $event->id,
                     'title' => $event->eventName,
@@ -73,7 +108,9 @@ class EventController extends Controller
             return response()->json(['error' => 'Error fetching events'], 500);
         }
     }
-
+    
+    
+    
 
     /**
      * Display the specified resource.

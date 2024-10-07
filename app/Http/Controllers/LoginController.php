@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Models\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Student;
@@ -31,6 +31,15 @@ class LoginController extends Controller
             // Authentication passed...
 
             $user = Auth::user(); // Get the authenticated user
+            $ipAddress = $request->ip();
+
+            $activity = "Logged in as " . $user->studentId . " from " . $ipAddress;
+
+            $logs = new Log();
+            $logs->studentId = $user->studentId;
+            $logs->type = "login";
+            $logs->activity = $activity;
+            $logs->save();
 
             // Check user's usertype and redirect accordingly 
             //$studentId in user is the id itself not students ID

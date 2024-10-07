@@ -37,7 +37,7 @@
                               <table class="table table-hover table-center mb-0 datatable">
                                  <thead>
                                     <tr>
-                                       <th>Student ID</th>
+                                       <th>LRN</th>
                                        <th>Name</th>
                                        <th>Subjects</th>
                                        <th>Grade Level</th>
@@ -49,7 +49,7 @@
                                  <tbody>
                                     @foreach ($enrollees as $enrollee)
                                     <tr>
-                                       <td>{{ $enrollee->studentId }}</td>
+                                       <td>{{$enrollee->studentId }}</td>
                                        <td>{{$enrollee->name}}</td>
                                        <td>{{$enrollee->subjects}}</td>
                                        <td>{{$enrollee->gradeLevel}}

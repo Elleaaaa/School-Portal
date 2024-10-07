@@ -68,7 +68,7 @@
                                             <div class="form-group">
                                                 <label>Suffix Name</label>
                                                 <input name="suffixName" type="text" class="form-control"
-                                                value="{{ $students-> suffixName}}" placeholder="Jr, Sr, III, etc">
+                                                value="{{ $students->suffix}}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-4">

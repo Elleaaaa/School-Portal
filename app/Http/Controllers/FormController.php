@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Enrollee;
 use App\Models\Grade;
+use App\Models\Log;
 use App\Models\SHSGrade;
 use App\Models\Student;
 use App\Models\Subject;
@@ -12,6 +13,7 @@ use Dompdf\Options;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class FormController extends Controller
 {
@@ -80,6 +82,12 @@ class FormController extends Controller
             'imagelogo2' => public_path('img/logo/baylogo.png')
         ];
 
+        $logs = new Log();
+        $logs->studentId = Auth::user()->studentId;
+        $logs->type = "request_cor";
+        $logs->activity = Auth::user()->studentId . " requested COR for " . $name;
+        $logs->save();
+
         $pdf = PDF::loadView('forms.cor', $data);
 
         // Download PDF with A4 size
@@ -109,6 +117,12 @@ class FormController extends Controller
             'imagelogo1' => public_path('img/logo/sanpablologo.png'),
             'imagelogo2' => public_path('img/logo/baylogo.png')
         ];
+
+        $logs = new Log();
+        $logs->studentId = Auth::user()->studentId;
+        $logs->type = "request_goodmoral";
+        $logs->activity = Auth::user()->studentId . " requested Good Moral for " . $name;
+        $logs->save();
 
         $pdf = PDF::loadView('forms.goodmoral', $data);
 
@@ -291,6 +305,13 @@ class FormController extends Controller
                 'gradesData' => $gradesData,
             ];
 
+            // to save logs
+            $logs = new Log();
+            $logs->studentId = Auth::user()->studentId;
+            $logs->type = "request_jhs_sf9";
+            $logs->activity = Auth::user()->studentId . " requested SF9 for " . $name;
+            $logs->save();
+
             // Generate the PDF
             $pdf = PDF::loadView('forms.sf9-jhs', $data);
             // Download PDF with A4 size
@@ -426,6 +447,12 @@ class FormController extends Controller
             'finalRating' => $finalRating,
         ];
 
+        // to save logs
+        $logs = new Log();
+        $logs->studentId = Auth::user()->studentId;
+        $logs->type = "request_shs_sf9";
+        $logs->activity = Auth::user()->studentId . " requested SF9 for " . $name;
+        $logs->save();
 
         $pdf = PDF::loadView('forms.sf9-shs', $data);
 
@@ -593,6 +620,12 @@ class FormController extends Controller
             $grade['average'] = number_format($average, 2);
         }
 
+        // to save logs
+        $logs = new Log();
+        $logs->studentId = Auth::user()->studentId;
+        $logs->type = "request_jhs_sf10";
+        $logs->activity = Auth::user()->studentId . " requested SF10 for " . $name;
+        $logs->save();
 
         $data = [
             'imagelogo' => public_path('img/logo/depedsymbol.png'),
@@ -633,7 +666,7 @@ class FormController extends Controller
             ->where('gradeLevel', 'Grade 11')
             ->where('semester', 'First Semester')
             ->first();
-        
+
         // GRADE 11 SECOND SEMESTER DETAILS
         $grade112Details = Enrollee::where('studentId', $studentId)
             ->where('gradeLevel', 'Grade 11')
@@ -691,7 +724,7 @@ class FormController extends Controller
         }
 
         $subjectsByGradeAndSemester = [];
-    
+
 
         // Loop through each enrollee record to fetch the subjects by grade level and semester
         foreach ($enrolleeDetails as $enrollee) {
@@ -772,7 +805,15 @@ class FormController extends Controller
 
         //code for the average here
         //no calculation yet
-        
+
+
+        // to save logs
+        $logs = new Log();
+        $logs->studentId = Auth::user()->studentId;
+        $logs->type = "request_shs_sf10";
+        $logs->activity = Auth::user()->studentId . " requested SF10 for " . $name;
+        $logs->save();
+
         $data = [
             'imagelogo' => public_path('img/logo/depedsymbol.png'),
             'imagelogo1' => public_path('img/logo/depedlogo.png'),

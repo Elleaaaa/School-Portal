@@ -243,6 +243,57 @@
                                 </li>
                             </ul>
                         </li>
+                        <li
+                            class="submenu {{ Request::routeIs('scholars.show', 'add-scholar.show') ? 'active' : '' }}">
+                            <a href="#"><i class="fas fa-graduation-cap"></i> <span> Scholars</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li class="{{ Request::routeIs('scholars.show') ? 'active' : '' }}">
+                                    <a href="{{ route('scholars.show') }}">View Scholars</a>
+                                </li>
+                                <li class="{{ Request::routeIs('add-scholar.show') ? 'active' : '' }}">
+                                    <a href="{{ route('add-scholar.show') }}">Add Scholars</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li
+                            class="submenu {{ in_array(Route::currentRouteName(), ['sectionlist.show', 'add-section.show']) ? 'active' : '' }}">
+                            <a href="#"><i class="fas fa-layer-group"></i><span>Sections</span><span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li class="{{ Route::currentRouteName() == 'sectionlist.show' ? 'active' : '' }}">
+                                    <a href="{{ route('sectionlist.show') }}">Section List</a>
+                                </li>
+                                <li class="{{ Route::currentRouteName() == 'add-section.show' ? 'active' : '' }}">
+                                    <a href="{{ route('add-section.show') }}">Section Add</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="{{ Route::currentRouteName() == 'overallAttendance.show' ? 'active' : '' }}">
+                            <a href="{{ route('overallAttendance.show') }}">
+                                <i class="fas fa-user-check"></i><span>Attendances</span>
+                            </a>
+                        </li>
+
+                        <li
+                            class="submenu {{ in_array(Route::currentRouteName(), ['timeTable.show', 'add-timetable.show']) ? 'active' : '' }}">
+                            <a href="#"><i class="fas fa-calendar-alt"></i><span>Time Table</span><span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li class="{{ Route::currentRouteName() == 'timeTable.show' ? 'active' : '' }}">
+                                    <a href="{{ route('timeTable.show') }}">Schedule List</a>
+                                </li>
+                                <li class="{{ Route::currentRouteName() == 'add-timetable.show' ? 'active' : '' }}">
+                                    <a href="{{ route('add-timetable.show') }}">Schedule Add</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="{{ Route::currentRouteName() == 'calendar.show' ? 'active' : '' }}">
+                            <a href="{{ route('calendar.show') }}">
+                                <i class="fas fa-calendar-alt"></i><span>Schedule</span>
+                            </a>
+                        </li>
                     @endif
 
                     {{-- ASSESSOR/EVALUATION SIDEBAR --}}
@@ -266,19 +317,20 @@
                                 </li>
                             </ul>
                         </li>
+
                         <li
-                        class="submenu {{ Request::routeIs('scholars.show', 'add-scholar.show') ? 'active' : '' }}">
-                        <a href="#"><i class="fas fa-graduation-cap"></i> <span> Scholars</span> <span
-                                class="menu-arrow"></span></a>
-                        <ul>
-                            <li class="{{ Request::routeIs('scholars.show') ? 'active' : '' }}">
-                                <a href="{{ route('scholars.show') }}">View Scholars</a>
-                            </li>
-                            <li class="{{ Request::routeIs('add-scholar.show') ? 'active' : '' }}">
-                                <a href="{{ route('add-scholar.show') }}">Add Scholars</a>
-                            </li>
-                        </ul>
-                    </li>
+                            class="submenu {{ Request::routeIs('scholars.show', 'add-scholar.show') ? 'active' : '' }}">
+                            <a href="#"><i class="fas fa-graduation-cap"></i> <span> Scholars</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li class="{{ Request::routeIs('scholars.show') ? 'active' : '' }}">
+                                    <a href="{{ route('scholars.show') }}">View Scholars</a>
+                                </li>
+                                <li class="{{ Request::routeIs('add-scholar.show') ? 'active' : '' }}">
+                                    <a href="{{ route('add-scholar.show') }}">Add Scholars</a>
+                                </li>
+                            </ul>
+                        </li>
                     @endif
 
 

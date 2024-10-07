@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Enrollee;
 use App\Models\Fee;
 use App\Models\Grade;
+use App\Models\Log;
 use App\Models\Notification;
 use App\Models\SHSGrade;
 use App\Models\Student;
@@ -123,6 +124,13 @@ class EnrolleesController extends Controller
                 $grade->finals = 'ongoing';
                 $grade->schoolYear = $schoolYear;
                 $grade->save();
+
+                // to save logs
+                $logs = new Log();
+                $logs->studentId = Auth::user()->studentId;
+                $logs->type = "enroll_student_shs";
+                $logs->activity = Auth::user()->studentId . " enrolled " . $fullName . " in " . $schoolYear;
+                $logs->save();
             }
         } else {
             foreach ($subjects as $subject) {
@@ -138,6 +146,13 @@ class EnrolleesController extends Controller
                 $grade->fourthQGrade = 'ongoing';
                 $grade->schoolYear = $schoolYear;
                 $grade->save();
+
+                // to save logs
+                $logs = new Log();
+                $logs->studentId = Auth::user()->studentId;
+                $logs->type = "enroll_student_jhs";
+                $logs->activity = Auth::user()->studentId . " enrolled " . $fullName . " in " . $schoolYear;
+                $logs->save();
             }
         }
 
@@ -265,6 +280,14 @@ class EnrolleesController extends Controller
 
         $gradeLevel = $enrollee->gradeLevel;
         $gradeLevelUp = isset($gradeMapping[$gradeLevel]) ? $gradeMapping[$gradeLevel] : "Invalid grade level";
+
+        // to save logs
+        $fullName = $student->firstName . ' ' . $student->middleName . ' ' . $student->lastName . ' ' . $student->suffixName;
+        $logs = new Log();
+        $logs->studentId = $studentId;
+        $logs->type = "enrollment";
+        $logs->activity = $fullName . " request to enroll in " . $gradeLevelUp;
+        $logs->save();
 
         return view('student.enrollment', compact('student', 'gradeLevelUp', 'enrollee'));
     }

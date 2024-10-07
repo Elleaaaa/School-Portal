@@ -19,13 +19,13 @@ class CashierController extends Controller
         $enrolledCount = Enrollee::where('status', "Enrolled")->count();
         $teachersCount = Teacher::where('status', "active")->count();
         $tuitionTotalPaidCount = Fee::where('feeType', 'Tuition Fee')
-                            ->where('status', 'Fully Paid')
-                            ->count();
+            ->where('status', 'Fully Paid')
+            ->count();
         $tuitionTotalNotPaidCount = Fee::where('feeType', 'Tuition Fee')
-                            ->where('status', 'Not Fully Paid')
-                            ->distinct('studentId')
-                            ->count();
-                            
+            ->where('status', 'Not Fully Paid')
+            ->distinct('studentId')
+            ->count();
+
         $cashierName = Cashier::where('cashierId', $cashierId)->first();
 
         return view('cashier.dashboard', compact('cashier', 'cashierName', 'enrolledCount', 'teachersCount', 'tuitionTotalPaidCount', 'tuitionTotalNotPaidCount'));
@@ -42,50 +42,50 @@ class CashierController extends Controller
     public function update(Request $request, string $cashierId)
     {
 
-         // Update Cashier profile
-         $cashier = Cashier::where('cashierId', $cashierId)->first();
-         $cashierPhoto = User::where('studentId', $cashierId)->first();
-         $cashierId = $cashier->cashierId;
-         if ($request->hasFile('displayPhoto')) {
+        // Update Cashier profile
+        $cashier = Cashier::where('cashierId', $cashierId)->first();
+        $cashierPhoto = User::where('studentId', $cashierId)->first();
+        $cashierId = $cashier->cashierId;
+        if ($request->hasFile('displayPhoto')) {
             $file = $request->file('displayPhoto');
-        
+
             // Generate a unique filename
             $filename = $file->hashName();
-        
+
             // Move the uploaded file to a safe location
             $file->storeAs('public/images/display-photo', $filename);
-        
+
             // Update the student's displayPhoto attribute with the filename
             $cashierPhoto->displayPhoto = $filename;
         }
-        
-         $cashier->firstName = $request->input('firstName');
-         $cashier->middleName = $request->input('middleName');
-         $cashier->lastName = $request->input('lastName');
-         $cashier->suffix = $request->input('suffixName');
-         $cashier->cashierId = $request->input('studentId');
-         $cashier->gender = $request->input('gender');
-         $cashier->birthday = $request->input('birthday');
-         $cashier->age = $request->input('age');
-         $cashier->mobileNumber = $request->input('mobileNumber');
-         $cashier->landlineNumber = $request->input('landlineNumber');
-         $cashier->religion = $request->input('religion');
-         $cashier->placeOfBirth = $request->input('birthplace');
-         $cashier->save();
-         $cashierPhoto->save();
- 
-         // Add New Address
-         $address = Address::where('studentId', $cashierId)->first();
-         $address->studentId = $request->input('studentId');
-         $address->region = $request->input('region');
-         $address->province = $request->input('province');
-         $address->city = $request->input('city');
-         $address->baranggay = $request->input('barangay');
-         $address->address = $request->input('address');
-         $address->save();
 
-         notify()->success('Record Updated Successfully!');
-         return redirect()->route('profile-cashier.show', ['cashierId' => $cashierId]);
+        $cashier->firstName = $request->input('firstName');
+        $cashier->middleName = $request->input('middleName');
+        $cashier->lastName = $request->input('lastName');
+        $cashier->suffix = $request->input('suffixName');
+        $cashier->cashierId = $request->input('studentId');
+        $cashier->gender = $request->input('gender');
+        $cashier->birthday = $request->input('birthday');
+        $cashier->age = $request->input('age');
+        $cashier->mobileNumber = $request->input('mobileNumber');
+        $cashier->landlineNumber = $request->input('landlineNumber');
+        $cashier->religion = $request->input('religion');
+        $cashier->placeOfBirth = $request->input('birthplace');
+        $cashier->save();
+        $cashierPhoto->save();
+
+        // Add New Address
+        $address = Address::where('studentId', $cashierId)->first();
+        $address->studentId = $request->input('studentId');
+        $address->region = $request->input('region');
+        $address->province = $request->input('province');
+        $address->city = $request->input('city');
+        $address->baranggay = $request->input('barangay');
+        $address->address = $request->input('address');
+        $address->save();
+
+        notify()->success('Record Updated Successfully!');
+        return redirect()->route('profile-cashier.show', ['cashierId' => $cashierId]);
     }
 
     /**

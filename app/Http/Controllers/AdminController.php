@@ -117,13 +117,17 @@ class AdminController extends Controller
 
     public function showEnrolledStudents()
     {
-        $enrollees = Enrollee::where('status', 'Enrolled')->get();
+        $enrollees = Enrollee::where('status', 'Enrolled')
+                            ->where('schoolYear', (now()->year . "-" . (now()->year + 1)))
+                            ->get();
         return view('admin.student-enrolled-list', compact('enrollees'));
     }
 
     public function showPendingStudents()
     {
-        $enrollees = Enrollee::where('status', 'Pending')->get();
+        $enrollees = Enrollee::where('status', 'Pending')
+                            ->where('schoolYear', (now()->year . "-" . (now()->year + 1)))
+                            ->get();
         return view('admin.student-pending-list', compact('enrollees'));
     }
 

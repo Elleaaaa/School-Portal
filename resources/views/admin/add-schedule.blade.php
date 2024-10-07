@@ -67,6 +67,14 @@
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
+                                                <label for="subject">Subject</label>
+                                                <select id="subject" name="subject" class="form-control">
+                                                    <option value=""></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-sm-6">
+                                            <div class="form-group">
                                                 <label for="teacher">Teacher Name</label>
                                                 <select name="teacher" id="teacher" class="form-control">
                                                     <option value="" selected disabled>Select Teacher</option>
@@ -76,15 +84,6 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-12 col-sm-6">
-                                            <div class="form-group">
-                                                <label for="subject">Subject</label>
-                                                <select id="subject" name="subject" class="form-control">
-                                                    <option value=""></option>
-                                                </select>
-                                            </div>
-                                        </div>
-
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label for="day">Day</label>

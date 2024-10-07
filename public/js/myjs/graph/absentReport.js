@@ -25,12 +25,12 @@ document.addEventListener('DOMContentLoaded', function() {
                             label: 'Absent Reasons',
                             data: totals,
                             backgroundColor: [
-                                'rgba(255, 99, 132, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(255, 206, 86, 0.2)',
-                                'rgba(75, 192, 192, 0.2)',
-                                'rgba(153, 102, 255, 0.2)',
-                                'rgba(255, 159, 64, 0.2)'
+                                '#FF6384',
+                                '#36A2EB',
+                                '#FFCE56',
+                                '#4BC0C0',
+                                '#9966FF',
+                                '#FF9F40'
                             ],
                             borderColor: [
                                 'rgba(255, 99, 132, 1)',
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 'rgba(153, 102, 255, 1)',
                                 'rgba(255, 159, 64, 1)'
                             ],
-                            borderWidth: 1
+                        
                         }]
                     },
                     options: {
@@ -64,6 +64,11 @@ document.addEventListener('DOMContentLoaded', function() {
                                 formatter: function(value, context) {
                                     return value;  // Display the value inside the pie slice
                                 }
+                            },
+                        },
+                        elements: {
+                            arc: {
+                                hoverBorderWidth: 15 // Increase this value to make the hovered part appear bigger
                             }
                         }
                     },

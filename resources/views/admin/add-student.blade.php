@@ -135,7 +135,7 @@
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-6">
                                             <div class="form-group">
-                                                <label>Student Id</label><span style="color: red;">*</span>
+                                                <label>LRN</label><span style="color: red;">*</span>
                                                 <input name="studentId" type="text" class="form-control"
                                                     value="{{ old('studentId') }}" required>
                                                 <x-input-error :messages="$errors->get('studentId')" class="mt-2 error-text" />
