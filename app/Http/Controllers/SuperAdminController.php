@@ -64,10 +64,12 @@ class SuperAdminController extends Controller
 
         $absentToday = Attendance::where('date', date('Y-m-d'))
                             ->where('status', 0)
+                            ->distinct('studentId') //to prevent duplicates
                             ->count();
    
         $presentToday = Attendance::where('date', date('Y-m-d'))
                                 ->where('status', 1)
+                                ->distinct('studentId') //to prevent duplicates
                                 ->count();
 
         return view('superadmin.dashboard', compact('supAdmin', 'enrolledCount', 'teachersCount', 'tuitionTotalPaidCount', 'tuitionTotalNotPaidCount', 'pendingCount', 'grade7', 'grade8', 'grade9', 'grade10', 'grade11', 'grade12', 'absentToday', 'presentToday'));

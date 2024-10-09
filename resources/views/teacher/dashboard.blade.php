@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
     <title>Teacher Dashboard</title>
-
+    <link rel="icon" href="{{ asset('images/icons/baylogo.png') }}">
     <link rel="stylesheet" href="{{ asset('plugins/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome/css/fontawesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome/css/all.min.css') }}">
@@ -34,6 +34,10 @@
                 white-space: nowrap;
                 /* Prevents wrapping */
             }
+        }
+
+        .db-info h3 {
+            text-align: right;
         }
     </style>
 
@@ -160,12 +164,11 @@
                     <div class="col-12 col-md-6 mb-4">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">Grade Levels</h5>
+                                <h5 class="card-title">Students by Grade Level</h5>
                                 <canvas id="gradeLevelChart" class="w-100" height="100"></canvas>
                             </div>
                         </div>
                     </div>
-                                                    
                 </div>
 
                 <div class="row">
@@ -207,8 +210,8 @@
     {{-- GRADE LEVEL CHART --}}
     <script src="{{ asset('js/myjs/graph/gradeLevelGraph.js') }}"></script>
 
-        
-        
+
+
 
 
 </body>

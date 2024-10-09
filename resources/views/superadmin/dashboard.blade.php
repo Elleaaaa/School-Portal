@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
     <title>Dashboard</title>
-
+    <link rel="icon" href="{{ asset('images/icons/baylogo.png') }}">
     <link rel="stylesheet" href="{{ asset('plugins/fullcalendar/fullcalendar.min.css') }}">
 
     <style>
@@ -68,7 +68,7 @@
                     </div>
                    
                     <div class="col-xl-3 col-sm-6 col-12 d-flex">
-                        <div class="card bg-two w-100">
+                        <div class="card bg-one w-100">
                             <div class="card-body">
                                 <div class="db-widgets d-flex justify-content-between align-items-center">
                                     <div class="db-icon">
@@ -83,7 +83,7 @@
                         </div>
                     </div>
                     <div class="col-xl-3 col-sm-6 col-12 d-flex">
-                        <div class="card bg-three w-100">
+                        <div class="card bg-two w-100">
                             <div class="card-body">
                                 <div class="db-widgets d-flex justify-content-between align-items-center">
                                     <div class="db-icon">
@@ -98,7 +98,7 @@
                         </div>
                     </div>
                     <div class="col-xl-3 col-sm-6 col-12 d-flex">
-                        <div class="card bg-four w-100">
+                        <div class="card bg-three w-100">
                             <div class="card-body">
                                 <div class="db-widgets d-flex justify-content-between align-items-center">
                                     <div class="db-icon">
@@ -113,7 +113,7 @@
                         </div>
                     </div>
                     <div class="col-xl-3 col-sm-6 col-12 d-flex">
-                        <div class="card bg-one w-100">
+                        <div class="card bg-six w-100">
                             <div class="card-body">
                                 <div class="db-widgets d-flex justify-content-between align-items-center">
                                     <div class="db-icon">
@@ -128,7 +128,7 @@
                         </div>
                     </div>
                     <div class="col-xl-3 col-sm-6 col-12 d-flex">
-                        <div class="card bg-one w-100">
+                        <div class="card bg-six w-100">
                             <div class="card-body">
                                 <div class="db-widgets d-flex justify-content-between align-items-center">
                                     <div class="db-icon">
@@ -143,7 +143,7 @@
                         </div>
                     </div>
                     <div class="col-xl-3 col-sm-6 col-12 d-flex">
-                        <div class="card bg-one w-100">
+                        <div class="card bg-six w-100">
                             <div class="card-body">
                                 <div class="db-widgets d-flex justify-content-between align-items-center">
                                     <div class="db-icon">
@@ -158,7 +158,7 @@
                         </div>
                     </div>
                     <div class="col-xl-3 col-sm-6 col-12 d-flex">
-                        <div class="card bg-one w-100">
+                        <div class="card bg-six w-100">
                             <div class="card-body">
                                 <div class="db-widgets d-flex justify-content-between align-items-center">
                                     <div class="db-icon">
@@ -173,7 +173,7 @@
                         </div>
                     </div>
                     <div class="col-xl-3 col-sm-6 col-12 d-flex">
-                        <div class="card bg-one w-100">
+                        <div class="card bg-six w-100">
                             <div class="card-body">
                                 <div class="db-widgets d-flex justify-content-between align-items-center">
                                     <div class="db-icon">
@@ -188,7 +188,7 @@
                         </div>
                     </div>
                     <div class="col-xl-3 col-sm-6 col-12 d-flex">
-                        <div class="card bg-one w-100">
+                        <div class="card bg-six w-100">
                             <div class="card-body">
                                 <div class="db-widgets d-flex justify-content-between align-items-center">
                                     <div class="db-icon">
@@ -203,7 +203,7 @@
                         </div>
                     </div>
                     <div class="col-xl-3 col-sm-6 col-12 d-flex">
-                        <div class="card bg-one w-100">
+                        <div class="card bg-six w-100">
                             <div class="card-body">
                                 <div class="db-widgets d-flex justify-content-between align-items-center">
                                     <div class="db-icon">

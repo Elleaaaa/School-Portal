@@ -9,6 +9,7 @@ use App\Models\Subject;
 use App\Models\Enrollee;
 use App\Models\Attendance;
 use App\Models\Grade;
+use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -24,8 +25,20 @@ class AttendanceController extends Controller
     public function index()
     {
         $id = Auth::user()->studentId;
+
+         // to filter ascenting grade 7-10
+         $grades = [
+            "Grade 7",
+            "Grade 8",
+            "Grade 9",
+            "Grade 10",
+            "Grade 11",
+            "Grade 12"
+        ];
+
         $handleSections = Subject::where('teacherId', $id)
             ->select('gradeLevel', 'section')
+            ->orderByRaw("FIELD(gradeLevel, '" . implode("', '", $grades) . "') ASC") // for ascending order of gradelevel
             ->distinct()
             ->get();
         return view('teacher.attendance-by-section', compact('handleSections'));
@@ -101,7 +114,9 @@ class AttendanceController extends Controller
 
         $myStudents = $myStudents->unique('studentId'); // Ensure unique students
         $myStudentsIds = $myStudents->pluck('studentId')->toArray();
-        $attendanceRecords = Attendance::whereIn('studentId', $myStudentsIds)->get();
+        $attendanceRecords = Attendance::whereIn('studentId', $myStudentsIds)
+                                        ->where('teacherId', $id)
+                                        ->get();
 
         $studentsWithAttendance = $myStudents->map(function ($student) use ($attendanceRecords) {
             $student->attendance = $attendanceRecords->where('studentId', $student->studentId);
@@ -153,9 +168,12 @@ class AttendanceController extends Controller
         $date = now()->toDateString();
         $syNow = Carbon::now()->year . '-' . (Carbon::now()->year + 1);
 
+        $teacherId = Auth::user()->studentId;
+
         foreach ($request->attendance as $studentId => $status) {
             // Check if an attendance record already exists for this student on the current date
-            $attendance = Attendance::where('studentId', $studentId)
+            $attendance = Attendance::where('teacherId', $teacherId)
+                ->where('studentId', $studentId)
                 ->where('date', $date)
                 ->where('schoolYear', $syNow)
                 ->first();
@@ -172,6 +190,7 @@ class AttendanceController extends Controller
             } else {
                 // Create a new record
                 Attendance::create([
+                    'teacherId' => $teacherId,
                     'studentId' => $studentId,
                     'date' => $date,
                     'schoolYear' => $syNow,
@@ -330,7 +349,7 @@ class AttendanceController extends Controller
             ->join('enrollees', 'attendances.studentId', '=', 'enrollees.studentId')
             ->groupBy('enrollees.section')
             ->where('enrollees.schoolyear', $syNow)
-            ->selectRaw('enrollees.section, count(*) as total_absent')
+            ->select('enrollees.section', DB::raw('count(distinct attendances.studentId) as total_absent'))
             ->pluck('total_absent', 'enrollees.section');
 
         $presentsBySection = Attendance::where('date', date('Y-m-d'))
@@ -339,7 +358,7 @@ class AttendanceController extends Controller
             ->join('enrollees', 'attendances.studentId', '=', 'enrollees.studentId')
             ->groupBy('enrollees.section')
             ->where('enrollees.schoolyear', $syNow)
-            ->selectRaw('enrollees.section, count(*) as total_present')
+            ->select('enrollees.section', DB::raw('count(distinct attendances.studentId) as total_present'))
             ->pluck('total_present', 'enrollees.section');
 
         return view('superadmin.overallAttendance', compact('allSections', 'gradeLevels', 'absenteesBySection', 'presentsBySection'));

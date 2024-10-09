@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <link rel="icon" href="{{ asset('images/icons/baylogo.png') }}">
     <title>Edit Students</title>
 </head>
 
@@ -75,15 +76,13 @@
                                             <div class="form-group">
                                                 <label>Gender</label>
                                                 <select name="gender" class="form-control">
-                                                    <option readonly>Select Gender</option>
-                                                    <option value="Female"
-                                                        {{ old('gender') == 'Female' ? 'selected' : '' }}>Female
-                                                    </option>
-                                                    <option value="Male"
-                                                        {{ old('gender') == 'Male' ? 'selected' : '' }}>Male</option>
-                                                    <option value="Others"
-                                                        {{ old('gender') == 'Others' ? 'selected' : '' }}>Others
-                                                    </option>
+                                                    <option value="" disabled {{ old('gender', $students->gender) ? '' : 'selected' }}>Select Gender</option>
+                                                    @foreach($genderOptions as $gender)
+                                                        <option value="{{ $gender }}"
+                                                            {{ (old('gender', $students->gender) == $gender) ? 'selected' : '' }}>
+                                                            {{ $gender }}
+                                                        </option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>

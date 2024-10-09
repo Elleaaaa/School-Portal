@@ -199,7 +199,7 @@ class AdminController extends Controller
          $address->address = $request->input('address');
          $address->save();
 
-         notify()->success('Student Record Updated Successfully!');
+         notify()->success('Profile Updated Successfully!');
          return redirect()->route('profile-admin.show', ['adminId' => $adminId]);
     }
 

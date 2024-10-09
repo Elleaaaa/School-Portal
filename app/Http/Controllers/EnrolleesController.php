@@ -131,6 +131,9 @@ class EnrolleesController extends Controller
                 $logs->type = "enroll_student_shs";
                 $logs->activity = Auth::user()->studentId . " enrolled " . $fullName . " in " . $schoolYear;
                 $logs->save();
+
+                notify()->success('Student Enrolled Successfully!');
+                return redirect()->route('enroll-student-shs.show');
             }
         } else {
             foreach ($subjects as $subject) {
@@ -154,10 +157,9 @@ class EnrolleesController extends Controller
                 $logs->activity = Auth::user()->studentId . " enrolled " . $fullName . " in " . $schoolYear;
                 $logs->save();
             }
+            notify()->success('Student Enrolled Successfully!');
+            return redirect()->route('enroll-student.show');
         }
-
-        notify()->success('Student Enrolled Successfully!');
-        return redirect()->route('enroll-student.show');
     }
 
     public function checkPaymentStatus(Request $request)

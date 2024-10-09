@@ -258,8 +258,10 @@ class StudentController extends Controller
         $guardians = Guardian::where('studentId', $studentId)->first();
         $lastSchool = LastSchool::where('studentId', $studentId)->first();
         $studentPhoto = User::where('studentID', $studentId)->first();
-        // dd($address);
-        return view('admin.edit-student', compact('students', 'address', 'guardians', 'lastSchool', 'studentPhoto'));
+
+        $genderOptions = ['Female', 'Male', 'Others'];
+      
+        return view('admin.edit-student', compact('students', 'address', 'guardians', 'lastSchool', 'studentPhoto', 'genderOptions'));
     }
 
     public function showInvoice()

@@ -4,8 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <title>Smartious - Edit Students</title>
-    <link rel="shortcut icon" href="assets/img/favicon.png">
+    <title>Profile</title>
+    <link rel="icon" href="{{ asset('images/icons/baylogo.png') }}">
 </head>
 
 <body>

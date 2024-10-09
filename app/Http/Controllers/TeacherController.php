@@ -194,11 +194,13 @@ class TeacherController extends Controller
         $myStudentsIds = $myStudents->pluck('studentId')->toArray();
 
         $absentToday = Attendance::whereIn('studentId', $myStudentsIds)
+            ->where('teacherId', $teacherId)
             ->where('date', date('Y-m-d'))
             ->where('status', 0) // 0 means absent
             ->count();
 
         $presentToday = Attendance::whereIn('studentId', $myStudentsIds)
+            ->where('teacherId', $teacherId)
             ->where('date', date('Y-m-d'))
             ->where('status', 1) // 1 means present
             ->count();
@@ -576,19 +578,19 @@ class TeacherController extends Controller
         $address->address = $request->input('address');
         $address->save();
 
-         // use for activity logs
-         $addressFields = [
+        // use for activity logs
+        $addressFields = [
             'region',
             'province',
-            'city', 
+            'city',
             'baranggay',
             'address',
         ];
 
         $addressChanges = MessageLogService::detectChanges($originalAddress, $address, $addressFields);
 
-         // Log the changes (if any)
-         if (!empty($addressChanges)) {
+        // Log the changes (if any)
+        if (!empty($addressChanges)) {
             $activityMessage = "Updated the teacher details of " . $teacher->studentId . ": " . implode(", ", $addressChanges);
 
             $logs = new Log();

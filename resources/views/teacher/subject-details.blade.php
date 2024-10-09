@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Educational Portal</title>
+    <link rel="icon" href="{{ asset('images/icons/baylogo.png') }}">
     <style>
         .box {
             padding: 20px;

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
     <title>My Profile</title>
     <link rel="shortcut icon" href="assets/img/favicon.png">
+    <link rel="icon" href="{{ asset('images/icons/baylogo.png') }}">
     <style>
         #sidebar {
             display: none; /* Initially hide the sidebar */

@@ -5,7 +5,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
       <title>All Students</title>
-      <link rel="shortcut icon" href="assets/img/favicon.png">
+      <link rel="icon" href="{{ asset('images/icons/baylogo.png') }}">
+
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;1,400&amp;display=swap">
       <link rel="stylesheet" href="{{ asset('plugins/bootstrap/css/bootstrap.min.css') }}">
       <link rel="stylesheet" href="{{ asset('plugins/fontawesome/css/fontawesome.min.css') }}">
@@ -40,7 +41,7 @@
                                     <tr>
                                        <th>Student ID</th>
                                        <th>Name</th>
-                                       <th>Age</th>
+                                       <th>Gender</th>
                                        <th>DOB</th>
                                        <th>Religion</th>
                                        <th>Mobile Number</th>
@@ -50,38 +51,42 @@
                                  <tbody>
                                     @foreach ($students as $student)
                                     <tr>
-                                       <td>{{$student->studentId}}</td>
-                                       <td>
-                                          @foreach ($images as $image)
-                                          @if ($image->studentId == $student->studentId)
-                                          <h2 class="table-avatar">
-                                              <a href="{{ route('edit-student.show', ['id' => $student->id]) }}"
-                                                  class="avatar avatar-sm mr-2"><img
-                                                      class="avatar-img rounded-circle"
-                                                      src="{{ asset('storage/images/display-photo/' . $image->displayPhoto) }}"
-                                                      alt="User Image"></a>
-                                              <a href="{{ route('edit-student.show', ['id' => $student->id]) }}">{{$student->firstName . " " . $student->lastName}}</a>
-                                          </h2>
-                                          @endif
-                                          @endforeach
-                                      </td>
-                                       <td>{{ $student->age }}</td>
-                                       <td>{{ $student->birthday }}</td>
-                                       <td>{{ $student->religion }}</td>
-                                       <td>{{ $student->mobileNumber }}</td>
-                                       <td class="text-right">
-                                          <div class="actions">
-                                             <a href="{{ route('edit-student.show', ['id' => $student->id]) }}" class="btn btn-sm bg-success-light mr-2">
-                                             <i class="fas fa-pen"></i>
-                                             </a>
-                                             {{-- <a href="#" class="btn btn-sm bg-danger-light">
-                                             <i class="fas fa-trash"></i> --}}
-                                             </a>
-                                          </div>
-                                       </td>
+                                        <td>{{$student->studentId}}</td>
+                                        <td>
+                                            @foreach ($images as $image)
+                                                @if ($image->studentId == $student->studentId)
+                                                <h2 class="table-avatar">
+                                                    <a href="{{ route('edit-student.show', ['id' => $student->id]) }}"
+                                                        class="avatar avatar-sm mr-2">
+                                                        <img class="avatar-img rounded-circle"
+                                                            src="{{ asset('storage/images/display-photo/' . $image->displayPhoto) }}"
+                                                            alt="User Image">
+                                                    </a>
+                                                    <a href="{{ route('edit-student.show', ['id' => $student->id]) }}">
+                                                        {{$student->firstName . " " . $student->lastName}}
+                                                    </a>
+                                                </h2>
+                                                @break {{-- Break out of the loop after the first matching image --}}
+                                                @endif
+                                            @endforeach
+                                        </td>
+                                        <td>{{ $student->gender }}</td>
+                                        <td>{{ $student->birthday }}</td>
+                                        <td>{{ $student->religion }}</td>
+                                        <td>{{ $student->mobileNumber }}</td>
+                                        <td class="text-right">
+                                            <div class="actions">
+                                                <a href="{{ route('edit-student.show', ['id' => $student->id]) }}" class="btn btn-sm bg-success-light mr-2">
+                                                    <i class="fas fa-pen"></i>
+                                                </a>
+                                                {{-- <a href="#" class="btn btn-sm bg-danger-light">
+                                                <i class="fas fa-trash"></i> --}}
+                                                </a>
+                                            </div>
+                                        </td>
                                     </tr>
                                     @endforeach
-                                 </tbody>
+                                </tbody>
                               </table>
                            </div>
                         </div>
