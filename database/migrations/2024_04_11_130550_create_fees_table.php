@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('middleName', 255)->nullable();
             $table->string('lastName', 255)->nullable();
             $table->string('suffixName', 255)->nullable();
+            $table->string('schoolYear', 255)->nullable();
             $table->string('feeId', 255)->nullable();
             $table->string('feeReceiptId', 255)->nullable();
             $table->string('feeType', 255)->nullable();

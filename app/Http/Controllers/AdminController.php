@@ -48,6 +48,7 @@ class AdminController extends Controller
         $nextYear = now()->addYear()->year;
 
         $admin = User::find($studentId);
+        // get the admin name
         $enrolledCount = Enrollee::where('status', "Enrolled")->count();
         $teachersCount = Teacher::where('status', "active")->count();
         $pendingCount = Enrollee::where('status', "Pending")->count();

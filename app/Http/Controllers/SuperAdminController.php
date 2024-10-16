@@ -19,6 +19,7 @@ class SuperAdminController extends Controller
     public function showDashboard(string $supAdminId)
     {
         $supAdmin = User::where('studentId', $supAdminId)->first();
+        //get the name of the super admin
         $enrolledCount = Enrollee::where('status', "Enrolled")
                                 ->where('schoolYear', now()->year . "-" . (now()->year + 1))
                                 ->count();

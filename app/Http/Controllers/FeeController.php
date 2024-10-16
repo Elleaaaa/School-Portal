@@ -319,6 +319,7 @@ class FeeController extends Controller
             $fee->middleName = $request->input('middleName');
             $fee->lastName = $request->input('lastName');
             $fee->suffixName = $request->input('suffixName');
+            $fee->schoolYear = date('Y') . '-' . (date('Y') + 1);
             $fee->feeType = $request->input('feeType');
             $fee->amount = $request->input('amount');
             $fee->amountPaid = $request->input('amountPaid');

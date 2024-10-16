@@ -38,7 +38,7 @@
                                         </div> --}}
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
-                                                <label for="studentId">Student ID</label>
+                                                <label for="studentId">LRN</label>
                                                 <input type="text" class="form-control" name="studentId" id="studentId">
                                             </div>
                                         </div>

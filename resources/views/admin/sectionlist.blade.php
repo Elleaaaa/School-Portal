@@ -64,8 +64,8 @@
                                              <a href="{{ route('edit-section.show', ['id' => $section->id]) }}" class="btn btn-sm bg-success-light mr-2">
                                              <i class="fas fa-pen"></i>
                                              </a>
-                                             <a href="#" class="btn btn-sm bg-danger-light">
-                                             <i class="fas fa-trash"></i>
+                                             {{-- <a href="#" class="btn btn-sm bg-danger-light">
+                                             <i class="fas fa-trash"></i> --}}
                                              </a>
                                           </div>
                                        </td>

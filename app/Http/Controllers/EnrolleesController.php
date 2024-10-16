@@ -165,14 +165,43 @@ class EnrolleesController extends Controller
     public function checkPaymentStatus(Request $request)
     {
         $studentId = $request->input('studentId');
-        $hasPaid = Fee::where('studentId', $studentId)->exists();
-
-        if (!$hasPaid) {
-            return response()->json(['message' => 'Student Not Yet Paid!']);
+    
+        // Check if the student has any payment records for the current school year
+        $hasPayments = Fee::where('studentId', $studentId)
+            ->where('schoolYear', date('Y') . '-' . (date('Y') + 1))
+            ->exists();
+    
+        if (!$hasPayments) {
+            return response()->json(['success' => false, 'message' => 'No Payment Records Found!']);
         }
-
-        return response()->noContent();
+    
+        // Check for fully paid status
+        $fullyPaid = Fee::where('studentId', $studentId)
+            ->where('status', 'Fully Paid')
+            ->where('schoolYear', date('Y') . '-' . (date('Y') + 1))
+            ->latest()
+            ->first();
+    
+        // Check for not fully paid status
+        $notFullyPaid = Fee::where('studentId', $studentId)
+            ->where('status', 'Not Fully Paid')
+            ->where('schoolYear', date('Y') . '-' . (date('Y') + 1))
+            ->latest()
+            ->first();
+    
+        // Determine the payment status
+        if ($fullyPaid) {
+            return response()->json(['success' => true, 'status' => 'fully_paid', 'message' => 'Payment status: Fully Paid.']);
+        }
+    
+        if ($notFullyPaid) {
+            return response()->json(['success' => true, 'status' => 'not_fully_paid', 'message' => 'Payment status: Not Fully Paid.']);
+        }
+    
+        return response()->json(['success' => true, 'status' => 'unknown', 'message' => 'No specific payment status found.']);
     }
+    
+
 
     public function selfEnroll(Request $request) // backend for self enroll of the student
     {

@@ -7,6 +7,8 @@
     <link rel="icon" href="{{ asset('images/icons/baylogo.png') }}">
     <title>Enroll Student</title>
 
+    <link rel="stylesheet" href="{{ asset('plugins/sweetalert2/sweetalert2.min.css') }}">
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
     
     <style>
@@ -181,8 +183,10 @@
     {{-- Auto populate student details when student ID is entered --}}
     <script src="{{ asset('js/myjs/populateStudentDetails.js') }}"></script>
 
+    <script src="{{ asset('plugins/sweetalert2/sweetalert2.all.min.js') }}"></script>
+
     {{-- CHECK IF STUDENT HAS PAID ALREADY --}}
-    <script src="{{ asset('js/myjs/checkpaymentstatus.js') }}"></script>
+    <script type="module" src="{{ asset('js/myjs/checkpaymentstatus.js') }}"></script>
 </body>
 
 </html>

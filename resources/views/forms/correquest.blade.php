@@ -75,11 +75,17 @@
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-6">
                                             <div class="form-group">
-                                                <label>Grade</label>
-                                                <input name="grade" type="text" class="form-control"
-                                                    value="{{ old('grade') }}">
+                                                <label for="grade">Grade</label>
+                                                <select name="grade" class="form-control" id="grade">
+                                                    <option value="">Select a Grade</option>
+                                                    @for ($i = 7; $i <= 12; $i++)
+                                                        <option value="Grade {{ $i }}" {{ old('grade') == "Grade $i" ? 'selected' : '' }}>
+                                                            Grade {{ $i }}
+                                                        </option>
+                                                    @endfor
+                                                </select>
                                             </div>
-                                        </div>
+                                        </div>                                        
                                         <div class="col-12 col-sm-6 col-md-6">
                                             <div class="form-group">
                                                 <label>Strand</label>

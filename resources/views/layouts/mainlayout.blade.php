@@ -217,6 +217,12 @@
                                 <i class="fas fa-school"></i><span>Dashboard</span>
                             </a>
                         </li>
+
+                        <li class="{{ Request::routeIs('paymenthistoryadmin.show') ? 'active' : '' }}">
+                            <a href="{{ route('paymenthistoryadmin.show') }}">
+                                <i class="fas fa-cash-register"></i><span> Payments Collection</span>
+                            </a>
+                        </li>
                         <li
                             class="submenu {{ Request::routeIs('enrolled-student-list.show', 'pending-student-list.show') ? 'active' : '' }}">
                             <a href="#"><i class="fas fa-user-graduate"></i> <span> Enrollment</span> <span
@@ -243,7 +249,7 @@
                                 </li>
                             </ul>
                         </li>
-                        <li
+                        {{-- <li
                             class="submenu {{ Request::routeIs('scholars.show', 'add-scholar.show') ? 'active' : '' }}">
                             <a href="#"><i class="fas fa-graduation-cap"></i> <span> Scholars</span> <span
                                     class="menu-arrow"></span></a>
@@ -255,7 +261,7 @@
                                     <a href="{{ route('add-scholar.show') }}">Add Scholars</a>
                                 </li>
                             </ul>
-                        </li>
+                        </li> --}}
                         <li
                             class="submenu {{ in_array(Route::currentRouteName(), ['sectionlist.show', 'add-section.show']) ? 'active' : '' }}">
                             <a href="#"><i class="fas fa-layer-group"></i><span>Sections</span><span
@@ -423,7 +429,7 @@
                             </ul>
                         </li>
 
-                        <li
+                        {{-- <li
                             class="submenu {{ in_array(Route::currentRouteName(), ['subjectlist.show', 'addsubject.show']) ? 'active' : '' }}">
                             <a href="#"><i class="fas fa-book"></i><span>Subjects</span><span
                                     class="menu-arrow"></span></a>
@@ -435,9 +441,9 @@
                                     <a href="{{ route('addsubject.show') }}">Subject Add</a>
                                 </li>
                             </ul>
-                        </li>
+                        </li> --}}
 
-                        <li
+                        {{-- <li
                             class="submenu {{ in_array(Route::currentRouteName(), ['sectionlist.show', 'add-section.show']) ? 'active' : '' }}">
                             <a href="#"><i class="fas fa-layer-group"></i><span>Sections</span><span
                                     class="menu-arrow"></span></a>
@@ -449,7 +455,7 @@
                                     <a href="{{ route('add-section.show') }}">Section Add</a>
                                 </li>
                             </ul>
-                        </li>
+                        </li> --}}
 
                         <li
                             class="submenu {{ in_array(Route::currentRouteName(), ['correquest.show', 'goodmoralrequest.show']) ? 'active' : '' }}">
@@ -507,7 +513,7 @@
                             </a>
                         </li>
 
-                        <li
+                        {{-- <li
                             class="submenu {{ in_array(Route::currentRouteName(), ['timeTable.show', 'add-timetable.show']) ? 'active' : '' }}">
                             <a href="#"><i class="fas fa-calendar-alt"></i><span>Time Table</span><span
                                     class="menu-arrow"></span></a>
@@ -519,7 +525,7 @@
                                     <a href="{{ route('add-timetable.show') }}">Schedule Add</a>
                                 </li>
                             </ul>
-                        </li>
+                        </li> --}}
                     @endif
 
 

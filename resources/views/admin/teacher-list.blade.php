@@ -69,12 +69,12 @@
                                                     @foreach ($images as $image)
                                                         @if ($image->studentId == $teacher->teacherId)
                                                             <h2 class="table-avatar">
-                                                                <a href="teacher-details.html" class="avatar avatar-sm mr-2">
+                                                                <a href="{{ route('edit-teacher.show', ['id' => $teacher->id]) }}"" class="avatar avatar-sm mr-2">
                                                                     <img class="avatar-img rounded-circle" 
                                                                          src="{{ asset('storage/images/display-photo/' . $image->displayPhoto) }}" 
                                                                          alt="User Image">
                                                                 </a>
-                                                                <a href="teacher-details.html">
+                                                                <a href="{{ route('edit-teacher.show', ['id' => $teacher->id]) }}">
                                                                     {{$teacher->firstName . ' ' . $teacher->lastName}}
                                                                 </a>
                                                             </h2>

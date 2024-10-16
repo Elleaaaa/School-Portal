@@ -15,6 +15,7 @@ class Fee extends Model
         'lastName',
         'middleName',
         'suffixName',
+        'schoolYear',
         'feeId',
         'feeType',
         'amount',
