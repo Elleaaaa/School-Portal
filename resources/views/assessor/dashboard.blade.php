@@ -35,7 +35,7 @@
                     </div>
                 </div>
 
-
+{{-- 
                 <div class="row">
                     <div class="col-xl-3 col-sm-6 col-12 d-flex">
                         <div class="card bg-six w-100">
@@ -82,42 +82,20 @@
                             </div>
                         </div>
                     </div>
-                </div>
-
-                    <div class="row">
-                        <div class="col-12 col-md-12 col-sm-6 mb-6">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Payments</h5>
-                                    <canvas id="paymentsChart" class="w-100" height="200"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-12 col-sm-6 mb-6">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Attendance</h5>
-                                    <canvas id="attendanceChart" class="w-100" height="200"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                </div> --}}
 
                 <div class="row">
-                    <div class="col-12 col-lg-12 col-xl-12">
-                        <div class="col-12 col-lg-12 col-xl-12 d-flex">
-                            <div class="card flex-fill">
-                                <div class="card-header">
-                                    <div class="row align-items-center">
-                                        <div class="col-12">
-                                            <h5 class="card-title">Calendar</h5>
-                                        </div>
+                    <div class="col-12 col-lg-12 col-xl-12 d-flex">
+                        <div class="card flex-fill">
+                            <div class="card-header">
+                                <div class="row align-items-center">
+                                    <div class="col-12">
+                                        <h5 class="card-title">Calendar</h5>
                                     </div>
                                 </div>
-                                <div class="card-body">
-                                    <div id="calendar-doctor" class="calendar-container"></div>
-
-                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div id="calendar" class="calendar-container"></div>
                             </div>
                         </div>
                     </div>
@@ -131,9 +109,9 @@
 
     </div>
 
-    <script src="{{ asset('plugins/simple-calendar/jquery.simple-calendar.js') }}"></script>
-    <script src="{{ asset('js/calander.js') }}"></script>
-    <script src="{{ asset('js/circle-progress.min.js') }}"></script>
+    <script src="{{ asset('js/moment.min.js') }}"></script>
+    <script src="{{ asset('plugins/fullcalendar/index.global.min.js') }}"></script>
+    <script src="{{ asset('js/myjs/eventsviewonly.fullcalender.js') }}"></script>
 
     
     {{-- JS CHART --}}

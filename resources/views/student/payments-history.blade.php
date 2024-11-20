@@ -41,7 +41,7 @@
                                     <table id="paymentHistory" class="display nowrap" style="width:100%" >
                                         <thead>
                                             <tr>
-                                                <th>Payment ID</th>
+                                                {{-- <th>Payment ID</th> --}}
                                                 <th>Fees Name</th>
                                                 <th>Amount</th>
                                                 <th>Discounted Price</th>
@@ -57,7 +57,7 @@
                                         <tbody>
                                             @foreach ($feeHistory as $fHistory)
                                             <tr data-href="{{ route('invoice.show') }}">
-                                                <td>{{$fHistory->feeId}}</td>
+                                                {{-- <td>{{$fHistory->feeId}}</td> --}}
                                                 <td>{{$fHistory->feeType}}</td>
                                                 <td>{{$fHistory->amount}}</td>
                                                 <td>{{$fHistory->discountedPrice}}</td>

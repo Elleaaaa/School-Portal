@@ -108,6 +108,7 @@ class AssessorController extends Controller
         return view('assessor.editDiscount', compact('discount'));
     }
 
+
     public function updateDiscount(Request $request, string $id)
     {
         $discount = Discount::find($id);
@@ -183,6 +184,27 @@ class AssessorController extends Controller
         return view('assessor.addScholar');
     }
 
+    public function showUpdateScholar(string $id)
+    {
+        $scholar = Scholar::find($id);
+        return view('assessor.editScholar', compact('scholar'));
+    }
+
+    public function updateScholar(Request $request, string $id)
+    {
+        $scholar = Scholar::find($id);
+
+        $scholar->studentId = $request->input('studentId');
+        $scholar->name = $request->input('name');
+        $scholar->scholarType = $request->input('scholarType');
+        $scholar->discount = $request->input('scholarDiscount');
+
+        $scholar->save();
+
+        notify()->success('Scholar Updated Successfully!');
+        return redirect()->back();
+    }
+
     public function fetchDiscountType() {
         $discountType = Discount::where('status', 'active')->pluck('discountType');
         
@@ -205,6 +227,17 @@ class AssessorController extends Controller
         } else {
             return response()->json(['error' => 'No discount found for the selected scholar type'], 404);
         }
+    }
+
+    public function setInactive(string $id)
+    {
+        $scholar = Scholar::find($id);
+
+        $scholar->status = 'inactive';
+        $scholar->save();
+
+        notify()->success('Scholar set as inactive!');
+        return redirect()->back();
     }
     
     

@@ -114,6 +114,7 @@
                                     <label class="uploadButton" for="file">
                                         <i class="fas fa-upload"></i>
                                     </label>
+                                    Upload Files
                                 </div>
                             </form>
                             <ul class="list-group">
@@ -122,7 +123,7 @@
                                 @endforeach
                             </ul>
                         </div>
-                        <div class="box">
+                        {{-- <div class="box">
                             <form method="POST" action="" enctype="multipart/form-data">
                                 <div class="file-input-wrapper">
                                     <input id="file" name="file" type="file" class="custom-file-input">
@@ -136,7 +137,7 @@
                                 <li class="list-group-item">Exam 1</li>
                                 <li class="list-group-item">Exam 2</li>
                             </ul>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>

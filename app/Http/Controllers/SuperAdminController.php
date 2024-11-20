@@ -6,6 +6,7 @@ use App\Models\Address;
 use App\Models\Attendance;
 use App\Models\Enrollee;
 use App\Models\Fee;
+use App\Models\Log;
 use App\Models\SuperAdmin;
 use App\Models\Teacher;
 use App\Models\User;
@@ -134,6 +135,12 @@ class SuperAdminController extends Controller
 
          notify()->success('Record Updated Successfully!');
          return redirect()->route('profile-superadmin.show', ['supAdminId' => $superAdminId]);
+    }
+
+    public function showActivityLogs()
+    {
+        $logs = Log::all();
+        return view('superadmin.activityLog', compact('logs'));
     }
 
     /**

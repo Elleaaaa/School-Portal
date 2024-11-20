@@ -249,7 +249,7 @@
                                 </li>
                             </ul>
                         </li>
-                        {{-- <li
+                        <li
                             class="submenu {{ Request::routeIs('scholars.show', 'add-scholar.show') ? 'active' : '' }}">
                             <a href="#"><i class="fas fa-graduation-cap"></i> <span> Scholars</span> <span
                                     class="menu-arrow"></span></a>
@@ -261,7 +261,7 @@
                                     <a href="{{ route('add-scholar.show') }}">Add Scholars</a>
                                 </li>
                             </ul>
-                        </li> --}}
+                        </li>
                         <li
                             class="submenu {{ in_array(Route::currentRouteName(), ['sectionlist.show', 'add-section.show']) ? 'active' : '' }}">
                             <a href="#"><i class="fas fa-layer-group"></i><span>Sections</span><span
@@ -298,6 +298,12 @@
                         <li class="{{ Route::currentRouteName() == 'calendar.show' ? 'active' : '' }}">
                             <a href="{{ route('calendar.show') }}">
                                 <i class="fas fa-calendar-alt"></i><span>Schedule</span>
+                            </a>
+                        </li>
+
+                        <li class="{{ Route::currentRouteName() == 'logs.show' ? 'active' : '' }}">
+                            <a href="{{ route('logs.show') }}">
+                                <i class="fas fa-list"></i><span>Logs</span>
                             </a>
                         </li>
                     @endif
@@ -423,9 +429,9 @@
                                 <li class="{{ Route::currentRouteName() == 'teacherlist.show' ? 'active' : '' }}">
                                     <a href="{{ route('teacherlist.show') }}">Teacher List</a>
                                 </li>
-                                <li class="{{ Route::currentRouteName() == 'addteacher.show' ? 'active' : '' }}">
+                                {{-- <li class="{{ Route::currentRouteName() == 'addteacher.show' ? 'active' : '' }}">
                                     <a href="{{ route('addteacher.show') }}">Teacher Add</a>
-                                </li>
+                                </li> --}}
                             </ul>
                         </li>
 
@@ -672,7 +678,7 @@
         // Initialize dark mode options (customize if needed)
         const options = {
             bottom: '32px', // Position of the darkmode switch
-            right: '32px', // Distance from right edge
+            right: '100px', // Distance from right edge
             left: 'unset', // Distance from left edge
             time: '0.5s', // Transition time
             mixColor: '#fff', // Default color for transitions
@@ -687,6 +693,9 @@
         const darkmode = new Darkmode(options);
         darkmode.showWidget(); // This will show the dark mode toggle button
     </script>
+
+<script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
+<script src="https://files.bpcontent.cloud/2024/10/16/13/20241016135041-AGJV7U92.js"></script>
 
 </body>
 

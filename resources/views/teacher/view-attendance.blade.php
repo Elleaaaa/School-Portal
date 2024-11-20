@@ -75,10 +75,14 @@
     <script>
         new DataTable('#attendanceTable', {
         lengthMenu: [10, 25, 50, 100, { label: 'All', value: -1 }],
-         layout: {
-         top1Start: {
-         }
-     }
+        layout: {
+                top1Start: {
+                    buttons: [{
+                        text: 'Export As',
+                        split: ['pdf'],
+                    }],
+                }
+            }
      });
      </script>
 

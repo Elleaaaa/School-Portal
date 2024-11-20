@@ -4,9 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <title>Enrolled Students</title>
+    <title>Activity Logs</title>
     <link rel="icon" href="{{ asset('images/icons/baylogo.png') }}">
-
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;1,400&amp;display=swap">
     <link rel="stylesheet" href="{{ asset('plugins/bootstrap/css/bootstrap.min.css') }}">
@@ -16,19 +15,6 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
     <style>
-        .subject-list {
-            display: inline;
-            max-width: 100px;
-            /* Adjust as necessary */
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-        }
-
-        .hidden {
-            display: none;
-        }
-
         .table .text-truncate {
             white-space: nowrap;
             overflow: hidden;
@@ -49,11 +35,16 @@
                 <div class="page-header">
                     <div class="row align-items-center">
                         <div class="col">
-                            <h3 class="page-title">Enrolled Students</h3>
+                            <h3 class="page-title">Activity Logs</h3>
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                                <li class="breadcrumb-item active">Enrolled Students</li>
+                                <li class="breadcrumb-item active">Activity Logs</li>
                             </ul>
+                        </div>
+                        <div class="col-auto text-right float-right ml-auto">
+
+                            <a href="{{ route('addsubject.show') }}" class="btn btn-primary">Add Subject <i
+                                    class="fas fa-plus"></i></a>
                         </div>
                     </div>
                 </div>
@@ -65,43 +56,28 @@
                                     <table class="table table-hover table-center mb-0 datatable">
                                         <thead>
                                             <tr>
-                                                <th>LRN</th>
-                                                <th>Name</th>
-                                                <th>Subjects</th>
-                                                <th>Grade Level</th>
-                                                <th>Strand</th>
-                                                <th>Section</th>
-                                                <th class="text-right">Action</th>
+                                                <th>User</th>
+                                                <th>Activity</th>
+                                                <th>Description</th>
+                                                <th>Date</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($enrollees as $enrollee)
+                                            @foreach ($logs as $log)
                                                 <tr>
-                                                    <td>{{ $enrollee->studentId }}</td>
-                                                    <td>{{ $enrollee->name }}</td>
+                                                    <td>{{ $log->studentId }}</td>
+                                                    <td>{{ $log->type }}</td>
                                                     <td>
                                                         <span class="d-inline-block text-truncate"
                                                             style="max-width: 200px; cursor: pointer;"
                                                             data-state="truncated" data-bs-toggle="tooltip"
-                                                            data-bs-placement="top" title="{{ $enrollee->subjects }}"
+                                                            data-bs-placement="top" title="{{ $log->activity }}"
                                                             onclick="toggleDescription(this)">
-                                                            {{ $enrollee->subjects }}
+                                                            {{ $log->activity }}
                                                         </span>
                                                     </td>
-                                                    <td>{{ $enrollee->gradeLevel }}
-                                                    <td>{{ $enrollee->strand }}
-                                                    <td>{{ $enrollee->section }}</td>
-                                                    <td class="text-right">
-                                                        <div class="actions">
-                                                            <a href="{{ route('edit-enroll-student.show', ['id' => $enrollee->id]) }}"
-                                                                class="btn btn-sm bg-success-light mr-2">
-                                                                <i class="fas fa-pen"></i>
-                                                            </a>
-                                                            {{-- <a href="#" class="btn btn-sm bg-danger-light">
-                                                                <i class="fas fa-trash"></i>
-                                                            </a> --}}
-                                                        </div>
-                                                    </td>
+                                                    <td>{{ \Carbon\Carbon::parse($log->created_at)->format('M d, Y h:ia') }}</td>
+
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -120,11 +96,7 @@
     <script>
         $(document).ready(function() {
             $('.datatable').DataTable({
-                "pageLength": 5,
-                lengthMenu: [5, 10, 25, 50, 100, {
-                    label: 'All',
-                    value: -1
-                }]
+                "pageLength": 10,
             });
         });
     </script>

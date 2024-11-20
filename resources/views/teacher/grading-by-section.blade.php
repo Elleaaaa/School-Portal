@@ -151,7 +151,7 @@
             buttons: [
                 {
                     text: 'Export As',
-                    split: ['pdf', 'excel', 'csv', 'copy', 'print',],
+                    split: ['pdf', 'excel',],
                 }
             ],
         }

@@ -37,7 +37,7 @@
                         <div class="card card-table">
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-hover table-center mb-0 datatable">
+                                    <table id="myStudents" class="table table-hover table-center mb-0 datatable">
                                         <thead>
                                             <tr>
                                                 <th>Student ID</th>
@@ -113,15 +113,24 @@
     </div>
 
     <script src="{{ asset('plugins/datatables/datatables.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
 
     <script>
-        $(document).ready(function() {
-            $('.datatable').DataTable({
-                "pageLength": 10
-            });
+         new DataTable('#myStudents', {
+            lengthMenu: [5, 10, 25, 50, 100, {
+                label: 'All',
+                value: -1
+            }],
+            layout: {
+                top1Start: {
+                    buttons: [{
+                        text: 'Export As',
+                        split: ['pdf', ],
+                    }],
+                }
+            }
         });
     </script>
-
 
 
 </body>

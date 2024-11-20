@@ -67,23 +67,6 @@
                 @endif --}}
 
                 <div class="row">
-                    <div class="col-12 col-lg-12 col-xl-12 d-flex">
-                        <div class="card flex-fill">
-                            <div class="card-header">
-                                <div class="row align-items-center">
-                                    <div class="col-12">
-                                        <h5 class="card-title">Calendar</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div id="calendar" class="calendar-container"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
                     <div class="col-xl-3 col-sm-6 col-12 d-flex">
                         <div class="card bg-one w-100">
                             <div class="card-body">
@@ -233,6 +216,23 @@
                             </div>
                             <div class="card-body">
                                 <canvas id="studentGraph"></canvas> <!-- Changed to canvas for Chart.js -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-lg-12 col-xl-12 d-flex">
+                        <div class="card flex-fill">
+                            <div class="card-header">
+                                <div class="row align-items-center">
+                                    <div class="col-12">
+                                        <h5 class="card-title">Calendar</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div id="calendar" class="calendar-container"></div>
                             </div>
                         </div>
                     </div>

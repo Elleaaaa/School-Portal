@@ -23,9 +23,11 @@ use Illuminate\Http\Request;
 
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\CashierController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\SuperAdminController;
+use App\Http\Controllers\VRController;
 use App\Models\Discount;
 use App\Models\Enrollee;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -150,9 +152,13 @@ Route::middleware([PreventBackHistory::class])->group(function () { //this will 
         Route::get('/get-discount/{scholarType}', [AssessorController::class, 'getDiscountByType'])->name('discount.get');
         Route::get('/fetch-discountType', [AssessorController::class, 'fetchDiscountType'])->name('discountType.show');
 
+        Route::post('/updateScholar/{id}', [AssessorController::class, 'updateScholar'])->name('edit-scholar.update');
+        Route::get('/updateScholar/{id}', [AssessorController::class, 'showUpdateScholar'])->name('edit-scholar.show');
         Route::get('/scholars', [AssessorController::class, 'showScholars'])->name('scholars.show');
         Route::get('/addScholar', [AssessorController::class, 'showAddScholar'])->name('add-scholar.show');
         Route::post('/addScholar', [AssessorController::class, 'addScholar'])->name('add-scholar.store');
+
+        Route::get('/setInactive/{id}', [AssessorController::class, 'setInactive'])->name('setScholarInactive.update');
     });
 
     // ADMIN ROUTES
@@ -263,6 +269,8 @@ Route::middleware([PreventBackHistory::class])->group(function () { //this will 
         Route::get('/api/gradelevels', [EnrolleesController::class, 'getGradeLevelsAJAX']);
 
         Route::get('/overall-attendance', [AttendanceController::class, 'overallStudentAttendance'])->name('overallAttendance.show');
+
+        Route::get('activity-logs', [SuperAdminController::class, 'showActivityLogs'])->name('logs.show');
     });
 
 
@@ -294,6 +302,8 @@ Route::middleware([PreventBackHistory::class])->group(function () { //this will 
         Route::post('/notifications/clear-all', [NotificationController::class, 'clearAll']);
     });
 });
+
+Route::get('/vrsample', [VRController::class, 'index']);
 
 
 Route::get('/fees-collection', function () {

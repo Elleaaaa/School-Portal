@@ -38,7 +38,7 @@
                         <div class="card card-table">
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table id="paymentHistory" class="display nowrap" style="width:100%" >
+                                    <table id="paymentHistory" class="display nowrap" style="width:100%">
                                         <thead>
                                             <tr>
                                                 <th>Payment ID</th>
@@ -56,19 +56,19 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($feeHistory as $fHistory)
-                                            <tr data-href="{{ route('invoice.show') }}">
-                                                <td>{{$fHistory->feeId}}</td>
-                                                <td>{{$fHistory->feeType}}</td>
-                                                <td>{{$fHistory->amount}}</td>
-                                                <td>{{$fHistory->discountedPrice}}</td>
-                                                <td>{{$fHistory->amountPaid}}</td>
-                                                <td>{{$fHistory->discount}}</td>
-                                                <td>{{$fHistory->discountAmount}}</td>
-                                                <td>{{$fHistory->amountLeft}}</td>
-                                                <td>{{$fHistory->reciever}}</td>
-                                                <td>{{$fHistory->status}}</td>
-                                                <td>{{$fHistory->created_at}}</td>
-                                            </tr>
+                                                <tr data-href="{{ route('invoice.show') }}">
+                                                    <td>{{ $fHistory->feeId }}</td>
+                                                    <td>{{ $fHistory->feeType }}</td>
+                                                    <td>{{ $fHistory->amount }}</td>
+                                                    <td>{{ $fHistory->discountedPrice }}</td>
+                                                    <td>{{ $fHistory->amountPaid }}</td>
+                                                    <td>{{ $fHistory->discount }}</td>
+                                                    <td>{{ $fHistory->discountAmount }}</td>
+                                                    <td>{{ $fHistory->amountLeft }}</td>
+                                                    <td>{{ $fHistory->reciever }}</td>
+                                                    <td>{{ $fHistory->status }}</td>
+                                                    <td>{{ $fHistory->created_at }}</td>
+                                                </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -79,31 +79,32 @@
                 </div>
             </div>
 
-       @include('layouts/footer')
+            @include('layouts/footer')
 
         </div>
 
     </div>
-    
+
     <script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
     <script src="{{ asset('plugins/datatables/datatables.min.js') }}"></script>
 
     <script>
         new DataTable('#paymentHistory', {
-        lengthMenu: [5, 10, 25, 50, 100, { label: 'All', value: -1 }],
-         layout: {
-         top1Start: {
-             buttons: [
-                 {
-                     text: 'Export As',
-                     split: ['pdf', 'excel', 'csv', 'copy', 'print',],
-                 }
-             ],
-         }
-     }
-     });
-     </script>
-  
+            lengthMenu: [5, 10, 25, 50, 100, {
+                label: 'All',
+                value: -1
+            }],
+            layout: {
+                top1Start: {
+                    buttons: [{
+                        text: 'Export As',
+                        split: ['pdf' ],
+                    }],
+                }
+            }
+        });
+    </script>
+
 
 </body>
 
