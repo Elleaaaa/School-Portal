@@ -72,8 +72,8 @@
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-4">
                                             <div class="form-group">
-                                                <label>Gender</label>
-                                                <select name="gender" class="form-control">
+                                                <label>Gender</label><span style="color: red;">*</span>
+                                                <select name="gender" class="form-control" required>
                                                     <option readonly>Select Gender</option>
                                                     <option value="Female" {{ old('gender') === 'Female' ? 'selected' : '' }}>Female</option>
                                                     <option value="Male" {{ old('gender') === 'Male' ? 'selected' : '' }}>Male</option>
@@ -83,20 +83,20 @@
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-4">
                                             <div class="form-group">
-                                                <label>Date of Birth</label>
-                                                <input name="birthday" type="date" class="form-control" value="{{ old('birthday') }}">
+                                                <label>Date of Birth</label><span style="color: red;">*</span>
+                                                <input name="birthday" type="date" class="form-control" value="{{ old('birthday') }}" required>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-4">
                                             <div class="form-group">
                                                 <label>Age</label>
-                                                <input name="age" type="text" class="form-control" value="{{ old('age') }}" >
+                                                <input name="age" type="text" class="form-control" value="{{ old('age') }}" readonly>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
-                                                <label>Mobile Number</label>
-                                                <input name="mobileNumber" type="text" class="form-control" value="{{ old('mobileNumber') }}">
+                                                <label>Mobile Number</label><span style="color: red;">*</span>
+                                                <input name="mobileNumber" type="text" class="form-control" value="{{ old('mobileNumber') }}" required>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6">
@@ -143,36 +143,36 @@
 
                                        {{-- Address --}}
                                         <div class="col-12">
-                                            <h5 class="form-title"><span>Address</span></h5>
+                                            <h5 class="form-title"><span>Home Address</span></h5>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
-                                                <label for="region">Region</label>
-                                                <select name="region" id="region" class="form-control">
+                                                <label for="region">Region</label><span style="color: red;">*</span>
+                                                <select name="region" id="region" class="form-control" required>
                                                     {{-- <option value="">Select Region</option> --}}
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
-                                            <label for="region">Province</label>
-                                            <select name="province" id="province" class="form-control">
+                                            <label for="region">Province</label><span style="color: red;">*</span>
+                                            <select name="province" id="province" class="form-control" required>
                                                 {{-- <option value="">Select Province</option> --}}
                                             </select>
                                             </div>
                                             </div>
                                             <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
-                                                <label for="region">Municipality</label>
-                                                <select name="city" id="city" class="form-control">
+                                                <label for="region">Municipality</label><span style="color: red;">*</span>
+                                                <select name="city" id="city" class="form-control" required>
                                                     {{-- <option value="">Select City</option> --}}
                                                 </select>
                                             </div>
                                             </div>
                                             <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
-                                                <label for="region">Barangay</label>
-                                                <select name="barangay" id="barangay" class="form-control">
+                                                <label for="region">Barangay</label><span style="color: red;">*</span>
+                                                <select name="barangay" id="barangay" class="form-control" required>
                                                     {{-- <option value="">Select Baranggay</option> --}}
                                                 </select>
                                             </div>
@@ -180,7 +180,7 @@
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label>Address</label>
-                                                <input name="address" type="text" class="form-control" value="{{ old('address') }}">
+                                                <input name="address" type="text" class="form-control" placeholder="home#/street/subd/vill" value="{{ old('address') }}" required>
                                             </div>
                                         </div>
                                         <div class="col-12">

@@ -24,13 +24,13 @@
                         </div>
                     </div>
                 </div>
-       
+
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="card">
                             <div class="card-body">
                                 <form method="POST" enctype="multipart/form-data">
-                                 @csrf
+                                    @csrf
                                     <div class="row">
                                         <div class="col-12">
                                             <h5 class="form-title"><span>Personal Information</span></h5>
@@ -38,92 +38,104 @@
                                         {{-- Student Information --}}
                                         <div class="col-4">
                                             <div class="form-group">
-                                                <img src="{{ asset('storage/images/display-photo/' . $user->displayPhoto) }}"  style="height: 250px">
+                                                <img src="{{ asset('storage/images/display-photo/' . $user->displayPhoto) }}"
+                                                    style="height: 250px">
                                             </div>
                                         </div>
-                                        
+
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label>Change Photo</label>
+                                                <label>Change Photo</label><span style="color: red;">*</span>
                                                 <input name="displayPhoto" type="file" class="form-control">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
-                                                <label>First Name</label>
-                                                <input name="firstName" type="text" class="form-control" value="{{ $assessor->firstName ?? '' }}">
+                                                <label>First Name</label><span style="color: red;">*</span>
+                                                <input name="firstName" type="text" class="form-control"
+                                                    value="{{ $assessor->firstName ?? '' }}" required>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
                                                 <label>Middle Name</label>
-                                                <input name="middleName" type="text" class="form-control"value="{{ $assessor->middleName ?? '' }}">
+                                                <input name="middleName" type="text"
+                                                    class="form-control"value="{{ $assessor->middleName ?? '' }}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
-                                                <label>Last Name</label>
-                                                <input name="lastName" type="text" class="form-control" value="{{ $assessor->lastName ?? '' }}">
+                                                <label>Last Name</label><span style="color: red;">*</span>
+                                                <input name="lastName" type="text" class="form-control"
+                                                    value="{{ $assessor->lastName ?? '' }}" required>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
                                                 <label>Suffix Name</label>
                                                 <input name="suffixName" type="text" class="form-control"
-                                                    placeholder="Jr, Sr, III, etc" value="{{ $assessor->suffix ?? '' }}">
+                                                    placeholder="Jr, Sr, III, etc"
+                                                    value="{{ $assessor->suffix ?? '' }}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
                                                 <label>ID</label>
-                                                <input readonly name="studentId" type="text" class="form-control" value="{{ Auth::user()->studentId }}">
+                                                <input readonly name="studentId" type="text" class="form-control"
+                                                    value="{{ Auth::user()->studentId }}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
-                                                <label>Gender</label>
-                                                <select name="gender" class="form-control">
-                                                    <option readonly>Select Gender</option>
-                                                    <option value="Female">Female</option>
-                                                    <option value="Male" >Male</option>
-                                                    <option value="Others">Others</option>
+                                                <label>Gender</label><span style="color: red;">*</span>
+                                                <select name="gender" class="form-control" required>
+                                                    <option value="" disabled>Select Gender</option>
+                                                    <option value="Female" {{ (isset($assessor->gender) && $assessor->gender == 'Female') ? 'selected' : '' }}>Female</option>
+                                                    <option value="Male" {{ (isset($assessor->gender) && $assessor->gender == 'Male') ? 'selected' : '' }}>Male</option>
+                                                    <option value="Others" {{ (isset($assessor->gender) && $assessor->gender == 'Others') ? 'selected' : '' }}>Others</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
-                                                <label>Date of Birth</label>
-                                                <input name="birthday" type="date" class="form-control" value="{{ $assessor->birthday ?? '' }}">
+                                                <label>Date of Birth</label><span style="color: red;">*</span>
+                                                <input name="birthday" type="date" class="form-control"
+                                                    value="{{ $assessor->birthday ?? '' }}" required>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
                                                 <label>Age</label>
-                                                <input name="age" type="text" class="form-control" value="{{ $assessor->age ?? '' }}">
+                                                <input name="age" type="text" class="form-control"
+                                                    value="{{ $assessor->age ?? '' }}" readonly>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
-                                                <label>Mobile Number</label>
-                                                <input name="mobileNumber" type="text" class="form-control" value="{{ $assessor->mobileNumber ?? '' }}">
+                                                <label>Mobile Number</label><span style="color: red;">*</span>
+                                                <input name="mobileNumber" type="text" class="form-control"
+                                                    value="{{ $assessor->mobileNumber ?? '' }}" required>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label>Landline Number</label>
-                                                <input name="landlineNumber" type="text" class="form-control" value="{{ $assessor->landlineNumber ?? '' }}">
+                                                <input name="landlineNumber" type="text" class="form-control"
+                                                    value="{{ $assessor->landlineNumber ?? '' }}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label>Religion</label>
-                                                <input name="religion" type="text" class="form-control" value="{{ $assessor->religion ?? '' }}">
+                                                <input name="religion" type="text" class="form-control"
+                                                    value="{{ $assessor->religion ?? '' }}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label>Place of Birth</label>
-                                                <input name="birthPlace" type="text" class="form-control" value="{{ $assessor->placeOfBirth ?? '' }}">
+                                                <input name="birthPlace" type="text" class="form-control"
+                                                    value="{{ $assessor->placeOfBirth ?? '' }}">
                                             </div>
                                         </div>
 
@@ -133,45 +145,49 @@
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
-                                                <label for="region">Region</label>
-                                                <select name="region" id="region" class="form-control">
+                                                <label for="region">Region</label><span style="color: red;">*</span>
+                                                <select name="region" id="region" class="form-control" required>
                                                     {{-- <option value="">Select Region</option> --}}
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
-                                            <label for="province">Province</label>
-                                            <select name="province" id="province" class="form-control">
-                                                {{-- <option value="">Select Province</option> --}}
-                                            </select>
+                                                <label for="province">Province</label><span
+                                                    style="color: red;">*</span>
+                                                <select name="province" id="province" class="form-control" required>
+                                                    {{-- <option value="">Select Province</option> --}}
+                                                </select>
                                             </div>
-                                            </div>
-                                            <div class="col-12 col-sm-6 col-md-3">
+                                        </div>
+                                        <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
-                                                <label for="city">Municipality</label>
-                                                <select name="city" id="city" class="form-control">
+                                                <label for="city">Municipality</label><span
+                                                    style="color: red;">*</span>
+                                                <select name="city" id="city" class="form-control" required>
                                                     {{-- <option value="">Select City</option> --}}
                                                 </select>
                                             </div>
-                                            </div>
-                                            <div class="col-12 col-sm-6 col-md-3">
+                                        </div>
+                                        <div class="col-12 col-sm-6 col-md-3">
                                             <div class="form-group">
-                                                <label for="barangay">Barangay</label>
-                                                <select name="barangay" id="barangay" class="form-control">
+                                                <label for="barangay">Barangay</label><span
+                                                    style="color: red;">*</span>
+                                                <select name="barangay" id="barangay" class="form-control" required>
                                                     {{-- <option value="">Select Baranggay</option> --}}
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label>Address</label>
-                                                <input name="address" type="text" class="form-control">
+                                                <label>Address</label><span style="color: red;">*</span>
+                                                <input name="address" type="text" class="form-control"
+                                                    value="{{ $address->address ?? '' }}" required>
                                             </div>
                                         </div>
 
                                         {{-- Parent Information --}}
-                                        <div class="col-12">
+                                        {{-- <div class="col-12">
                                             <h5 class="form-title"><span>Parent Information</span></h5>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-6">
@@ -253,7 +269,7 @@
                                                 <label>Annual Gross Income</label>
                                                 <input name="fatherAnnualGrossIncome" type="text" class="form-control" value="{{ $guardians->fatherAnnualGrossIncome ?? '' }}">
                                              </div>
-                                        </div>
+                                        </div> --}}
                                         {{-- <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label>Present Address</label>
@@ -278,9 +294,9 @@
             </div>
         </div>
     </div>
-    
+
     <script src="{{ asset('js/philippinesgeo.json') }}"></script>
-    {{-- POPULATES THE ADDRESS FIELDS --}}
+    {{-- AUTO POPULATE ADDRESS FIELDS --}}
     <script>
         fetch("{{ asset('js/philippinesgeo.json') }}")
             .then(response => response.json())
@@ -289,40 +305,36 @@
                 const provinceSelect = document.getElementById('province');
                 const citySelect = document.getElementById('city');
                 const barangaySelect = document.getElementById('barangay');
-                
+
                 // Add default options for region
                 const defaultRegionOption = document.createElement('option');
                 defaultRegionOption.value = '';
                 defaultRegionOption.textContent = 'Select Region';
                 regionSelect.appendChild(defaultRegionOption);
-    
+
                 // Add default options for province, city, and barangay
                 ['province', 'city', 'barangay'].forEach(selectId => {
                     const defaultOption = document.createElement('option');
                     defaultOption.value = '';
-                    defaultOption.textContent = `Select ${selectId.charAt(0).toUpperCase() + selectId.slice(1)}`;
+                    defaultOption.textContent =
+                    `Select ${selectId.charAt(0).toUpperCase() + selectId.slice(1)}`;
                     document.getElementById(selectId).appendChild(defaultOption);
                 });
-    
-                // Iterate over each region
+
+                // Populate regions
                 for (const regionName in data) {
                     const option = document.createElement('option');
                     option.value = regionName;
                     option.textContent = regionName;
                     regionSelect.appendChild(option);
                 }
-    
+                regionSelect.value = "{{ $address->region }}";
+
                 // Function to populate provinces based on selected region
                 function populateProvinces(selectedRegion) {
                     provinceSelect.innerHTML = ''; // Clear previous options
-    
+
                     if (selectedRegion) {
-                       // Add default option for Province
-                       const defaultProvinceOption = document.createElement('option');
-                       defaultProvinceOption.value = '';
-                       defaultProvinceOption.textContent = 'Select Province';
-                       provinceSelect.appendChild(defaultProvinceOption);
-  
                         const region = data[selectedRegion];
                         if (region) {
                             for (const provinceName in region.province_list) {
@@ -333,50 +345,42 @@
                             }
                         }
                     }
+                    // Set selected province based on old input
+                    provinceSelect.value = "{{ $address->province }}";
+                    // Trigger change event to populate cities
+                    provinceSelect.dispatchEvent(new Event('change'));
                 }
-    
+
                 // Function to populate cities/municipalities based on selected province
                 function populateCities(selectedProvince) {
                     citySelect.innerHTML = ''; // Clear previous options
-    
+
                     if (selectedProvince) {
-                       citySelect.innerHTML = ''; // Clear previous options
-                       
-                       // Add default option for city
-                       const defaultCityOption = document.createElement('option');
-                       defaultCityOption.value = '';
-                       defaultCityOption.textContent = 'Select City';
-                       citySelect.appendChild(defaultCityOption);
-  
-                       const selectedRegion = regionSelect.value;
-                       const region = data[selectedRegion];
-                       if (region) {
-                          const province = region.province_list[selectedProvince];
-                          if (province && province.municipality_list) {
+                        const selectedRegion = regionSelect.value;
+                        const region = data[selectedRegion];
+                        if (region) {
+                            const province = region.province_list[selectedProvince];
+                            if (province && province.municipality_list) {
                                 for (const municipalityName in province.municipality_list) {
-                                   const option = document.createElement('option');
-                                   option.value = municipalityName;
-                                   option.textContent = municipalityName;
-                                   citySelect.appendChild(option);
+                                    const option = document.createElement('option');
+                                    option.value = municipalityName;
+                                    option.textContent = municipalityName;
+                                    citySelect.appendChild(option);
                                 }
-                          }
-                       }
+                            }
+                        }
                     }
-  
+                    // Set selected city based on old input
+                    citySelect.value = "{{ $address->city }}";
+                    // Trigger change event to populate barangays
+                    citySelect.dispatchEvent(new Event('change'));
                 }
-    
+
                 // Function to populate barangays based on selected city
                 function populateBarangays(selectedCity) {
                     barangaySelect.innerHTML = ''; // Clear previous options
-    
+
                     if (selectedCity) {
-  
-                       // Add default option for barangay
-                       const defaultBarangayOption = document.createElement('option');
-                       defaultBarangayOption.value = '';
-                       defaultBarangayOption.textContent = 'Select Barangay';
-                       barangaySelect.appendChild(defaultBarangayOption);
-  
                         const selectedRegion = regionSelect.value;
                         const selectedProvince = provinceSelect.value;
                         const region = data[selectedRegion];
@@ -395,29 +399,32 @@
                             }
                         }
                     }
+                    // Set selected barangay based on old input
+                    barangaySelect.value = "{{ $address->baranggay }}";
                 }
-    
+
                 // Event listeners for select elements
                 regionSelect.addEventListener('change', () => {
                     const selectedRegion = regionSelect.value;
                     populateProvinces(selectedRegion);
-                    populateCities(null); // Clear city dropdown
-                    populateBarangays(null); // Clear barangay dropdown
                 });
-    
+
                 provinceSelect.addEventListener('change', () => {
                     const selectedProvince = provinceSelect.value;
                     populateCities(selectedProvince);
-                    populateBarangays(null); // Clear barangay dropdown
                 });
-    
+
                 citySelect.addEventListener('change', () => {
                     const selectedCity = citySelect.value;
                     populateBarangays(selectedCity);
                 });
+
+                // Trigger initial population
+                populateProvinces("{{ $address->region }}");
             })
             .catch(error => console.error('Error fetching data:', error));
     </script>
+
 
 </body>
 

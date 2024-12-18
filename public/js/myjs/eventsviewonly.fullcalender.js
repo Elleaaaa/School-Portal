@@ -13,6 +13,7 @@ function display_events() {
                             return {
                                 id: item.id,
                                 title: item.title,
+                                description: item.description,
                                 start: item.start,
                                 end: item.end,
                                 category: item.category,
@@ -69,6 +70,34 @@ function initialize_calendar(events) {
                 category: event.category || "",
             },
         })),
+
+        eventClick: function(info) {
+            var event = info.event; // The event object from FullCalendar
+            console.log(event); // Log the event to verify its structure
+        
+            // Format start and end dates
+            var startFormatted = moment(event.startStr).format('MMM. DD YYYY h:mma');
+            var endFormatted = moment(event.endStr).format('MMM. DD YYYY h:mma');
+            
+        
+            // Fetch the description from extendedProps
+            var description = event.extendedProps.description || 'No description available.';
+        
+            // Update the modal content
+            var eventDetails = `
+                <p><strong>Title:</strong> ${event.title}</p>
+                <br />
+                <p><strong>Time:</strong> ${startFormatted} to ${endFormatted}</p>
+                <br />
+                <p><strong>Description:</strong> ${description}</p>
+            `;
+        
+            $('#addEventModal .modal-body').html(eventDetails); // Populate modal content
+            $('#addEventModalLabel').text("Event Details"); // Update modal title
+            $('#addEventModal').modal('show'); // Show modal
+        },
+        
+
         eventContent: function (arg) {
             if (arg.event) {
                 var title = arg.event.title || "Untitled";

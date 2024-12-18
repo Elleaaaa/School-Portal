@@ -41,37 +41,46 @@
                                     <table id="paymentHistory" class="display nowrap" style="width:100%">
                                         <thead>
                                             <tr>
-                                                <th>Payment ID</th>
-                                                <th>Fees Name</th>
-                                                <th>Amount</th>
-                                                <th>Discounted Price</th>
+                                                <th>Reference Number</th>
+                                                <th>Date</th>
+                                                <th>StudentId</th>
+                                                <th>Section</th>
+                                                {{-- <th>Amount</th> --}}
+                                                {{-- <th>Discounted Price</th>
                                                 <th>Amount Paid</th>
                                                 <th>Discount</th>
-                                                <th>Discount Amount</th>
-                                                <th>Amount Left</th>
-                                                <th>Receiver</th>
-                                                <th>Status</th>
-                                                <th>Date</th>
+                                                <th>Discount Amount</th> --}}
+                                                <th>Balance</th>
+                                                {{-- <th>Receiver</th> --}}
+                                                <th style="text-align: right;">Status</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($feeHistory as $fHistory)
+                                                @php
+                                                    // Get the section for this particular studentId
+                                                    $section = $studentsWithSections->get($fHistory->studentId)['section'] ?? 'N/A';
+                                                @endphp
                                                 <tr data-href="{{ route('invoice.show') }}">
                                                     <td>{{ $fHistory->feeId }}</td>
-                                                    <td>{{ $fHistory->feeType }}</td>
-                                                    <td>{{ $fHistory->amount }}</td>
-                                                    <td>{{ $fHistory->discountedPrice }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($fHistory->created_at)->format('M d, Y h:ia') }}</td>
+                                                    <td>
+                                                        <a href="{{ route('studentpaymenthistory.show', ['studentId' => $fHistory->studentId]) }}"> {{ $fHistory->studentId }}</a>
+                                                    </td>
+                                                    <td>{{ $section }}</td>
+                                                    {{-- <td>{{ $fHistory->amount }}</td> --}}
+                                                    {{-- <td>{{ $fHistory->discountedPrice }}</td>
                                                     <td>{{ $fHistory->amountPaid }}</td>
                                                     <td>{{ $fHistory->discount }}</td>
-                                                    <td>{{ $fHistory->discountAmount }}</td>
+                                                    <td>{{ $fHistory->discountAmount }}</td> --}}
                                                     <td>{{ $fHistory->amountLeft }}</td>
-                                                    <td>{{ $fHistory->reciever }}</td>
-                                                    <td>{{ $fHistory->status }}</td>
-                                                    <td>{{ $fHistory->created_at }}</td>
+                                                    {{-- <td>{{ $fHistory->reciever }}</td> --}}
+                                                    <td style="text-align: right;">{{ $fHistory->status }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -90,7 +99,7 @@
 
     <script>
         new DataTable('#paymentHistory', {
-            lengthMenu: [5, 10, 25, 50, 100, {
+            lengthMenu: [10, 25, 50, 100, {
                 label: 'All',
                 value: -1
             }],
@@ -101,7 +110,8 @@
                         split: ['pdf' ],
                     }],
                 }
-            }
+            },
+            
         });
     </script>
 

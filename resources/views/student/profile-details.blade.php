@@ -61,7 +61,7 @@
                                             <div class="form-group">
                                                 <label>First Name<span style="color: red;">*</span></label>
                                                 <input name="firstName" type="text" class="form-control"
-                                                    value="{{ $student->firstName ?? '' }}">
+                                                    value="{{ $student->firstName ?? '' }}" required>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-3">
@@ -75,7 +75,7 @@
                                             <div class="form-group">
                                                 <label>Last Name<span style="color: red;">*</span></label>
                                                 <input name="lastName" type="text" class="form-control"
-                                                    value="{{ $student->lastName ?? '' }}">
+                                                    value="{{ $student->lastName ?? '' }}" required>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-3">
@@ -85,43 +85,43 @@
                                                     placeholder="Jr, Sr, III, etc" value="{{ $student->suffix ?? '' }}">
                                             </div>
                                         </div>
-                                        <div class="col-12 col-sm-6 col-md-3">
+                                        <div class="col-12 col-lg-4 col-sm-6 col-md-4">
                                             <div class="form-group">
                                                 <label>Learner Reference Number (LRN)</label>
                                                 <input readonly name="studentId" type="text" class="form-control"
                                                     value="{{ Auth::user()->studentId }}">
                                             </div>
                                         </div>
-                                        <div class="col-12 col-sm-6 col-md-3">
+                                        <div class="col-12 col-lg-3 col-sm-6 col-md-3">
                                             <div class="form-group">
-                                                <label>Gender<span style="color: red;">*</span></label>
-                                                <select name="gender" class="form-control">
-                                                    <option readonly>Select Gender</option>
-                                                    <option value="Female">Female</option>
-                                                    <option value="Male">Male</option>
-                                                    <option value="Others">Others</option>
+                                                <label>Gender</label><span style="color: red;">*</span>
+                                                <select name="gender" class="form-control" required>
+                                                    <option value="" disabled>Select Gender</option>
+                                                    <option value="Female" {{ (isset($student->gender) && $student->gender == 'Female') ? 'selected' : '' }}>Female</option>
+                                                    <option value="Male" {{ (isset($student->gender) && $student->gender == 'Male') ? 'selected' : '' }}>Male</option>
+                                                    <option value="Others" {{ (isset($student->gender) && $student->gender == 'Others') ? 'selected' : '' }}>Others</option>
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-12 col-sm-6 col-md-3">
+                                        <div class="col-12 col-lg-3 col-sm-6 col-md-3">
                                             <div class="form-group">
                                                 <label>Date of Birth<span style="color: red;">*</span></label>
                                                 <input name="birthday" type="date" class="form-control"
-                                                    value="{{ $student->birthday ?? '' }}">
+                                                    value="{{ $student->birthday ?? '' }}" required>
                                             </div>
                                         </div>
-                                        <div class="col-12 col-sm-6 col-md-3">
+                                        <div class="col-12 col-lg-2 col-sm-6 col-md-2">
                                             <div class="form-group">
                                                 <label>Age</label>
                                                 <input name="age" type="text" class="form-control"
-                                                    value="{{ $student->age ?? '' }}">
+                                                    value="{{ $student->age ?? '' }}" readonly>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label>Mobile Number<span style="color: red;">*</span></label>
                                                 <input name="mobileNumber" type="text" class="form-control"
-                                                    value="{{ $student->mobileNumber ?? '' }}">
+                                                    value="{{ $student->mobileNumber ?? '' }}" required>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6">
@@ -141,8 +141,8 @@
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label>Place of Birth<span style="color: red;">*</span></label>
-                                                <input name="birthPlace" type="text" class="form-control"
-                                                    value="{{ $student->placeOfBirth ?? '' }}">
+                                                <input name="birthplace" type="text" class="form-control"
+                                                    value="{{ $student->placeOfBirth ?? '' }}" required>
                                             </div>
                                         </div>
 
@@ -201,42 +201,42 @@
                                             <div class="form-group">
                                                 <label>Mother's First Name<span style="color: red;">*</span></label>
                                                 <input name="mothersFirstName" type="text" class="form-control"
-                                                    value="{{ $guardians->mothersFirstName ?? '' }}">
+                                                    value="{{ $guardians->mothersFirstName ?? '' }}" required>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-6">
                                             <div class="form-group">
                                                 <label>Mother's Last Name<span style="color: red;">*</span></label>
                                                 <input name="mothersLastName" type="text" class="form-control"
-                                                    value="{{ $guardians->mothersLastName ?? '' }}">
+                                                    value="{{ $guardians->mothersLastName ?? '' }}" required>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-4">
                                             <div class="form-group">
                                                 <label>Occupation<span style="color: red;">*</span></label>
                                                 <input name="mothersOccupation" type="text" class="form-control"
-                                                    value="{{ $guardians->mothersOccupation ?? '' }}">
+                                                    value="{{ $guardians->motherOccupation ?? '' }}" required>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-4">
                                             <div class="form-group">
                                                 <label>Mobile Number<span style="color: red;">*</span></label>
-                                                <input name="mothersMobile" type="text" class="form-control"
-                                                    value="{{ $guardians->mothersMobile ?? '' }}">
+                                                <input name="mothersContact" type="text" class="form-control"
+                                                    value="{{ $guardians->motherContact ?? '' }}" required>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-4">
                                             <div class="form-group">
                                                 <label>Age</label>
                                                 <input name="mothersAge" type="text" class="form-control"
-                                                    value="{{ $guardians->mothersAge ?? '' }}">
+                                                    value="{{ $guardians->motherAge ?? '' }}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-12 col-md-12">
                                             <div class="form-group">
                                                 <label>Address<span style="color: red;">*</span></label>
-                                                <input name="motherAddress" type="text" class="form-control"
-                                                    value="{{ $guardians->motherAddress ?? '' }}">
+                                                <input name="mothersAddress" type="text" class="form-control"
+                                                    value="{{ $guardians->motherAddress ?? '' }}" required>
                                             </div>
                                         </div>
 
@@ -248,28 +248,28 @@
                                             <div class="form-group">
                                                 <label>Father's First Name<span style="color: red;">*</span></label>
                                                 <input name="fathersFirstName" type="text" class="form-control"
-                                                    value="{{ $guardians->fathersFirstName ?? '' }}">
+                                                    value="{{ $guardians->fathersFirstName ?? '' }}" required>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-6">
                                             <div class="form-group">
                                                 <label>Father's Last Name<span style="color: red;">*</span></label>
                                                 <input name="fathersLastName" type="text" class="form-control"
-                                                    value="{{ $guardians->fathersLastName ?? '' }}">
+                                                    value="{{ $guardians->fathersLastName ?? '' }}" required>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-4">
                                             <div class="form-group">
                                                 <label>Occupation<span style="color: red;">*</span></label>
                                                 <input name="fathersOccupation" type="text" class="form-control"
-                                                    value="{{ $guardians->fathersOccupation ?? '' }}">
+                                                    value="{{ $guardians->fatherOccupation ?? '' }}" required>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-4">
                                             <div class="form-group">
                                                 <label>Mobile Number<span style="color: red;">*</span></label>
-                                                <input name="fathersMobile" type="text" class="form-control"
-                                                    value="{{ $guardians->fathersMobile ?? '' }}">
+                                                <input name="fathersContact" type="text" class="form-control"
+                                                    value="{{ $guardians->fatherContact ?? '' }}" required>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-4">
@@ -282,8 +282,8 @@
                                         <div class="col-12 col-sm-6 col-md-12">
                                             <div class="form-group">
                                                 <label>Address<span style="color: red;">*</span></label>
-                                                <input name="fatherAddress" type="text" class="form-control"
-                                                    value="{{ $guardians->fatherAddress ?? '' }}">
+                                                <input name="fathersAddress" type="text" class="form-control"
+                                                    value="{{ $guardians->fatherAddress ?? '' }}" required>
                                             </div>
                                         </div>
 
@@ -295,14 +295,14 @@
                                             <div class="form-group">
                                                 <label>Name of School<span style="color: red;">*</span></label>
                                                 <input name="lastSchool" type="text" class="form-control"
-                                                value="{{ $lastSchool->school ?? '' }}">
+                                                value="{{ $lastSchool->school ?? '' }}" required>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-6">
                                             <div class="form-group">
                                                 <label>General Average<span style="color: red;">*</span></label>
                                                 <input name="lastSchoolAverage" type="text" class="form-control"
-                                                value="{{ $lastSchool->genAverage ?? '' }}">
+                                                value="{{ $lastSchool->genAverage ?? '' }}" required>
                                             </div>
                                         </div>
                                         <div class="col-12">

@@ -52,30 +52,40 @@
                                     <table class="table table-hover table-center mb-0 datatable">
                                         <thead>
                                             <tr>
+                                                <th class="text-right">Action</th>
                                                 <th>ID</th>
                                                 <th>Name</th>
                                                 <th>AGE</th>
                                                 <th>Subjects</th>
                                                 <th>Mobile Number</th>
                                                 <th>Address</th>
-                                                <th class="text-right">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($teachers as $teacher)
                                             <tr>
+                                                <td class="text-right">
+                                                    <div class="actions">
+                                                        <a href="{{ route('edit-teacher.show', ['id' => $teacher->id]) }}" class="btn btn-sm bg-success-light mr-2">
+                                                            <i class="fas fa-pen"></i>
+                                                        </a>
+                                                        {{-- <a href="#" class="btn btn-sm bg-danger-light">
+                                                            <i class="fas fa-trash"></i>
+                                                        </a> --}}
+                                                    </div>
+                                                </td>
                                                 <td>{{$teacher->teacherId}}</td>
                                                 <td>
                                                     @foreach ($images as $image)
                                                         @if ($image->studentId == $teacher->teacherId)
                                                             <h2 class="table-avatar">
-                                                                <a href="{{ route('edit-teacher.show', ['id' => $teacher->id]) }}"" class="avatar avatar-sm mr-2">
+                                                                <a href="{{ route('edit-teacher.show', ['id' => $teacher->id]) }}" class="avatar avatar-sm mr-2">
                                                                     <img class="avatar-img rounded-circle" 
                                                                          src="{{ asset('storage/images/display-photo/' . $image->displayPhoto) }}" 
                                                                          alt="User Image">
                                                                 </a>
                                                                 <a href="{{ route('edit-teacher.show', ['id' => $teacher->id]) }}">
-                                                                    {{$teacher->firstName . ' ' . $teacher->lastName}}
+                                                                    {{$teacher->lastName . ' ' . $teacher->firstName}}
                                                                 </a>
                                                             </h2>
                                                             @break {{-- Break out of the loop after the first matching image --}}
@@ -99,16 +109,6 @@
                                                             @break
                                                         @endif
                                                     @endforeach
-                                                </td>
-                                                <td class="text-right">
-                                                    <div class="actions">
-                                                        <a href="{{ route('edit-teacher.show', ['id' => $teacher->id]) }}" class="btn btn-sm bg-success-light mr-2">
-                                                            <i class="fas fa-pen"></i>
-                                                        </a>
-                                                        {{-- <a href="#" class="btn btn-sm bg-danger-light">
-                                                            <i class="fas fa-trash"></i>
-                                                        </a> --}}
-                                                    </div>
                                                 </td>
                                             </tr>
                                             @endforeach

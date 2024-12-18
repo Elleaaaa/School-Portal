@@ -34,6 +34,7 @@ class EventController extends Controller
         // Create a new event instance
         $event = new Event();
         $event->eventName = $request->input('eventName');
+        $event->description = $request->input('description');
         $event->status = 'active';
         $event->start_datetime = $request->input('start_datetime');
         $event->end_datetime = $request->input('end_datetime');
@@ -95,6 +96,7 @@ class EventController extends Controller
                 return [
                     'id' => $event->id,
                     'title' => $event->eventName,
+                    'description' => $event->description,
                     'start' => $start_datetime,
                     'end' => $end_datetime,
                     'category' => $event->category,
@@ -135,6 +137,7 @@ class EventController extends Controller
         // Validation and update logic here
         $event = Event::findOrFail($id);
         $event->eventName = $request->input('eventName');
+        $event->description = $request->input('description');
         $event->category = $request->input('category');
         $event->start_datetime = $request->input('start_datetime');
         $event->end_datetime = $request->input('end_datetime');

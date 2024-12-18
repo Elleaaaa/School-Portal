@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
     <title>Dashboard</title>
-    
+
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;1,400&amp;display=swap">
     <link rel="stylesheet" href="{{ asset('plugins/bootstrap/css/bootstrap.min.css') }}">
@@ -220,7 +220,7 @@
 
                         <li class="{{ Request::routeIs('paymenthistoryadmin.show') ? 'active' : '' }}">
                             <a href="{{ route('paymenthistoryadmin.show') }}">
-                                <i class="fas fa-cash-register"></i><span> Payments Collection</span>
+                                <i class="fas fa-cash-register"></i><span> Collected Fees</span>
                             </a>
                         </li>
                         <li
@@ -242,10 +242,10 @@
                                     class="menu-arrow"></span></a>
                             <ul>
                                 <li class="{{ Request::routeIs('teacherlist.show') ? 'active' : '' }}">
-                                    <a href="{{ route('teacherlist.show') }}">Teacher List</a>
+                                    <a href="{{ route('teacherlist.show') }}">View Teachers</a>
                                 </li>
                                 <li class="{{ Request::routeIs('addteacher.show') ? 'active' : '' }}">
-                                    <a href="{{ route('addteacher.show') }}">Teacher Add</a>
+                                    <a href="{{ route('addteacher.show') }}">Add Teacher</a>
                                 </li>
                             </ul>
                         </li>
@@ -268,10 +268,24 @@
                                     class="menu-arrow"></span></a>
                             <ul>
                                 <li class="{{ Route::currentRouteName() == 'sectionlist.show' ? 'active' : '' }}">
-                                    <a href="{{ route('sectionlist.show') }}">Section List</a>
+                                    <a href="{{ route('sectionlist.show') }}">View Sections</a>
                                 </li>
                                 <li class="{{ Route::currentRouteName() == 'add-section.show' ? 'active' : '' }}">
-                                    <a href="{{ route('add-section.show') }}">Section Add</a>
+                                    <a href="{{ route('add-section.show') }}">Add Section</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li
+                            class="submenu {{ in_array(Route::currentRouteName(), ['subjectlist.show', 'addsubject.show']) ? 'active' : '' }}">
+                            <a href="#"><i class="fas fa-book"></i><span>Subjects</span><span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li class="{{ Route::currentRouteName() == 'subjectlist.show' ? 'active' : '' }}">
+                                    <a href="{{ route('subjectlist.show') }}">View Subjects</a>
+                                </li>
+                                <li class="{{ Route::currentRouteName() == 'addsubject.show' ? 'active' : '' }}">
+                                    <a href="{{ route('addsubject.show') }}">Add Subject</a>
                                 </li>
                             </ul>
                         </li>
@@ -288,10 +302,10 @@
                                     class="menu-arrow"></span></a>
                             <ul>
                                 <li class="{{ Route::currentRouteName() == 'timeTable.show' ? 'active' : '' }}">
-                                    <a href="{{ route('timeTable.show') }}">Schedule List</a>
+                                    <a href="{{ route('timeTable.show') }}">View Schedule</a>
                                 </li>
                                 <li class="{{ Route::currentRouteName() == 'add-timetable.show' ? 'active' : '' }}">
-                                    <a href="{{ route('add-timetable.show') }}">Schedule Add</a>
+                                    <a href="{{ route('add-timetable.show') }}">Add Schedule</a>
                                 </li>
                             </ul>
                         </li>
@@ -379,7 +393,7 @@
                                 </li>
                             </ul>
                         </li> --}}
-                        <li class="menu-title"><span>Management</span></li>
+                        {{-- <li class="menu-title"><span>Management</span></li>
                         <li
                             class="submenu {{ Request::routeIs('paymenthistoryadmin.show', 'addfees.show', 'paymentList.show') ? 'active' : '' }}">
                             <a href="#"><i class="fas fa-file-invoice-dollar"></i> <span> Accounts</span> <span
@@ -395,6 +409,22 @@
                                     <a href="{{ route('paymentList.show') }}">Payment List</a>
                                 </li>
                             </ul>
+                        </li> --}}
+
+                        <li class="{{ Request::routeIs('paymenthistoryadmin.show') ? 'active' : '' }}">
+                            <a href="{{ route('paymenthistoryadmin.show') }}">
+                            <i class="fas fa-coins"></i><span>Collected Fees</span>
+                        </a>
+                        </li>
+                        <li class="{{ Request::routeIs('addfees.show') ? 'active' : '' }}">
+                            <a href="{{ route('addfees.show') }}">
+                                <i class="fas fa-file-invoice-dollar"></i><span>Add Fees</span>
+                            </a>
+                        </li>
+                        <li class="{{ Request::routeIs('paymentList.show') ? 'active' : '' }}">
+                            <a href="{{ route('paymentList.show') }}">
+                                <i class="fas fa-list"></i><span>Payments List</span>
+                            </a>
                         </li>
                     @endif
 
@@ -413,10 +443,10 @@
                                     class="menu-arrow"></span></a>
                             <ul>
                                 <li class="{{ Route::currentRouteName() == 'studentlist.show' ? 'active' : '' }}">
-                                    <a href="{{ route('studentlist.show') }}">Student List</a>
+                                    <a href="{{ route('studentlist.show') }}">View Students</a>
                                 </li>
                                 <li class="{{ Route::currentRouteName() == 'addstudent.show' ? 'active' : '' }}">
-                                    <a href="{{ route('addstudent.show') }}">Student Add</a>
+                                    <a href="{{ route('addstudent.show') }}">Add Student</a>
                                 </li>
                             </ul>
                         </li>
@@ -427,7 +457,7 @@
                                     class="menu-arrow"></span></a>
                             <ul>
                                 <li class="{{ Route::currentRouteName() == 'teacherlist.show' ? 'active' : '' }}">
-                                    <a href="{{ route('teacherlist.show') }}">Teacher List</a>
+                                    <a href="{{ route('teacherlist.show') }}">View Teachers</a>
                                 </li>
                                 {{-- <li class="{{ Route::currentRouteName() == 'addteacher.show' ? 'active' : '' }}">
                                     <a href="{{ route('addteacher.show') }}">Teacher Add</a>
@@ -441,10 +471,10 @@
                                     class="menu-arrow"></span></a>
                             <ul>
                                 <li class="{{ Route::currentRouteName() == 'subjectlist.show' ? 'active' : '' }}">
-                                    <a href="{{ route('subjectlist.show') }}">Subject List</a>
+                                    <a href="{{ route('subjectlist.show') }}">View Subjects</a>
                                 </li>
                                 <li class="{{ Route::currentRouteName() == 'addsubject.show' ? 'active' : '' }}">
-                                    <a href="{{ route('addsubject.show') }}">Subject Add</a>
+                                    <a href="{{ route('addsubject.show') }}">Add Subject</a>
                                 </li>
                             </ul>
                         </li> --}}
@@ -678,7 +708,7 @@
         // Initialize dark mode options (customize if needed)
         const options = {
             bottom: '32px', // Position of the darkmode switch
-            right: '100px', // Distance from right edge
+            right: '30px', // Distance from right edge
             left: 'unset', // Distance from left edge
             time: '0.5s', // Transition time
             mixColor: '#fff', // Default color for transitions
@@ -694,8 +724,6 @@
         darkmode.showWidget(); // This will show the dark mode toggle button
     </script>
 
-<script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
-<script src="https://files.bpcontent.cloud/2024/10/16/13/20241016135041-AGJV7U92.js"></script>
 
 </body>
 

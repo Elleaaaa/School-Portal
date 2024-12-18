@@ -79,13 +79,13 @@
                                         <div class="col-12 col-sm-6 col-md-4">
                                             <div class="form-group">
                                                 <label>Date of Birth</label>
-                                                <input name="birthday" type="date" class="form-control" value=" {{ $teacher-> birthday}} ">
+                                                <input name="birthday" type="date" class="form-control" value="{{ $teacher->birthday ?? '' }}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6 col-md-4">
                                             <div class="form-group">
                                                 <label>Age</label>
-                                                <input name="age" type="text" class="form-control" value=" {{ $teacher-> age}}" >
+                                                <input name="age" type="text" class="form-control" value=" {{ $teacher->age}}" >
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6">

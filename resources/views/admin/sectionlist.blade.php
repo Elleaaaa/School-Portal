@@ -39,26 +39,16 @@
                               <table class="table table-hover table-center mb-0 datatable">
                                  <thead>
                                     <tr>
+                                       <th class="text-right">Action</th>
                                        <th>Grade Level</th>
                                        <th>Section</th>
                                        <th>Section Name</th>
                                        <th>Adviser</th>
-                                       <th class="text-right">Action</th>
                                     </tr>
                                  </thead>
                                  <tbody>
                                     @foreach ($sections as $section)
                                     <tr>
-                                       <td>{{ $section->gradeLevel }}</td>
-                                       <td>{{ $section->section }}</td>
-                                       <td>{{ $section->sectionName }}</td>
-                                       <td>
-                                        @foreach ($teachers as $teacher)
-                                            @if ($teacher->teacherId === $section->teacherId)
-                                                {{ $teacher->firstName }} {{ $teacher->lastName }}
-                                            @endif
-                                        @endforeach
-                                        </td>
                                        <td class="text-right">
                                           <div class="actions">
                                              <a href="{{ route('edit-section.show', ['id' => $section->id]) }}" class="btn btn-sm bg-success-light mr-2">
@@ -69,6 +59,16 @@
                                              </a>
                                           </div>
                                        </td>
+                                       <td>{{ $section->gradeLevel }}</td>
+                                       <td>{{ $section->section }}</td>
+                                       <td>{{ $section->sectionName }}</td>
+                                       <td>
+                                        @foreach ($teachers as $teacher)
+                                            @if ($teacher->teacherId === $section->teacherId)
+                                                {{ $teacher->firstName }} {{ $teacher->lastName }}
+                                            @endif
+                                        @endforeach
+                                        </td>
                                     </tr>
                                     @endforeach
                                  </tbody>

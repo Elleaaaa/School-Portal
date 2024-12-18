@@ -165,66 +165,111 @@ class EnrolleesController extends Controller
     public function checkPaymentStatus(Request $request)
     {
         $studentId = $request->input('studentId');
-    
+
         // Check if the student has any payment records for the current school year
         $hasPayments = Fee::where('studentId', $studentId)
             ->where('schoolYear', date('Y') . '-' . (date('Y') + 1))
             ->exists();
-    
+
         if (!$hasPayments) {
             return response()->json(['success' => false, 'message' => 'No Payment Records Found!']);
         }
-    
+
         // Check for fully paid status
         $fullyPaid = Fee::where('studentId', $studentId)
             ->where('status', 'Fully Paid')
             ->where('schoolYear', date('Y') . '-' . (date('Y') + 1))
             ->latest()
             ->first();
-    
+
         // Check for not fully paid status
         $notFullyPaid = Fee::where('studentId', $studentId)
             ->where('status', 'Not Fully Paid')
             ->where('schoolYear', date('Y') . '-' . (date('Y') + 1))
             ->latest()
             ->first();
-    
+
         // Determine the payment status
         if ($fullyPaid) {
             return response()->json(['success' => true, 'status' => 'fully_paid', 'message' => 'Payment status: Fully Paid.']);
         }
-    
+
         if ($notFullyPaid) {
             return response()->json(['success' => true, 'status' => 'not_fully_paid', 'message' => 'Payment status: Not Fully Paid.']);
         }
-    
+
         return response()->json(['success' => true, 'status' => 'unknown', 'message' => 'No specific payment status found.']);
     }
-    
 
 
-    public function selfEnroll(Request $request) // backend for self enroll of the student
+
+    // public function selfEnroll(Request $request) // backend for self enroll of the student
+    // {
+    //     $fName = $request->input('firstName');
+    //     $mName = $request->input('middleName');
+    //     $lName = $request->input('lastName');
+    //     $sName = $request->input('suffixName');
+    //     $fullName = $fName . ' ' . $mName . ' ' . $lName . ' ' . $sName;
+
+    //     // Check if the student is already enrolled this SY
+    //     $year = date('Y');
+    //     $month = date('m');
+
+    //     if ($month <= 6) {
+    //         $schoolYear = ($year - 1) . '-' . $year;
+    //     } else {
+    //         $schoolYear = $year . '-' . ($year + 1);
+    //     }
+
+    //     // Enroll Student
+    //     $enrollee = new Enrollee();
+
+    //     $enrollee->studentId = $request->input('studentId');
+    //     $enrollee->name = $fullName;
+    //     $enrollee->subjects = $request->input('subjects');
+    //     $enrollee->gradeLevel = $request->input('gradeLevel');
+    //     $enrollee->section = $request->input('section');
+    //     $enrollee->semester = $request->input('semester');
+    //     $enrollee->strand = $request->input('strand');
+    //     $enrollee->classType = $request->input('classType');
+    //     $enrollee->schoolYear = $schoolYear;
+    //     $enrollee->status = $request->input('status');
+    //     $enrollee->save();
+
+    //     $notif = new Notification();
+    //     $notif->userId = $request->input('studentId');
+    //     $notif->title = "Pending Enrollment!";
+    //     $notif->message = "Wait for Registrar to approved your enrollment";
+    //     $notif->type = "enrollment";
+    //     $notif->userRole = "student";
+    //     $notif->save();
+
+    //     // create row for each subjects
+    //     $subjects = explode(',', $request->input('subjects'));
+    //     foreach ($subjects as $subject) {
+    //         $grade = new Grade();
+    //         $grade->studentId = $request->input('studentId');
+    //         $grade->gradeLevel = $request->input('gradeLevel');
+    //         $grade->section = $request->input('section');
+    //         $grade->semester = $request->input('semester');
+    //         $grade->subject = $subject;
+    //         $grade->firstQGrade = 'not yet graded';
+    //         $grade->secondQGrade = 'not yet graded';
+    //         $grade->thirdQGrade = 'not yet graded';
+    //         $grade->fourthQGrade = 'not yet graded';
+    //         $grade->schoolYear = $schoolYear;
+    //         $grade->save();
+    //     }
+
+    //     notify()->success('Wait for registrar to confirm!');
+    //     return redirect()->route('selfEnrollment.show');
+    // }
+
+    // used in selfEnroll Code below
+    private function enrollStudent($studentId, $fullName, $request, $schoolYear)
     {
-        $fName = $request->input('firstName');
-        $mName = $request->input('middleName');
-        $lName = $request->input('lastName');
-        $sName = $request->input('suffixName');
-        $fullName = $fName . ' ' . $mName . ' ' . $lName . ' ' . $sName;
-
-        // Check if the student is already enrolled this SY
-        $year = date('Y');
-        $month = date('m');
-
-        if ($month <= 6) {
-            $schoolYear = ($year - 1) . '-' . $year;
-        } else {
-            $schoolYear = $year . '-' . ($year + 1);
-        }
-
-        // Enroll Student
         $enrollee = new Enrollee();
-
-        $enrollee->studentId = $request->input('studentId');
+        $enrollee->studentId = $studentId;
         $enrollee->name = $fullName;
         $enrollee->subjects = $request->input('subjects');
         $enrollee->gradeLevel = $request->input('gradeLevel');
@@ -232,36 +277,115 @@ class EnrolleesController extends Controller
         $enrollee->semester = $request->input('semester');
         $enrollee->strand = $request->input('strand');
         $enrollee->classType = $request->input('classType');
+        $enrollee->schoolYear = $schoolYear;
         $enrollee->status = $request->input('status');
         $enrollee->save();
 
         $notif = new Notification();
-        $notif->userId = $request->input('studentId');
-        $notif->title = "Pending Enrollment!";
-        $notif->message = "Wait for Registrar to approved your enrollment";
+        $notif->userId = $studentId;
+        $notif->title = "Enrollment Approved!";
+        $notif->message = "Congratulations! Your enrollment for school year $schoolYear has been approved.";
         $notif->type = "enrollment";
         $notif->userRole = "student";
         $notif->save();
+    }
 
-        // create row for each subjects
-        $subjects = explode(',', $request->input('subjects'));
-        foreach ($subjects as $subject) {
-            $grade = new Grade();
-            $grade->studentId = $request->input('studentId');
-            $grade->gradeLevel = $request->input('gradeLevel');
-            $grade->section = $request->input('section');
-            $grade->semester = $request->input('semester');
-            $grade->subject = $subject;
-            $grade->firstQGrade = 'not yet graded';
-            $grade->secondQGrade = 'not yet graded';
-            $grade->thirdQGrade = 'not yet graded';
-            $grade->fourthQGrade = 'not yet graded';
-            $grade->schoolYear = $schoolYear;
-            $grade->save();
+    public function selfEnroll(Request $request)
+    {
+        $fName = $request->input('firstName');
+        $mName = $request->input('middleName');
+        $lName = $request->input('lastName');
+        $sName = $request->input('suffixName');
+        $fullName = trim("$fName $mName $lName $sName");
+
+        // Determine the current school year
+        $year = date('Y');
+        $month = date('m');
+
+        $schoolYear = $month <= 6 ? ($year - 1) . '-' . $year : $year . '-' . ($year + 1);
+
+        $studentId = $request->input('studentId');
+        $semester = $request->input('semester');
+        $gradeLevel = $request->input('gradeLevel');
+
+        // Check if the student is already enrolled
+        $existingEnrollment = Enrollee::where('studentId', $studentId)
+            ->where('schoolYear', $schoolYear)
+            ->first();
+
+        if ($existingEnrollment) {
+            // Check if the student is in Grade 11 or Grade 12
+            if (in_array($existingEnrollment->gradeLevel, ['Grade 11', 'Grade 12'])) {
+                // Allow enrollment only if the semester is different
+                if ($existingEnrollment->semester != $semester) {
+                    $this->enrollStudent($studentId, $fullName, $request, $schoolYear);
+                } else {
+                    notify()->error('You are currently enrolled in this school year!');
+                    return redirect()->back();
+                }
+            } else {
+                // For other grade levels, prevent re-enrollment in the same school year
+                notify()->error('You are currently enrolled in this school year!');
+                return redirect()->back();
+            }
+        } else {
+            // No existing enrollment found, proceed with enrollment
+            $this->enrollStudent($studentId, $fullName, $request, $schoolYear);
         }
 
-        notify()->success('Wait for registrar to confirm!');
-        return redirect()->route('selfEnrollment.show');
+        // Process grades for subjects
+        $subjects = explode(',', $request->input('subjects'));
+        $subjects = array_map('trim', $subjects); // Remove any extra spaces around subjects
+
+        if (in_array($gradeLevel, ['Grade 11', 'Grade 12'])) {
+            foreach ($subjects as $subject) {
+                $grade = new SHSGrade();
+                $grade->studentId = $studentId;
+                $grade->gradeLevel = $gradeLevel;
+                $grade->section = $request->input('section');
+                $grade->semester = $semester;
+                $grade->subject = $subject;
+                $grade->midterm = 'ongoing';
+                $grade->finals = 'ongoing';
+                $grade->schoolYear = $schoolYear;
+                $grade->save();
+
+                // Save logs
+                $logs = new Log();
+                $logs->studentId = $studentId;
+                $logs->type = "enroll_student_shs";
+                $logs->activity = "$studentId enrolled $fullName in $schoolYear.";
+                $logs->save();
+            }
+
+            notify()->success('Student Enrolled Successfully!');
+            return redirect()->route('enroll-student-shs.show');
+        } else {
+            foreach ($subjects as $subject) {
+                $grade = new Grade();
+                $grade->studentId = $studentId;
+                $grade->gradeLevel = $gradeLevel;
+                $grade->section = $request->input('section');
+                $grade->semester = $semester;
+                $grade->subject = $subject;
+                $grade->firstQGrade = 'ongoing';
+                $grade->secondQGrade = 'ongoing';
+                $grade->thirdQGrade = 'ongoing';
+                $grade->fourthQGrade = 'ongoing';
+                $grade->schoolYear = $schoolYear;
+                $grade->save();
+
+                // Save logs
+                $logs = new Log();
+                $logs->studentId = $studentId;
+                $logs->type = "enroll_student_jhs";
+                $logs->activity = "$studentId enrolled $fullName in $schoolYear.";
+                $logs->save();
+            }
+
+            notify()->success('Student Enrolled Successfully!');
+            return redirect()->route('enroll-student.show');
+        }
     }
 
     /**

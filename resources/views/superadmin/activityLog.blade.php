@@ -41,11 +41,11 @@
                                 <li class="breadcrumb-item active">Activity Logs</li>
                             </ul>
                         </div>
-                        <div class="col-auto text-right float-right ml-auto">
+                        {{-- <div class="col-auto text-right float-right ml-auto">
 
                             <a href="{{ route('addsubject.show') }}" class="btn btn-primary">Add Subject <i
                                     class="fas fa-plus"></i></a>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                 <div class="row">
@@ -76,7 +76,8 @@
                                                             {{ $log->activity }}
                                                         </span>
                                                     </td>
-                                                    <td>{{ \Carbon\Carbon::parse($log->created_at)->format('M d, Y h:ia') }}</td>
+                                                    {{-- <td>{{ \Carbon\Carbon::parse($log->created_at)->format('M d, Y h:ia') }}</td> --}}
+                                                    <td>{{$log->created_at}}</td>
 
                                                 </tr>
                                             @endforeach

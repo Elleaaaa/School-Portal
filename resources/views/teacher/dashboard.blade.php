@@ -53,7 +53,7 @@
                 <div class="page-header">
                     <div class="row">
                         <div class="col-sm-12">
-                            <h3 class="page-title">Welcome {{ $teacher->firstName }}</h3>
+                            <h3 class="page-title">Welcome {{ $teacher->firstName .' '. $teacher->lastName .' '. $teacher->suffix}}</h3>
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item"><strong>Dashboard</strong></li>
                                 <li class="breadcrumb-item active">Teacher Dashboard</li>

@@ -371,9 +371,6 @@ class StudentController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        // Add New Student
-        // $student = new Student();
-
         // Update Student
         $student = Student::find($id);
         $studentId = $student->studentId;
@@ -399,7 +396,8 @@ class StudentController extends Controller
         $student->studentId = $request->input('studentId');
         $student->gender = $request->input('gender');
         $student->birthday = $request->input('birthday');
-        $student->age = $request->input('age');
+        $birthday = new \Carbon\Carbon($student->birthday);
+        $student->age = $birthday->age;
         $student->mobileNumber = $request->input('mobileNumber');
         $student->landlineNumber = $request->input('landlineNumber');
         $student->religion = $request->input('religion');
@@ -420,23 +418,41 @@ class StudentController extends Controller
         $guardian = Guardian::where('studentId', $studentId)->first();
         $guardian->mothersFirstName = $request->input('mothersFirstName');
         $guardian->mothersLastName = $request->input('mothersLastName');
-        $guardian->motherAge = $request->input('motherAge');
-        $guardian->motherOccupation = $request->input('motherOccupation');
-        $guardian->motherContact = $request->input('motherContact');
-        $guardian->motherAddress = $request->input('motherAddress');
+        $guardian->motherAge = $request->input('mothersAge');
+        $guardian->motherOccupation = $request->input('mothersOccupation');
+        $guardian->motherContact = $request->input('mothersContact');
+        $guardian->motherAddress = $request->input('mothersAddress');
 
         $guardian->fathersFirstName = $request->input('fathersFirstName');
         $guardian->fathersLastName = $request->input('fathersLastName');
         $guardian->fathersSuffix = $request->input('fathersSuffix');
         $guardian->fatherAge = $request->input('fatherAge');
-        $guardian->fatherOccupation = $request->input('fatherOccupation');
-        $guardian->fatherContact = $request->input('fatherContact');
-        $guardian->fatherAddress = $request->input('fatherAddress');
+        $guardian->fatherOccupation = $request->input('fathersOccupation');
+        $guardian->fatherContact = $request->input('fathersContact');
+        $guardian->fatherAddress = $request->input('fathersAddress');
         $guardian->save();
+
+        // Update Last School
+        $lastschool = LastSchool::where('studentId', $studentId)->first();
+        $lastschool->school = $request->input('lastSchool');
+        $lastschool->genAverage = $request->input('lastSchoolAverage');
+        $lastschool->save();
 
         $user = User::where('studentId', $studentId)->first();
         $user->completeProfile = True;
         $user->save();
+
+        $fName = $request->input('firstName');
+        $mName = $request->input('middleName');
+        $lName = $request->input('lastName');
+        $suffix = $request->input('suffixName');
+        $fullName = $lName . " " . $suffix . " " . $fName . " " . $mName;
+
+        $enrollee = Enrollee::where('studentId', $studentId)->first();
+        if ($enrollee) {
+            $enrollee->name = $fullName;
+            $enrollee->save();
+        }
 
         notify()->success('Student Record Updated Successfully!');
         return redirect()->route('profile-details.show', ['studentId' => $studentId]);
@@ -458,7 +474,8 @@ class StudentController extends Controller
         $student->suffix = $request->input('suffixName');
         $student->gender = $request->input('gender');
         $student->birthday = $request->input('birthday');
-        $student->age = $request->input('age');
+        $birthday = new \Carbon\Carbon($student->birthday);
+        $student->age = $birthday->age;
         $student->mobileNumber = $request->input('mobileNumber');
         $student->landlineNumber = $request->input('landlineNumber');
         $student->religion = $request->input('religion');
@@ -492,7 +509,7 @@ class StudentController extends Controller
             $logs->save();
         }
 
-        $fullName = trim($request->input('firstName') . ' ' . $request->input('middleName') . ' ' . $request->input('lastName') . ' ' . $request->input('suffixName'));
+        $fullName = trim($request->input('lastName') . ' ' . $request->input('suffixName') . ' ' . $request->input('firstName') . ' ' . $request->input('middleName'));
         // Update the Enrollee's name
         Enrollee::where('studentId', $studentId)->update([
             'name' => $fullName,

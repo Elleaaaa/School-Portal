@@ -108,7 +108,7 @@
                                             <div class="form-group">
                                                 <label>Age</label>
                                                 <input name="age" type="text" class="form-control"
-                                                    value="{{ $teacher->age ?? '' }}">
+                                                    value="{{ $teacher->age ?? '' }}" readonly>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6">

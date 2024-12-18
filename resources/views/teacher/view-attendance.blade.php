@@ -54,10 +54,10 @@
                                     <tr>
                                         <td>{{ $student->name }}</td>
                                         <td>{{ $student->section ?? 'N/A' }}</td>
-                                        <td style="background-color: {{ $record->status == 1 ? '#90ee90' : '#ff4d4d' }};">
+                                        <td style="background-color: {{ $record->status == 1 ? '#d2f8d2' : '#ffcccc' }};">
                                             {{ $record->status == 1 ? 'Present' : 'Absent' }}
-                                        </td>
-                                        <td>{{ $record->date }}</td>
+                                        </td>                                        
+                                        <td>{{ \Carbon\Carbon::parse($record->date)->format('M d Y') }}</td>
                                     </tr>
                                 @endforeach
                             @endforeach

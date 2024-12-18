@@ -9,6 +9,7 @@ use App\Models\Scholar;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AssessorController extends Controller
 {
@@ -17,25 +18,31 @@ class AssessorController extends Controller
      */
     public function showDashboard()
     {
-        return view('assessor.dashboard');
+        $assessorId = Auth::user()->studentId;
+        $assessor = Assessor::where('assessorId', $assessorId)->first();
+
+        $assessorName = $assessor->firstName . " " . $assessor->lastName . " " . $assessor->suffixName;
+
+        return view('assessor.dashboard', compact('assessorName'));
     }
 
     public function showProfile(string $assessorId)
     {
         $user = User::where('studentId', $assessorId)->first();
         $assessor = Assessor::where('assessorId', $assessorId)->first();
+        $address = Address::where('studentId', $assessorId)->first();
 
-        return view('assessor.profile-details', compact('assessor', 'user'));
+        return view('assessor.profile-details', compact('assessor', 'user', 'address'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $assessorId)
     {
         // Add New Student
         // $student = new Student();
 
         // Update Assessor profile
-        $assessor = Assessor::find($id);
-        $adminPhoto = User::find($id);
+        $assessor = Assessor::where('assessorId', $assessorId)->first();
+        $assessorPhoto = User::where('studentId', $assessorId)->first();
         $assessorId = $assessor->assessorId; //change
         if ($request->hasFile('displayPhoto')) {
             $file = $request->file('displayPhoto');
@@ -47,23 +54,24 @@ class AssessorController extends Controller
             $file->storeAs('public/images/display-photo', $filename);
 
             // Update the student's displayPhoto attribute with the filename
-            $adminPhoto->displayPhoto = $filename;
+            $assessorPhoto->displayPhoto = $filename;
         }
 
         $assessor->firstName = $request->input('firstName');
         $assessor->middleName = $request->input('middleName');
         $assessor->lastName = $request->input('lastName');
         $assessor->suffix = $request->input('suffixName');
-        $assessor->adminId = $request->input('studentId');
+        $assessor->assessorId = $request->input('studentId');
         $assessor->gender = $request->input('gender');
         $assessor->birthday = $request->input('birthday');
-        $assessor->age = $request->input('age');
+        $birthday = new \Carbon\Carbon($assessor->birthday);
+        $assessor->age = $birthday->age;
         $assessor->mobileNumber = $request->input('mobileNumber');
         $assessor->landlineNumber = $request->input('landlineNumber');
         $assessor->religion = $request->input('religion');
         $assessor->placeOfBirth = $request->input('birthplace');
         $assessor->save();
-        $adminPhoto->save();
+        $assessorPhoto->save();
 
         // Add New Address
         $address = Address::where('studentId', $assessorId)->first();

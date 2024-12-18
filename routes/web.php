@@ -28,23 +28,27 @@ use App\Http\Controllers\FormController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\VRController;
+use App\Http\Controllers\WebsiteController;
 use App\Models\Discount;
 use App\Models\Enrollee;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Support\Facades\Auth;
 
-Route::get('/login', function () {
-    return view('login');
-})->middleware(['auth', 'verified'])->name('login'); // will redirect here after register
+// Route::get('/login', function () {
+//     return view('login');
+// })->middleware(['auth', 'verified'])->name('login'); // will redirect here after register
+
+
 
 //Limit the request of the users
 Ratelimiter::for('auth_limited', function (Request $request) {
     // Check if the user is authenticated
     if ($user = $request->user()) {
         // Rate limit authenticated users by their ID
-        return Limit::perMinute(60)->by($user->id);
+        return Limit::perMinute(100)->by($user->id);
     }
     // Rate limit unauthenticated users by their IP address
-    return Limit::perMinute(60)->by($request->ip());
+    return Limit::perMinute(100)->by($request->ip());
 });
 
 Route::middleware([PreventBackHistory::class])->group(function () { //this will prevent back after logout
@@ -56,7 +60,7 @@ Route::middleware([PreventBackHistory::class])->group(function () { //this will 
 
     Route::middleware(['guest'])->group(function () {
         // FOR LOGGING IN
-        Route::get('/', [LoginController::class, 'index'])->name('login')->middleware('throttle:auth_limited');
+        Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('throttle:auth_limited');
         Route::post('/login1', [LoginController::class, 'login'])->name('login1');
     });
 
@@ -275,7 +279,6 @@ Route::middleware([PreventBackHistory::class])->group(function () { //this will 
 
 
     // CASHIER ROUTES
-
     Route::middleware(['auth', 'throttle:auth_limited'])->group(function () {
         Route::get('/cashier-dashboard/{cashierId}', [CashierController::class, 'showDashboard'])->name('cashier-dashboard.show');
         Route::get('/profile-cashier/{cashierId}', [CashierController::class, 'showProfile'])->name('profile-cashier.show');
@@ -292,6 +295,8 @@ Route::middleware([PreventBackHistory::class])->group(function () { //this will 
         Route::get('/get-discount', [FeeController::class, 'getDiscount'])->name('getDiscount');
 
         Route::get('/fees/amount', [FeeController::class, 'getAmountFeeAJAX']);
+
+        Route::get('/student/payment-history/{studentId}', [FeeController::class, 'studentPaymentHistory'])->name('studentpaymenthistory.show');
     });
 
     Route::middleware(['auth', 'throttle:auth_limited'])->group(function () {
@@ -301,26 +306,46 @@ Route::middleware([PreventBackHistory::class])->group(function () { //this will 
         Route::post('/notifications/mark-as-read/{id}', [NotificationController::class, 'markAsRead']);
         Route::post('/notifications/clear-all', [NotificationController::class, 'clearAll']);
     });
+
+    // this routes are for remember me to work
+    Route::get('/', function () {
+        if (Auth::check()) {
+            // Redirect to the appropriate dashboard
+            $user = Auth::user();
+            switch ($user->usertype) {
+                case 'superadmin':
+                    return redirect()->route('supadmin-dashboard.show', ['supAdminId' => $user->studentId]);
+                case 'admin':
+                    return redirect()->route('admin-dashboard.show', ['studentId' => $user->studentId]);
+                case 'cashier':
+                    return redirect()->route('cashier-dashboard.show', ['cashierId' => $user->studentId]);
+                case 'assessor':
+                    return redirect()->route('assessor-dashboard.show', ['assessorId' => $user->studentId]);
+                case 'teacher':
+                    return redirect()->route('teacher-dashboard.show', ['teacherId' => $user->studentId]);
+                default:
+                    return redirect()->route('student-dashboard.show');
+            }
+        }
+        return view('/'); // Show the landing page for unauthenticated users
+    });
+
 });
 
 Route::get('/vrsample', [VRController::class, 'index']);
 
-
-Route::get('/fees-collection', function () {
-    return view('admin.fees-collection');
-})->name('fees-collection');
-
-Route::get('/expenses', function () {
-    return view('admin.expenses');
-})->name('expenses');
-
-Route::get('/salary', function () {
-    return view('admin.salary');
-})->name('salary');
-
-Route::get('/events', function () {
-    return view('admin.events');
-})->name('events');
+Route::get('/', [WebsiteController::class, 'index'])->name('homepage.show');
+Route::get('/Liceo-De-Bay/about', [WebsiteController::class, 'about'])->name('about.show');
+Route::get('/Liceo-De-Bay/blog', [WebsiteController::class, 'about'])->name('blog.show');
+Route::get('/Liceo-De-Bay/blog-single', [WebsiteController::class, 'blogSingle'])->name('blogSingle.show');
+Route::get('/Liceo-De-Bay/contact', [WebsiteController::class, 'contact'])->name('contact.show');
+Route::get('/Liceo-De-Bay/events', [WebsiteController::class, 'event'])->name('event.show');
+Route::get('/Liceo-De-Bay/event-single', [WebsiteController::class, 'eventSingle'])->name('eventSingle.show');
+Route::get('/Liceo-De-Bay/teachers', [WebsiteController::class, 'teacher'])->name('teacher.show');
+Route::get('/Liceo-De-Bay/teacher-single', [WebsiteController::class, 'teacherSingle'])->name('teacherSingle.show');
+Route::get('/Liceo-De-Bay/scholarship', [WebsiteController::class, 'scholarship'])->name('scholarship.show');
+Route::get('/Liceo-De-Bay/notice', [WebsiteController::class, 'notice'])->name('notice.show');
+Route::get('/Liceo-De-Bay/hierarchy', [WebsiteController::class, 'hierarchy'])->name('hierarchy.show');
 
 
 

@@ -42,7 +42,7 @@
                 <div class="page-header">
                     <div class="row">
                         <div class="col-sm-12">
-                            <h3 class="page-title">Welcome superadmin</h3>
+                            <h3 class="page-title">Welcome {{$supAdminFullName}}</h3>
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item active">Dashboard</li>
                             </ul>
@@ -346,6 +346,11 @@
                                     <label for="eventName">Event Name</label>
                                     <input type="text" class="form-control" id="eventName" name="eventName"
                                         placeholder="Enter Event Name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="description">Description</label>
+                                    <input type="text" class="form-control" id="description" name="description"
+                                        placeholder="description" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="category">Category</label>

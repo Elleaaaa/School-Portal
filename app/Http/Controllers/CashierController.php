@@ -35,8 +35,9 @@ class CashierController extends Controller
     {
         $user = User::where('studentId', $cashierId)->first();
         $cashier = Cashier::where('cashierId', $cashierId)->first();
+        $address = Address::where('studentId', $cashierId)->first();
 
-        return view('cashier.profile-details', compact('cashier', 'user'));
+        return view('cashier.profile-details', compact('cashier', 'user', 'address'));
     }
 
     public function update(Request $request, string $cashierId)
@@ -66,7 +67,8 @@ class CashierController extends Controller
         $cashier->cashierId = $request->input('studentId');
         $cashier->gender = $request->input('gender');
         $cashier->birthday = $request->input('birthday');
-        $cashier->age = $request->input('age');
+        $birthday = new \Carbon\Carbon($cashier->birthday);
+        $cashier->age = $birthday->age;
         $cashier->mobileNumber = $request->input('mobileNumber');
         $cashier->landlineNumber = $request->input('landlineNumber');
         $cashier->religion = $request->input('religion');

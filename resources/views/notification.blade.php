@@ -4,7 +4,7 @@
    <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-      <title>Smartious - Subjects</title>
+      <title>Notifications</title>
       <link rel="shortcut icon" href="assets/img/favicon.png">
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;1,400&amp;display=swap">
       <link rel="stylesheet" href="{{ asset('plugins/bootstrap/css/bootstrap.min.css') }}">
@@ -12,6 +12,19 @@
       <link rel="stylesheet" href="{{ asset('plugins/fontawesome/css/all.min.css') }}">
       <link rel="stylesheet" href="{{ asset('plugins/datatables/datatables.min.css') }}">
       <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
+      <style>
+          .table .text-truncate {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .table td span {
+            cursor: pointer;
+        }
+        
+      </style>
    </head>
    <body>
       <div class="main-wrapper">
@@ -43,13 +56,23 @@
                                     <tr>
                                        <th>Title</th>
                                        <th>Message</th>
+                                       <th>Date</th>
                                     </tr>
                                  </thead>
                                  <tbody>
                                     @foreach ($notifications as $notification)
                                     <tr>
                                        <td>{{$notification->title}}</td>
-                                       <td>{{$notification->message}}</td>
+                                       <td>
+                                          <span class="d-inline-block text-truncate"
+                                          style="max-width: 200px; cursor: pointer;"
+                                          data-state="truncated" data-bs-toggle="tooltip"
+                                          data-bs-placement="top" title="{{ $notification->message }}"
+                                          onclick="toggleDescription(this)">
+                                          {{ $notification->message }}
+                                          </span>
+                                       </td>
+                                       <td>{{ \Carbon\Carbon::parse($notification->created_at)->format('M d, Y h:ia') }}</td>
                                     </tr>
                                     @endforeach
                                  </tbody>
@@ -80,5 +103,24 @@
      }
      });
      </script>
+     
+     <script>
+         function toggleDescription(element) {
+            const isTruncated = element.getAttribute('data-state') === 'truncated';
+
+            if (isTruncated) {
+               // Expand the text
+               element.style.maxWidth = 'none'; // Remove width restriction
+               element.classList.remove('text-truncate'); // Remove truncation class
+               element.setAttribute('data-state', 'expanded'); // Update state
+               $(element).tooltip('hide'); // Hide tooltip
+            } else {
+               // Truncate the text again
+               element.style.maxWidth = '200px'; // Reapply width restriction
+               element.classList.add('text-truncate'); // Reapply truncation class
+               element.setAttribute('data-state', 'truncated'); // Update state
+            }
+         }
+   </script>
    </body>
    </html>

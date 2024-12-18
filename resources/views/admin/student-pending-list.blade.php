@@ -37,20 +37,16 @@
                               <table class="table table-hover table-center mb-0 datatable">
                                  <thead>
                                     <tr>
+                                       <th class="text-right">Action</th>
                                        <th>Name</th>
                                        <th>Subjects</th>
                                        <th>Grade Level </th>
                                        <th>Section</th>
-                                       <th class="text-right">Action</th>
                                     </tr>
                                  </thead>
                                  <tbody>
                                     @foreach ($enrollees as $enrollee)
                                     <tr>
-                                       <td>{{$enrollee->name}}</td>
-                                       <td>{{$enrollee->subjects}}</td>
-                                       <td>{{$enrollee->gradeLevel}}
-                                       <td>{{$enrollee->section}}</td>
                                        <td class="text-right">
                                           <div class="actions">
                                              <a href="{{ route('edit-enroll-student.show', ['id' => $enrollee->id]) }}" class="btn btn-sm bg-success-light mr-2">
@@ -61,6 +57,10 @@
                                              </a>
                                           </div>
                                        </td>
+                                       <td>{{$enrollee->name}}</td>
+                                       <td>{{$enrollee->subjects}}</td>
+                                       <td>{{$enrollee->gradeLevel}}
+                                       <td>{{$enrollee->section}}</td>
                                     </tr>
                                     @endforeach
                                  </tbody>

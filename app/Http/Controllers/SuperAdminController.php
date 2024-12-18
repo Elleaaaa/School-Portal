@@ -74,7 +74,10 @@ class SuperAdminController extends Controller
                                 ->distinct('studentId') //to prevent duplicates
                                 ->count();
 
-        return view('superadmin.dashboard', compact('supAdmin', 'enrolledCount', 'teachersCount', 'tuitionTotalPaidCount', 'tuitionTotalNotPaidCount', 'pendingCount', 'grade7', 'grade8', 'grade9', 'grade10', 'grade11', 'grade12', 'absentToday', 'presentToday'));
+        $supAdminName = SuperAdmin::where('supAdminId', $supAdminId)->first();
+        $supAdminFullName = $supAdminName->firstName . ' ' . $supAdminName->lastName . ' ' . $supAdminName->suffix;
+
+        return view('superadmin.dashboard', compact('supAdmin', 'supAdminFullName', 'enrolledCount', 'teachersCount', 'tuitionTotalPaidCount', 'tuitionTotalNotPaidCount', 'pendingCount', 'grade7', 'grade8', 'grade9', 'grade10', 'grade11', 'grade12', 'absentToday', 'presentToday'));
     }
 
     
@@ -82,8 +85,9 @@ class SuperAdminController extends Controller
     {
         $user = User::where('studentId', $supAdminId)->first();
         $supAdmin = SuperAdmin::where('supAdminId', $supAdminId)->first();
+        $address = Address::where('studentId', $supAdminId)->first();
 
-        return view('superadmin.profile-details', compact('supAdmin', 'user'));
+        return view('superadmin.profile-details', compact('supAdmin', 'user', 'address'));
     }
 
     public function update(Request $request, string $supAdminId)
@@ -115,7 +119,8 @@ class SuperAdminController extends Controller
          $superAdmin->supAdminId = $request->input('studentId');
          $superAdmin->gender = $request->input('gender');
          $superAdmin->birthday = $request->input('birthday');
-         $superAdmin->age = $request->input('age');
+         $birthday = new \Carbon\Carbon($superAdmin->birthday);
+         $superAdmin->age = $birthday->age;
          $superAdmin->mobileNumber = $request->input('mobileNumber');
          $superAdmin->landlineNumber = $request->input('landlineNumber');
          $superAdmin->religion = $request->input('religion');

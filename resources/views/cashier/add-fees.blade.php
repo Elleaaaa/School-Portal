@@ -158,6 +158,16 @@
                                             </div>
                                         </div>
 
+                                        <!-- Receipt ID -->
+                                        <div class="col-12 col-sm-6">
+                                            <div class="form-group">
+                                                <label>Control Number</label>
+                                                <input type="number" class="form-control" name="receiptId"
+                                                    id="receiptId" required>
+                                            </div>
+                                        </div>
+
+                                        <!-- Reciever -->
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label>Reciever</label>

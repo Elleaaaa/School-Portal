@@ -58,16 +58,27 @@
                                     <table class="table table-hover table-center mb-0 datatable">
                                         <thead>
                                             <tr>
+                                                <th class="text-right">Action</th>
                                                 <th>Discount Type</th>
                                                 <th>Percentage</th>
                                                 <th>Amount</th>
                                                 <th>Status</th>
-                                                <th class="text-right">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($discounts as $discount)
                                                 <tr>
+                                                    <td class="text-right">
+                                                        <div class="actions">
+                                                            <a href="{{ route('edit-discount.show', ['id' => $discount->id]) }}"
+                                                                class="btn btn-sm bg-success-light mr-2">
+                                                                <i class="fas fa-pen"></i>
+                                                            </a>
+                                                            {{-- <a href="#" class="btn btn-sm bg-danger-light">
+                                             <i class="fas fa-trash"></i>
+                                             </a> --}}
+                                                        </div>
+                                                    </td>
                                                     <td>{{ $discount->discountType }}</td>
                                                     <td>{{ $discount->percentage }}</td>
                                                     <td>{{ $discount->amount }}</td>
@@ -78,16 +89,6 @@
                                                                 id="statusButton{{ $discount->id }}">
                                                             </a>
                                                         </div>
-                                                    </td>
-                                                    <td class="text-right">
-                                                        <div class="actions">
-                                             <a href="{{ route('edit-discount.show', ['id' => $discount->id]) }}" class="btn btn-sm bg-success-light mr-2">
-                                                <i class="fas fa-pen"></i>
-                                            </a>
-                                             {{-- <a href="#" class="btn btn-sm bg-danger-light">
-                                             <i class="fas fa-trash"></i>
-                                             </a> --}}
-                                          </div>
                                                     </td>
                                                 </tr>
                                             @endforeach

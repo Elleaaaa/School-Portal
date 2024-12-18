@@ -45,32 +45,34 @@
                                     <table class="table table-hover table-center mb-0 datatable">
                                         <thead>
                                             <tr>
+                                                <th class="text-right">Action</th>
                                                 <th>Student ID</th>
                                                 <th>Name</th>
                                                 <th>Scholarship</th>
                                                 <th>Email</th>
                                                 <th>Mobile Number</th>
-                                                <th class="text-right">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($scholars as $scholar)
                                                 <tr>
+                                                    <td class="text-right">
+                                                        <div class="actions">
+                                                            <a href="{{ route('edit-scholar.show', ['id' => $scholar->id]) }}"
+                                                                class="btn btn-sm bg-success-light mr-2">
+                                                                <i class="fas fa-pen"></i>
+                                                            </a>
+                                                            <a href="{{ route('setScholarInactive.update', ['id' => $scholar->id]) }}"
+                                                                class="btn btn-sm bg-danger-light">
+                                                                <i class="fas fa-trash"></i>
+                                                            </a>
+                                                        </div>
+                                                    </td>
                                                     <td>{{ $scholar->studentId }}</td>
                                                     <td>{{ $scholar->name }}</td>
                                                     <td>{{ $scholar->scholarType }}</td>
                                                     <td>{{ $scholar->email }}</td>
                                                     <td>{{ $scholar->mobileNumber }}</td>
-                                                    <td class="text-right">
-                                                        <div class="actions">
-                                             <a href="{{ route('edit-scholar.show', ['id' => $scholar->id]) }}" class="btn btn-sm bg-success-light mr-2">
-                                                <i class="fas fa-pen"></i>
-                                            </a>
-                                             <a href="{{ route('setScholarInactive.update', ['id' => $scholar->id]) }}" class="btn btn-sm bg-danger-light">
-                                             <i class="fas fa-trash"></i>
-                                             </a>
-                                          </div>
-                                                    </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>

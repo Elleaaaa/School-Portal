@@ -44,6 +44,7 @@ class CalendarController extends Controller
         $studentId = $student->studentId;
         $enrolled = Enrollee::where('studentId', $studentId)
             ->where('status', 'Enrolled')
+            ->where('schoolYear', date('Y') . '-' . (date('Y') + 1))
             ->get();
         $calendarData = null;
         $weekDays = Lesson::DAYS; // load all weekdays
@@ -51,6 +52,7 @@ class CalendarController extends Controller
         if ($enrolled->isNotEmpty()) { // Check if $enrolled is not empty
             // get the section of the student
             $section = Enrollee::where('studentId', $studentId)
+                ->where('status', 'Enrolled')
                 ->orderBy('id', 'desc') // to get the latest section of students
                 ->first()->section;
 

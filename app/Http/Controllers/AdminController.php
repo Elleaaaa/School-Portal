@@ -48,7 +48,7 @@ class AdminController extends Controller
         $nextYear = now()->addYear()->year;
 
         $admin = User::find($studentId);
-        // get the admin name
+     
         $enrolledCount = Enrollee::where('status', "Enrolled")->count();
         $teachersCount = Teacher::where('status', "active")->count();
         $pendingCount = Enrollee::where('status', "Pending")->count();
@@ -78,7 +78,10 @@ class AdminController extends Controller
                             ->where('schoolYear', $currentYear . "-" . $nextYear)
                             ->count();
 
-        return view('admin.dashboard', compact('admin', 'enrolledCount', 'teachersCount', 'pendingCount', 'grade7', 'grade8', 'grade9', 'grade10', 'grade11', 'grade12'));
+        $adminName = Admin::where('adminId', $studentId)->first();
+        $adminFullName = $adminName->firstName . ' ' . $adminName->lastName . ' ' . $adminName->suffix;
+
+        return view('admin.dashboard', compact('admin', 'adminFullName', 'enrolledCount', 'teachersCount', 'pendingCount', 'grade7', 'grade8', 'grade9', 'grade10', 'grade11', 'grade12'));
     }
 
     public function showStudentList()
@@ -136,10 +139,12 @@ class AdminController extends Controller
     {
         $user = User::where('studentId', $adminId)->first();
         $admin = DB::table('admins')->where('adminId', $adminId)->first();
+        $address = Address::where('studentId', $adminId)->first();
+        
         if ($admin === null) {
             abort(404); // or handle the case where student is not found
         }
-        return view('admin.profile-details', compact('admin', 'user'));
+        return view('admin.profile-details', compact('admin', 'user', 'address'));
     }
 
     /**
@@ -182,7 +187,8 @@ class AdminController extends Controller
          $admin->adminId = $request->input('studentId');
          $admin->gender = $request->input('gender');
          $admin->birthday = $request->input('birthday');
-         $admin->age = $request->input('age');
+         $birthday = new \Carbon\Carbon($admin->birthday);
+         $admin->age = $birthday->age;
          $admin->mobileNumber = $request->input('mobileNumber');
          $admin->landlineNumber = $request->input('landlineNumber');
          $admin->religion = $request->input('religion');

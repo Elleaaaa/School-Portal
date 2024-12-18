@@ -39,18 +39,28 @@
                               <table class="table table-hover table-center mb-0 datatable">
                                  <thead>
                                     <tr>
+                                       <th class="text-right">Action</th>
                                        <th>Student ID</th>
                                        <th>Name</th>
                                        <th>Gender</th>
                                        <th>DOB</th>
                                        <th>Religion</th>
                                        <th>Mobile Number</th>
-                                       <th class="text-right">Action</th>
                                     </tr>
                                  </thead>
                                  <tbody>
                                     @foreach ($students as $student)
                                     <tr>
+                                       <td class="text-right">
+                                          <div class="actions">
+                                              <a href="{{ route('edit-student.show', ['id' => $student->id]) }}" class="btn btn-sm bg-success-light mr-2">
+                                                  <i class="fas fa-pen"></i>
+                                              </a>
+                                              {{-- <a href="#" class="btn btn-sm bg-danger-light">
+                                              <i class="fas fa-trash"></i> --}}
+                                              </a>
+                                          </div>
+                                      </td>
                                         <td>{{$student->studentId}}</td>
                                         <td>
                                             @foreach ($images as $image)
@@ -74,16 +84,6 @@
                                         <td>{{ $student->birthday }}</td>
                                         <td>{{ $student->religion }}</td>
                                         <td>{{ $student->mobileNumber }}</td>
-                                        <td class="text-right">
-                                            <div class="actions">
-                                                <a href="{{ route('edit-student.show', ['id' => $student->id]) }}" class="btn btn-sm bg-success-light mr-2">
-                                                    <i class="fas fa-pen"></i>
-                                                </a>
-                                                {{-- <a href="#" class="btn btn-sm bg-danger-light">
-                                                <i class="fas fa-trash"></i> --}}
-                                                </a>
-                                            </div>
-                                        </td>
                                     </tr>
                                     @endforeach
                                 </tbody>

@@ -11,6 +11,7 @@ use App\Models\Log;
 use App\Models\Student;
 use App\Models\Notification;
 use App\Models\Scholar;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -67,18 +68,47 @@ class FeeController extends Controller
 
 
 
+    // payment history in student tab
     public function paymentHistory()
     {
         $studentId = Auth::user()->studentId;
         $feeHistory = Fee::where('studentId', $studentId)->orderByDesc('created_at')->get();
-        return view('student.payments-history', compact('feeHistory'));
+
+        $totalAmount = $feeHistory->sum('amountPaid');
+        $tuitionFee = $feeHistory->where('schoolYear', date('Y') . '-' . (date('Y') + 1))
+            ->where('feeType', "Tuition Fee")
+            ->where('studentId', $studentId)
+            ->first();
+        $tuitionAmount = $tuitionFee ? $tuitionFee->discountedPrice : 0;
+
+
+        return view('student.payments-history', compact('feeHistory', 'totalAmount', 'tuitionAmount'));
     }
 
     public function paymentHistoryAdmin()
     {
-        $feeHistory = Fee::all();
-        return view('cashier.payments-history', compact('feeHistory'));
+        // Get the most recent payment for each student
+        $feeHistory = Fee::whereIn('studentId', Fee::pluck('studentId')->toArray())
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->groupBy('studentId')
+            ->map(function ($payments) {
+                return $payments->first(); // Get the most recent payment for each student
+            });
+
+        // Get the section for each student
+        $studentsWithSections = $feeHistory->map(function ($payment) {
+            $studentId = $payment->studentId; // Get the studentId of each payment
+            $section = Enrollee::where('studentId', $studentId)->first(); // Get the section for each student
+            return [
+                'payment' => $payment,
+                'section' => $section ? $section->section : null, // Get the section name (or null if not found)
+            ];
+        });
+
+        return view('cashier.payments-history', compact('feeHistory', 'studentsWithSections'));
     }
+
 
     // use to fetch student details to populate input fields in payment
     public function fetchStudentDetails(Request $request)
@@ -113,157 +143,6 @@ class FeeController extends Controller
         $feeId = $timestamp . "-" . $random;
         return $feeId;
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    // public function store(Request $request)
-    // {
-
-    //     $studentId = $request->input('studentId');
-    //     $lastPayment = Fee::where('studentId', $studentId)->latest()->first();
-
-    //     $feeid = null;
-
-    //     // If there's a last payment, retrieve its associated fee type
-    //     if ($lastPayment) {
-    //         $feeid = $lastPayment->feeId;
-    //     }
-
-    //     $discountedPrice = $request->input('discountedPrice');
-    //     $amountPaid = $request->input('amountPaid');
-
-    //     // Retrieve all payment records for the specific student
-    //     $paymentRecords = Fee::where('studentId', $studentId)->get();
-
-    //     // Initialize the variable to store the total of previous amounts paid
-    //     $addedPreviousPaid = 0;
-
-    //     // Loop through each payment record and accumulate the amount paid
-    //     foreach ($paymentRecords as $paymentRecord) {
-    //         $addedPreviousPaid += $paymentRecord->amountPaid;
-    //     }
-
-    //     $newAddedPaid = $addedPreviousPaid + $amountPaid;
-
-    //     // Calculate the remaining amount after deducting the previous amount paid
-    //     $amountLeft = $discountedPrice - $newAddedPaid;
-
-
-    //     // Set status
-    //     if ($amountLeft == 0) {
-    //         $status = "Fully Paid";
-    //     } else {
-    //         $status = "Not Fully Paid";
-    //     }
-
-
-    //     // Add New Fee
-    //     $fee = new Fee();
-
-    //     $fee->feeId = self::generateFeeId();
-    //     $fee->feeReceiptId = self::generateFeeId();
-    //     $fee->studentId =  $request->input('studentId');
-    //     $fee->firstName = $request->input('firstName');
-    //     $fee->middleName = $request->input('middleName');
-    //     $fee->lastName = $request->input('lastName');
-    //     $fee->suffixName = $request->input('suffixName');
-    //     $fee->feeType = $request->input('feeType');
-    //     $fee->amount = $request->input('amount');
-    //     $fee->amountPaid = $request->input('amountPaid');
-    //     $fee->discount = $request->input('discount');
-    //     $fee->discountAmount = $request->input('discountAmount');
-    //     $fee->discountedPrice = $request->input('discountedPrice');
-    //     $fee->reciever = $request->input('reciever');
-    //     $fee->status = $status;
-    //     $fee->amountLeft = $amountLeft;
-    //     $fee->save();
-
-    //     $notif = new Notification();
-    //     $notif->userId = $request->input('studentId');
-    //     $notif->title = "Payment Successful!";
-    //     $notif->message = "You paid an Amount of ". number_format(($amountPaid),2). " Your Remaining Balance is ". number_format(($amountLeft),2). " recieved by: ". $request->input('reciever');
-    //     $notif->type = "tuition payment";
-    //     $notif->userRole = "student";
-    //     $notif->save();
-
-    //     notify()->success('Paid Successfully!');
-    //     return redirect()->route('addfees.show');
-    // }
-
-    // public function store(Request $request)
-    // {
-
-    //     $studentId = $request->input('studentId');
-    //     $lastPayment = Fee::where('studentId', $studentId)->latest()->first();
-
-    //     $feeid = null;
-
-    //     // If there's a last payment, retrieve its associated fee type
-    //     if ($lastPayment) {
-    //         $feeid = $lastPayment->feeId;
-    //     }
-
-    //     $discountedPrice = $request->input('discountedPrice');
-    //     $amountPaid = $request->input('amountPaid');
-
-    //     // Retrieve all payment records for the specific student
-    //     $paymentRecords = Fee::where('studentId', $studentId)->get();
-
-    //     // Initialize the variable to store the total of previous amounts paid
-    //     $addedPreviousPaid = 0;
-
-    //     // Loop through each payment record and accumulate the amount paid
-    //     foreach ($paymentRecords as $paymentRecord) {
-    //         $addedPreviousPaid += $paymentRecord->amountPaid;
-    //     }
-
-    //     $newAddedPaid = $addedPreviousPaid + $amountPaid;
-
-    //     // Calculate the remaining amount after deducting the previous amount paid
-    //     $amountLeft = $discountedPrice - $newAddedPaid;
-
-
-    //     // Set status
-    //     if ($amountLeft == 0) {
-    //         $status = "Fully Paid";
-    //     } else {
-    //         $status = "Not Fully Paid";
-    //     }
-
-
-    //     // Add New Fee
-    //     $fee = new Fee();
-
-    //     $fee->feeId = self::generateFeeId();
-    //     $fee->feeReceiptId = self::generateFeeId();
-    //     $fee->studentId =  $request->input('studentId');
-    //     $fee->firstName = $request->input('firstName');
-    //     $fee->middleName = $request->input('middleName');
-    //     $fee->lastName = $request->input('lastName');
-    //     $fee->suffixName = $request->input('suffixName');
-    //     $fee->feeType = $request->input('feeType');
-    //     $fee->amount = $request->input('amount');
-    //     $fee->amountPaid = $request->input('amountPaid');
-    //     $fee->discount = $request->input('discount');
-    //     $fee->discountAmount = $request->input('discountAmount');
-    //     $fee->discountedPrice = $request->input('discountedPrice');
-    //     $fee->reciever = $request->input('reciever');
-    //     $fee->status = $status;
-    //     $fee->amountLeft = $amountLeft;
-    //     $fee->save();
-
-    //     $notif = new Notification();
-    //     $notif->userId = $request->input('studentId');
-    //     $notif->title = "Payment Successful!";
-    //     $notif->message = "You paid an Amount of " . number_format(($amountPaid), 2) . " Your Remaining Balance is " . number_format(($amountLeft), 2) . " recieved by: " . $request->input('reciever');
-    //     $notif->type = "tuition payment";
-    //     $notif->userRole = "student";
-    //     $notif->save();
-
-    //     notify()->success('Paid Successfully!');
-    //     return redirect()->route('addfees.show');
-    // }
 
     public function store(Request $request)
     {
@@ -313,7 +192,7 @@ class FeeController extends Controller
             $fee = new Fee();
 
             $fee->feeId = self::generateFeeId();
-            $fee->feeReceiptId = self::generateFeeId();
+            $fee->feeReceiptId =  $request->input('receiptId');
             $fee->studentId =  $request->input('studentId');
             $fee->firstName = $request->input('firstName');
             $fee->middleName = $request->input('middleName');
@@ -453,35 +332,42 @@ class FeeController extends Controller
 
 
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function studentPaymentHistory(String $studentId)
     {
-        //
-    }
+        $cashierId = Auth::user()->studentId;
+        $student = Student::where('studentId', $studentId)->first();
+        $studentName = $student->firstName . ' ' . $student->middleName . ' ' . $student->lastName . ' ' . $student->suffixName;
+    
+        $enrollee = Enrollee::where('studentId', $studentId)->first();
+        $gradeLevel = $enrollee ? $enrollee->gradeLevel : null;
+        $section = $enrollee ? $enrollee->section : null;
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+        $scholar = Scholar::where('studentId', $studentId)->first();
+        $scholarType = $scholar ? $scholar->scholarType : "N/A";
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+        $payments = Fee::where('studentId', $studentId)->orderBy('created_at', 'asc')->get();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $cashier = Cashier::where('cashierId', $cashierId)->first();
+
+        if (!$student) {
+            return response()->json(['error' => 'Student not found'], 404);
+        } else {
+
+            $data = [
+                'studentName' => $studentName,
+                'studentId' => $studentId,
+                'gradeLevel' => $gradeLevel,
+                'section' => $section,
+                'scholarType' => $scholarType,
+                'payments' => $payments,
+                'cashier' => $cashier,
+                'imagelogo1' => public_path('img/logo/sanpablologo.png'),
+                'imagelogo2' => public_path('img/logo/baylogo.png')
+            ];
+            
+            $pdf = PDF::loadView('cashier.student-payment-history', $data);
+            return $pdf->setPaper('A4', 'portrait')->stream('student-payment-history.pdf');
+        }
     }
+    
 }

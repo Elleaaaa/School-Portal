@@ -7,16 +7,13 @@
   
     <link href="{{ asset('css/main.css') }}" rel="stylesheet">
 	<link rel="stylesheet" href="{{ asset('plugins/bootstrap/css/bootstrap.min.css') }}">
-
-    <!-- FONTAWSOME -->
-    <script src="https://kit.fontawesome.com/a6e8b7ba95.js" crossorigin="anonymous"></script>
     
 </head>
 <body>
 <div class="limiter">
 		<div class="container-login100" style="background-image: url('img/backgroundgrad.jpg');">
 			<div class="wrap-login100">
-				<form method="POST" action="{{ url('/login1') }}" class="login100-form validate-form">
+				<form method="POST" action="{{ route('login1') }}" class="login100-form validate-form">
 					@csrf
 					<span class="login100-form-logo">
 						<img src="{{ asset('img/liceologo-sm.png') }}" alt="">
@@ -39,8 +36,8 @@
 					@endif
 
 					<div class="contact100-form-checkbox">
-						<input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
-						<label class="label-checkbox100" for="ckb1">
+						<input class="input-checkbox100" id="remember_me" type="checkbox" name="remember">
+						<label class="label-checkbox100" for="remember_me">
 							Remember me
 						</label>
 					</div>
@@ -64,5 +61,6 @@
 
 	<script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
+	<script src="{{ asset('js/fontawesome.js') }}"></script>
 </body>
 </html>

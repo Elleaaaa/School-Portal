@@ -60,7 +60,8 @@ class TeacherController extends Controller
         $teacher->teacherId = $request->input('teacherId');
         $teacher->gender = $request->input('gender');
         $teacher->birthday = $request->input('birthday');
-        $teacher->age = $request->input('age');
+        $birthday = new \Carbon\Carbon($teacher->birthday);
+        $teacher->age = $birthday->age;
         $teacher->mobileNumber = $request->input('mobileNumber');
         $teacher->landlineNumber = $request->input('landlineNumber');
         $teacher->religion = $request->input('religion');
@@ -114,7 +115,7 @@ class TeacherController extends Controller
             $logs = new Log();
             $logs->studentId = Auth::user()->studentId;
             $logs->type = "add_teacher";
-            $logs->activity = "Added new teacher with ID " . $validatedData['studentId'];
+            $logs->activity = "Added new teacher with ID " . $validatedData['teacherId'];
             $logs->save();
         }
 
@@ -466,10 +467,8 @@ class TeacherController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        // Add New Student
-        // $student = new Student();
 
-        // Update Student
+        // Update Teacher
         $teacher = Teacher::find($id);
         $teacherId = $teacher->teacherId;
         $teacherPhoto = User::where('studentId', $teacherId)->first();
@@ -494,7 +493,8 @@ class TeacherController extends Controller
         $teacher->teacherId = $request->input('studentId');
         $teacher->gender = $request->input('gender');
         $teacher->birthday = $request->input('birthday');
-        $teacher->age = $request->input('age');
+        $birthday = new \Carbon\Carbon($teacher->birthday);
+        $teacher->age = $birthday->age;
         $teacher->mobileNumber = $request->input('mobileNumber');
         $teacher->landlineNumber = $request->input('landlineNumber');
         $teacher->religion = $request->input('religion');
@@ -518,14 +518,14 @@ class TeacherController extends Controller
 
     public function updateAdmin(Request $request, string $id)
     {
-        // Add New Student
-        // $student = new Student();
 
-        // Update Student
+        // Update Teacher
         $teacher = Teacher::find($id);
         $originalTeacher = $teacher->replicate();
         $teacherId = $teacher->teacherId;
-        //  dd($teacher);
+
+        // old full name
+        $oldFullName = $teacher->firstName . ' ' . $teacher->middleName . ' ' . $teacher->lastName . ' ' . $teacher->suffix;
 
         $teacher->firstName = $request->input('firstName');
         $teacher->middleName = $request->input('middleName');
@@ -533,12 +533,22 @@ class TeacherController extends Controller
         $teacher->suffix = $request->input('suffixName');
         $teacher->gender = $request->input('gender');
         $teacher->birthday = $request->input('birthday');
-        $teacher->age = $request->input('age');
+        $birthday = new \Carbon\Carbon($teacher->birthday);
+        $teacher->age = $birthday->age;
         $teacher->mobileNumber = $request->input('mobileNumber');
         $teacher->landlineNumber = $request->input('landlineNumber');
         $teacher->religion = $request->input('religion');
         $teacher->placeOfBirth = $request->input('birthplace');
         $teacher->save();
+
+        // new full name 
+        $newFullName = $teacher->firstName . ' ' . $teacher->middleName . ' ' . $teacher->lastName . ' ' . $teacher->suffix;
+
+        // Update the name of teacher in subject table if the teacher name has changed
+        if ($oldFullName !== $newFullName) {
+            Subject::where('teacherId', $teacher->teacherId)
+                ->update(['teacherName' => $newFullName]);
+        }
 
         // use for activity logs
         $teacherFields = [

@@ -134,6 +134,13 @@ class SectionController extends Controller
         $section->status = $request->input('status');
         $section->save();
 
+        // Update the Subject table if the section name has changed
+        if ($oldSectionName !== $section->sectionName) {
+            Subject::where('gradeLevel', $section->gradeLevel)
+                ->where('section', $oldSectionName)
+                ->update(['section' => $section->sectionName]);
+        }
+
         // use for activity logs
         $sectionFields = [
             'gradeLevel',
@@ -155,11 +162,6 @@ class SectionController extends Controller
             $logs->activity = $activityMessage;
             $logs->save();
         }
-
-        // when section name is updated, it will also update the section in Subject Table
-        Subject::where('gradeLevel', $section->gradeLevel)
-            ->where('section', $oldSectionName)
-            ->update(['section' => $section->sectionName]);
 
         notify()->success('Section Updated Successfully!');
         return redirect()->route('sectionlist.show');

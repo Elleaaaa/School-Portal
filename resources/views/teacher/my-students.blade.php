@@ -63,8 +63,12 @@
                                                                             src="{{ asset('storage/images/display-photo/' . $image->displayPhoto) }}"
                                                                             alt="User Image">
                                                                     </a>
-                                                                    <a
-                                                                        href="teacher-details.html">{{ $student->name }}</a>
+                                                                    {{-- {{ $student->name }} --}}
+                                                                    @foreach ($studentDetails as $studentDetail)
+                                                                        @if ($studentDetail->studentId == $student->studentId)
+                                                                            {{ $studentDetail->lastName . ' ' . $studentDetail->firstName . ' ' . $studentDetail->suffix }}
+                                                                        @endif
+                                                                    @endforeach
                                                                 </h2>
                                                             @endif
                                                         @endforeach
@@ -116,21 +120,78 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
 
     <script>
-         new DataTable('#myStudents', {
-            lengthMenu: [5, 10, 25, 50, 100, {
-                label: 'All',
-                value: -1
-            }],
-            layout: {
-                top1Start: {
-                    buttons: [{
-                        text: 'Export As',
-                        split: ['pdf', ],
-                    }],
-                }
-            }
+        function processLogoImage(imagePath, callback) {
+            const logoImage = new Image();
+            logoImage.src = imagePath;
+
+            logoImage.onload = function() {
+                const canvas = document.createElement('canvas');
+                canvas.width = logoImage.width;
+                canvas.height = logoImage.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(logoImage, 0, 0);
+                const base64Image = canvas.toDataURL();
+
+                callback(base64Image);
+            };
+
+            logoImage.onerror = function() {
+                console.error('Failed to load logo image.');
+            };
+        }
+
+        function initializeDataTable(base64Image) {
+            new DataTable('#myStudents', {
+                lengthMenu: [5, 10, 25, 50, 100, {
+                    label: 'All',
+                    value: -1
+                }],
+                dom: 'Bfrtip',
+                buttons: [{
+                    extend: 'pdfHtml5',
+                    text: 'Export As PDF',
+                    title: '',
+                    message: '',
+                    orientation: 'portrait',
+                    pageSize: 'A4',
+                    customize: function(doc) {
+                        // Set margins for the page
+                        doc.pageMargins = [40, 40, 40, 40];
+
+                        doc.content.splice(0, 0, {
+                            image: base64Image,
+                            width: 80,
+                            alignment: 'center',
+                            margin: [0, 0, 0,
+                                0
+                            ]
+                        });
+
+                        doc.content.splice(1, 0, {
+                            text: 'My Students',
+                            alignment: 'center',
+                            fontSize: 18,
+                            margin: [0, 0, 0,
+                                0
+                            ]
+                        });
+
+                    },
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                }]
+
+            });
+        }
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const imagePath = '{{ asset('img/logo/baylogo.png') }}';
+            processLogoImage(imagePath, initializeDataTable);
         });
     </script>
+
 
 
 </body>

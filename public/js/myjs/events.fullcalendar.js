@@ -13,6 +13,7 @@ function display_events() {
                         return {
                             id: item.id,
                             title: item.title,
+                            description: item.description,
                             start: item.start,
                             end: item.end,
                             category: item.category,
@@ -84,6 +85,7 @@ function initialize_calendar(events) {
             $('#addEventModal').find("input[name='eventName']").val(event.title);
             $('#addEventModal').find("input[name='start_datetime']").val(startFormatted);
             $('#addEventModal').find("input[name='end_datetime']").val(endFormatted);
+            $('#addEventModal').find("input[name='description']").val(event.extendedProps.description);
             // Assume you store category in the extendedProps
             $('#addEventModal').find("select[name='category']").val(event.extendedProps.category);
             $('#addEventModal').modal('show');
@@ -110,6 +112,7 @@ function initialize_calendar(events) {
 
 function clearModalFields() {
     $('#addEventModal').find("input[name='eventName']").val('');
+    $('#addEventModal').find("input[name='description']").val('');
     $('#addEventModal').find("input[name='start_datetime']").val('');
     $('#addEventModal').find("input[name='end_datetime']").val('');
     $('#addEventModal').find("select[name='category']").val('');
